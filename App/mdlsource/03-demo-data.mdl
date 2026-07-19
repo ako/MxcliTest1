@@ -1,0 +1,184 @@
+-- ============================================================================
+-- Travel Itinerary Planner -- Demo Data Seed  (generated)
+-- ============================================================================
+-- Idempotent after-startup microflow: seeds three realistic trips with
+-- day-by-day agendas. Dates are relative to the current date (evergreen).
+-- An after-startup microflow MUST return Boolean (return true) or CE0142.
+-- ============================================================================
+
+/**
+ * Seed demo travel data (idempotent). Creates Tokyo Spring, Iceland Ring Road
+ * and Lisbon Weekend trips with days and time-ordered activities. Does nothing
+ * if any Trip already exists.
+ *
+ * @returns true (required for after-startup microflow -- CE0142)
+ * @since 1.0.0
+ */
+create microflow "Travel"."ACT_Seed" ()
+returns Boolean as $ok
+folder 'DemoData'
+begin
+  -- Guard: only seed an empty database
+  retrieve $Existing from "Travel"."Trip" limit 1;
+  if $Existing != empty then
+    return true;
+  end if;
+
+  declare $base datetime = trimToDays([%CurrentDateTime%]);
+
+  $Days = create list of "Travel"."Day";
+  $Activities = create list of "Travel"."Activity";
+
+
+  -- Trip: Tokyo Spring (Booked)
+  $Tokyo = create "Travel"."Trip" (
+    Title = 'Tokyo Spring',
+    Destination = 'Tokyo, Japan',
+    StartDate = addDays($base, 30),
+    EndDate = addDays($base, 33),
+    CoverImageUrl = 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?auto=format&fit=crop&w=1000&q=80',
+    Summary = 'Cherry-blossom season in the capital: temples, neon nights, and a Hakone day trip with Mt Fuji views.',
+    Budget = 3500,
+    "Status" = Travel.ENUM_TripStatus.Booked);
+  commit $Tokyo;
+
+  $D01 = create "Travel"."Day" (DayNumber = 1, DayDate = addDays($base, 30), Heading = 'Arrival & Shinjuku', Travel.Trip_Day = $Tokyo);
+  add $D01 to $Days;
+  $A01 = create "Travel"."Activity" (Name = 'Narita Express to Shinjuku', "Category" = Travel.ENUM_ActivityCategory.Transport, StartTime = addHours(addDays($base, 30), 15), EndTime = addHours(addDays($base, 30), 16), Location = 'Narita Airport', Address = 'Narita Intl Airport, Chiba', Cost = 30, Booked = true, Travel.Day_Activity = $D01);
+  add $A01 to $Activities;
+  $A02 = create "Travel"."Activity" (Name = 'Check-in Park Hyatt Tokyo', "Category" = Travel.ENUM_ActivityCategory.Lodging, StartTime = addHours(addDays($base, 30), 17), EndTime = addHours(addDays($base, 30), 18), Location = 'Park Hyatt Tokyo', Address = '3-7-1-2 Nishishinjuku, Shinjuku', Cost = 0, Booked = true, Travel.Day_Activity = $D01);
+  add $A02 to $Activities;
+  $A03 = create "Travel"."Activity" (Name = 'Dinner at Omoide Yokocho', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, 30), 19), EndTime = addHours(addDays($base, 30), 21), Location = 'Omoide Yokocho', Address = 'Nishishinjuku, Shinjuku', Cost = 40, Booked = false, Travel.Day_Activity = $D01);
+  add $A03 to $Activities;
+  $D02 = create "Travel"."Day" (DayNumber = 2, DayDate = addDays($base, 31), Heading = 'Asakusa & Ueno', Travel.Trip_Day = $Tokyo);
+  add $D02 to $Days;
+  $A04 = create "Travel"."Activity" (Name = 'Senso-ji Temple', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 31), 9), EndTime = addHours(addDays($base, 31), 11), Location = 'Senso-ji', Address = '2-3-1 Asakusa, Taito', Cost = 0, Booked = false, Travel.Day_Activity = $D02);
+  add $A04 to $Activities;
+  $A05 = create "Travel"."Activity" (Name = 'Tempura lunch at Daikokuya', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, 31), 12), EndTime = addHours(addDays($base, 31), 13), Location = 'Daikokuya Tempura', Address = '1-38-10 Asakusa, Taito', Cost = 25, Booked = false, Travel.Day_Activity = $D02);
+  add $A05 to $Activities;
+  $A06 = create "Travel"."Activity" (Name = 'Ueno Park & National Museum', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 31), 14), EndTime = addHours(addDays($base, 31), 17), Location = 'Ueno Park', Address = 'Uenokoen, Taito', Cost = 15, Booked = false, Travel.Day_Activity = $D02);
+  add $A06 to $Activities;
+  $A07 = create "Travel"."Activity" (Name = 'Akihabara evening', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 31), 18), EndTime = addHours(addDays($base, 31), 20), Location = 'Akihabara', Address = 'Akihabara, Chiyoda', Cost = 20, Booked = false, Travel.Day_Activity = $D02);
+  add $A07 to $Activities;
+  $D03 = create "Travel"."Day" (DayNumber = 3, DayDate = addDays($base, 32), Heading = 'Shibuya & Harajuku', Travel.Trip_Day = $Tokyo);
+  add $D03 to $Days;
+  $A08 = create "Travel"."Activity" (Name = 'Meiji Shrine', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 32), 10), EndTime = addHours(addDays($base, 32), 11), Location = 'Meiji Jingu', Address = '1-1 Yoyogikamizonocho, Shibuya', Cost = 0, Booked = false, Travel.Day_Activity = $D03);
+  add $A08 to $Activities;
+  $A09 = create "Travel"."Activity" (Name = 'Takeshita Street, Harajuku', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 32), 12), EndTime = addHours(addDays($base, 32), 14), Location = 'Takeshita Street', Address = 'Jingumae, Shibuya', Cost = 30, Booked = false, Travel.Day_Activity = $D03);
+  add $A09 to $Activities;
+  $A10 = create "Travel"."Activity" (Name = 'Shibuya Crossing & Hachiko', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 32), 15), EndTime = addHours(addDays($base, 32), 16), Location = 'Shibuya Crossing', Address = 'Shibuya, Tokyo', Cost = 0, Booked = false, Travel.Day_Activity = $D03);
+  add $A10 to $Activities;
+  $A11 = create "Travel"."Activity" (Name = 'Izakaya dinner in Ebisu', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, 32), 20), EndTime = addHours(addDays($base, 32), 22), Location = 'Ebisu Yokocho', Address = 'Ebisu, Shibuya', Cost = 45, Booked = true, Travel.Day_Activity = $D03);
+  add $A11 to $Activities;
+  $D04 = create "Travel"."Day" (DayNumber = 4, DayDate = addDays($base, 33), Heading = 'Hakone Day Trip', Travel.Trip_Day = $Tokyo);
+  add $D04 to $Days;
+  $A12 = create "Travel"."Activity" (Name = 'Romancecar to Hakone', "Category" = Travel.ENUM_ActivityCategory.Transport, StartTime = addHours(addDays($base, 33), 8), EndTime = addHours(addDays($base, 33), 10), Location = 'Shinjuku Station', Address = 'Shinjuku, Tokyo', Cost = 25, Booked = true, Travel.Day_Activity = $D04);
+  add $A12 to $Activities;
+  $A13 = create "Travel"."Activity" (Name = 'Hakone Open-Air Museum', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 33), 11), EndTime = addHours(addDays($base, 33), 13), Location = 'Hakone Open-Air Museum', Address = 'Ninotaira, Hakone', Cost = 16, Booked = false, Travel.Day_Activity = $D04);
+  add $A13 to $Activities;
+  $A14 = create "Travel"."Activity" (Name = 'Lake Ashi cruise', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 33), 14), EndTime = addHours(addDays($base, 33), 15), Location = 'Lake Ashi', Address = 'Hakone, Kanagawa', Cost = 18, Booked = false, Travel.Day_Activity = $D04);
+  add $A14 to $Activities;
+
+  -- Trip: Iceland Ring Road (Planning)
+  $Iceland = create "Travel"."Trip" (
+    Title = 'Iceland Ring Road',
+    Destination = 'Reykjavik, Iceland',
+    StartDate = addDays($base, 90),
+    EndDate = addDays($base, 93),
+    CoverImageUrl = 'https://images.unsplash.com/photo-1504893524553-b855bce32c67?auto=format&fit=crop&w=1000&q=80',
+    Summary = 'Waterfalls, black-sand beaches, a glacier lagoon and northern lights along the south coast.',
+    Budget = 2800,
+    "Status" = Travel.ENUM_TripStatus.Planning);
+  commit $Iceland;
+
+  $D05 = create "Travel"."Day" (DayNumber = 1, DayDate = addDays($base, 90), Heading = 'Golden Circle', Travel.Trip_Day = $Iceland);
+  add $D05 to $Days;
+  $A15 = create "Travel"."Activity" (Name = 'Thingvellir National Park', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 90), 9), EndTime = addHours(addDays($base, 90), 11), Location = 'Thingvellir', Address = 'Thingvellir National Park', Cost = 0, Booked = false, Travel.Day_Activity = $D05);
+  add $A15 to $Activities;
+  $A16 = create "Travel"."Activity" (Name = 'Geysir geothermal area', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 90), 12), EndTime = addHours(addDays($base, 90), 13), Location = 'Geysir', Address = 'Haukadalur Valley', Cost = 0, Booked = false, Travel.Day_Activity = $D05);
+  add $A16 to $Activities;
+  $A17 = create "Travel"."Activity" (Name = 'Gullfoss waterfall', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 90), 14), EndTime = addHours(addDays($base, 90), 15), Location = 'Gullfoss', Address = 'Gullfoss, South Iceland', Cost = 0, Booked = false, Travel.Day_Activity = $D05);
+  add $A17 to $Activities;
+  $A18 = create "Travel"."Activity" (Name = 'Guesthouse in Selfoss', "Category" = Travel.ENUM_ActivityCategory.Lodging, StartTime = addHours(addDays($base, 90), 19), EndTime = addHours(addDays($base, 90), 20), Location = 'Selfoss', Address = 'Selfoss, South Iceland', Cost = 140, Booked = false, Travel.Day_Activity = $D05);
+  add $A18 to $Activities;
+  $D06 = create "Travel"."Day" (DayNumber = 2, DayDate = addDays($base, 91), Heading = 'South Coast', Travel.Trip_Day = $Iceland);
+  add $D06 to $Days;
+  $A19 = create "Travel"."Activity" (Name = 'Seljalandsfoss', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 91), 9), EndTime = addHours(addDays($base, 91), 10), Location = 'Seljalandsfoss', Address = 'South Coast, Route 1', Cost = 0, Booked = false, Travel.Day_Activity = $D06);
+  add $A19 to $Activities;
+  $A20 = create "Travel"."Activity" (Name = 'Skogafoss', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 91), 11), EndTime = addHours(addDays($base, 91), 12), Location = 'Skogafoss', Address = 'Skogar, South Iceland', Cost = 0, Booked = false, Travel.Day_Activity = $D06);
+  add $A20 to $Activities;
+  $A21 = create "Travel"."Activity" (Name = 'Reynisfjara black-sand beach', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 91), 14), EndTime = addHours(addDays($base, 91), 15), Location = 'Reynisfjara', Address = 'Vik i Myrdal', Cost = 0, Booked = false, Travel.Day_Activity = $D06);
+  add $A21 to $Activities;
+  $A22 = create "Travel"."Activity" (Name = 'Hotel in Vik', "Category" = Travel.ENUM_ActivityCategory.Lodging, StartTime = addHours(addDays($base, 91), 17), EndTime = addHours(addDays($base, 91), 18), Location = 'Vik', Address = 'Vik i Myrdal', Cost = 160, Booked = false, Travel.Day_Activity = $D06);
+  add $A22 to $Activities;
+  $D07 = create "Travel"."Day" (DayNumber = 3, DayDate = addDays($base, 92), Heading = 'Glacier Lagoon', Travel.Trip_Day = $Iceland);
+  add $D07 to $Days;
+  $A23 = create "Travel"."Activity" (Name = 'Drive to Jokulsarlon', "Category" = Travel.ENUM_ActivityCategory.Transport, StartTime = addHours(addDays($base, 92), 9), EndTime = addHours(addDays($base, 92), 12), Location = 'Route 1', Address = 'Southeast Iceland', Cost = 0, Booked = false, Travel.Day_Activity = $D07);
+  add $A23 to $Activities;
+  $A24 = create "Travel"."Activity" (Name = 'Jokulsarlon Glacier Lagoon', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 92), 12), EndTime = addHours(addDays($base, 92), 14), Location = 'Jokulsarlon', Address = 'Vatnajokull National Park', Cost = 0, Booked = false, Travel.Day_Activity = $D07);
+  add $A24 to $Activities;
+  $A25 = create "Travel"."Activity" (Name = 'Diamond Beach walk', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 92), 14), EndTime = addHours(addDays($base, 92), 15), Location = 'Diamond Beach', Address = 'Breidamerkursandur', Cost = 0, Booked = false, Travel.Day_Activity = $D07);
+  add $A25 to $Activities;
+  $A26 = create "Travel"."Activity" (Name = 'Northern Lights hunt', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, 92), 21), EndTime = addHours(addDays($base, 92), 23), Location = 'Countryside', Address = 'Southeast Iceland', Cost = 0, Booked = false, Travel.Day_Activity = $D07);
+  add $A26 to $Activities;
+  $D08 = create "Travel"."Day" (DayNumber = 4, DayDate = addDays($base, 93), Heading = 'Snaefellsnes', Travel.Trip_Day = $Iceland);
+  add $D08 to $Days;
+  $A27 = create "Travel"."Activity" (Name = 'Kirkjufell mountain', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 93), 9), EndTime = addHours(addDays($base, 93), 10), Location = 'Kirkjufell', Address = 'Grundarfjordur', Cost = 0, Booked = false, Travel.Day_Activity = $D08);
+  add $A27 to $Activities;
+  $A28 = create "Travel"."Activity" (Name = 'Seafood lunch in Stykkisholmur', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, 93), 12), EndTime = addHours(addDays($base, 93), 13), Location = 'Stykkisholmur', Address = 'Snaefellsnes Peninsula', Cost = 35, Booked = false, Travel.Day_Activity = $D08);
+  add $A28 to $Activities;
+  $A29 = create "Travel"."Activity" (Name = 'Snaefellsjokull National Park', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, 93), 15), EndTime = addHours(addDays($base, 93), 17), Location = 'Snaefellsjokull', Address = 'West Iceland', Cost = 0, Booked = false, Travel.Day_Activity = $D08);
+  add $A29 to $Activities;
+
+  -- Trip: Lisbon Weekend (Completed)
+  $Lisbon = create "Travel"."Trip" (
+    Title = 'Lisbon Weekend',
+    Destination = 'Lisbon, Portugal',
+    StartDate = addDays($base, -25),
+    EndDate = addDays($base, -23),
+    CoverImageUrl = 'https://images.unsplash.com/photo-1585208798174-6cedd86e019a?auto=format&fit=crop&w=1000&q=80',
+    Summary = 'A long weekend of miradouros, pastel de nata, tram 28 and a day trip to fairy-tale Sintra.',
+    Budget = 900,
+    "Status" = Travel.ENUM_TripStatus.Completed);
+  commit $Lisbon;
+
+  $D09 = create "Travel"."Day" (DayNumber = 1, DayDate = addDays($base, -25), Heading = 'Alfama & Baixa', Travel.Trip_Day = $Lisbon);
+  add $D09 to $Days;
+  $A30 = create "Travel"."Activity" (Name = 'Sao Jorge Castle', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -25), 10), EndTime = addHours(addDays($base, -25), 12), Location = 'Castelo de S. Jorge', Address = 'R. de Santa Cruz do Castelo', Cost = 15, Booked = true, Travel.Day_Activity = $D09);
+  add $A30 to $Activities;
+  $A31 = create "Travel"."Activity" (Name = 'Lunch at Time Out Market', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, -25), 13), EndTime = addHours(addDays($base, -25), 14), Location = 'Time Out Market', Address = 'Av. 24 de Julho 49', Cost = 22, Booked = false, Travel.Day_Activity = $D09);
+  add $A31 to $Activities;
+  $A32 = create "Travel"."Activity" (Name = 'Tram 28 ride', "Category" = Travel.ENUM_ActivityCategory.Activity, StartTime = addHours(addDays($base, -25), 15), EndTime = addHours(addDays($base, -25), 16), Location = 'Tram 28', Address = 'Martim Moniz', Cost = 3, Booked = false, Travel.Day_Activity = $D09);
+  add $A32 to $Activities;
+  $A33 = create "Travel"."Activity" (Name = 'Fado dinner in Alfama', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, -25), 20), EndTime = addHours(addDays($base, -25), 22), Location = 'Alfama', Address = 'Alfama, Lisbon', Cost = 50, Booked = true, Travel.Day_Activity = $D09);
+  add $A33 to $Activities;
+  $D10 = create "Travel"."Day" (DayNumber = 2, DayDate = addDays($base, -24), Heading = 'Belem', Travel.Trip_Day = $Lisbon);
+  add $D10 to $Days;
+  $A34 = create "Travel"."Activity" (Name = 'Jeronimos Monastery', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -24), 9), EndTime = addHours(addDays($base, -24), 11), Location = 'Mosteiro dos Jeronimos', Address = 'Praca do Imperio, Belem', Cost = 12, Booked = false, Travel.Day_Activity = $D10);
+  add $A34 to $Activities;
+  $A35 = create "Travel"."Activity" (Name = 'Pasteis de Belem', "Category" = Travel.ENUM_ActivityCategory.Food, StartTime = addHours(addDays($base, -24), 11), EndTime = addHours(addDays($base, -24), 12), Location = 'Pasteis de Belem', Address = 'R. de Belem 84', Cost = 8, Booked = false, Travel.Day_Activity = $D10);
+  add $A35 to $Activities;
+  $A36 = create "Travel"."Activity" (Name = 'Belem Tower', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -24), 12), EndTime = addHours(addDays($base, -24), 13), Location = 'Torre de Belem', Address = 'Av. Brasilia, Belem', Cost = 8, Booked = false, Travel.Day_Activity = $D10);
+  add $A36 to $Activities;
+  $A37 = create "Travel"."Activity" (Name = 'MAAT museum', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -24), 16), EndTime = addHours(addDays($base, -24), 18), Location = 'MAAT', Address = 'Av. Brasilia, Belem', Cost = 9, Booked = false, Travel.Day_Activity = $D10);
+  add $A37 to $Activities;
+  $D11 = create "Travel"."Day" (DayNumber = 3, DayDate = addDays($base, -23), Heading = 'Sintra Day Trip', Travel.Trip_Day = $Lisbon);
+  add $D11 to $Days;
+  $A38 = create "Travel"."Activity" (Name = 'Train to Sintra', "Category" = Travel.ENUM_ActivityCategory.Transport, StartTime = addHours(addDays($base, -23), 9), EndTime = addHours(addDays($base, -23), 10), Location = 'Rossio Station', Address = 'Rossio, Lisbon', Cost = 5, Booked = false, Travel.Day_Activity = $D11);
+  add $A38 to $Activities;
+  $A39 = create "Travel"."Activity" (Name = 'Pena Palace', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -23), 10), EndTime = addHours(addDays($base, -23), 13), Location = 'Palacio da Pena', Address = 'Estrada da Pena, Sintra', Cost = 20, Booked = true, Travel.Day_Activity = $D11);
+  add $A39 to $Activities;
+  $A40 = create "Travel"."Activity" (Name = 'Quinta da Regaleira', "Category" = Travel.ENUM_ActivityCategory.Sightseeing, StartTime = addHours(addDays($base, -23), 13), EndTime = addHours(addDays($base, -23), 15), Location = 'Quinta da Regaleira', Address = 'R. Barbosa du Bocage, Sintra', Cost = 12, Booked = false, Travel.Day_Activity = $D11);
+  add $A40 to $Activities;
+
+  commit $Days;
+  commit $Activities;
+
+  log info node 'TravelSeed' 'Seeded 3 trips, 11 days, 40 activities';
+  return true;
+end;
+/
+
+-- Wire the seed microflow to run after startup
+alter settings model AfterStartupMicroflow = "Travel"."ACT_Seed";
+/
