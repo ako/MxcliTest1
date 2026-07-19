@@ -1,0 +1,61 @@
+-- ============================================================================
+-- Travel Itinerary Planner — formatted date/time label attributes
+-- ============================================================================
+-- StartDate/EndDate/StartTime are DateTime, and dynamictext contentparams can
+-- only bind attributes (not expressions). So we expose calculated String
+-- attributes that format the dates cleanly, and bind those in the pages.
+-- ============================================================================
+
+/**
+ * Human-readable date range for a Trip, e.g. "Aug 18, 2026 — Aug 21, 2026".
+ * @param $Trip the trip
+ * @returns formatted date range
+ * @since 1.0.0
+ */
+create or replace microflow "Travel"."CALC_TripDateRange" (
+  $Trip: "Travel"."Trip"
+)
+returns String as $result
+folder 'Calc'
+begin
+  return formatDateTime($Trip/StartDate, 'MMM d, yyyy') + '  —  ' + formatDateTime($Trip/EndDate, 'MMM d, yyyy');
+end;
+/
+
+/**
+ * Day label, e.g. "Tue, Aug 19".
+ * @param $Day the day
+ * @returns formatted day date
+ * @since 1.0.0
+ */
+create or replace microflow "Travel"."CALC_DayDateLabel" (
+  $Day: "Travel"."Day"
+)
+returns String as $result
+folder 'Calc'
+begin
+  return formatDateTime($Day/DayDate, 'EEE, MMM d');
+end;
+/
+
+/**
+ * Activity time range, e.g. "15:00 – 16:00".
+ * @param $Activity the activity
+ * @returns formatted time range
+ * @since 1.0.0
+ */
+create or replace microflow "Travel"."CALC_ActivityTime" (
+  $Activity: "Travel"."Activity"
+)
+returns String as $result
+folder 'Calc'
+begin
+  return formatDateTime($Activity/StartTime, 'HH:mm') + ' – ' + formatDateTime($Activity/EndTime, 'HH:mm');
+end;
+/
+
+-- Calculated (virtual) label attributes bound to the microflows above
+alter entity "Travel"."Trip"     add attribute "DateRangeLabel": string(100) calculated by "Travel"."CALC_TripDateRange";
+alter entity "Travel"."Day"      add attribute "DateLabel":      string(100) calculated by "Travel"."CALC_DayDateLabel";
+alter entity "Travel"."Activity" add attribute "TimeLabel":      string(100) calculated by "Travel"."CALC_ActivityTime";
+/

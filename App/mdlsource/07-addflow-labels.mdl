@@ -1,0 +1,47 @@
+-- ============================================================================
+-- Travel Itinerary Planner — set display labels in the interactive add flows
+-- ============================================================================
+
+/**
+ * Create a new Day for a Trip and open its edit page (sets DateLabel).
+ * @param $Trip the trip
+ * @returns true
+ */
+create or replace microflow "Travel"."ACT_Day_New" (
+  $Trip: "Travel"."Trip"
+)
+returns Boolean as $ok
+folder 'NewEdit'
+begin
+  retrieve $ExistingDays from "Travel"."Day" where [Travel.Trip_Day = $Trip];
+  declare $Count integer = 0;
+  loop $Day in $ExistingDays
+  begin
+    set $Count = $Count + 1;
+  end loop;
+  $NewDay = create "Travel"."Day" (DayNumber = $Count + 1, DayDate = $Trip/StartDate);
+  set $NewDay/Travel.Trip_Day = $Trip;
+  change $NewDay (DateLabel = formatDateTime($NewDay/DayDate, 'EEE, MMM d'));
+  show page "Travel"."Day_NewEdit"($Day = $NewDay);
+  return true;
+end;
+/
+
+/**
+ * Create a new Activity for a Day and open its edit page.
+ * @param $Day the day
+ * @returns true
+ */
+create or replace microflow "Travel"."ACT_Activity_New" (
+  $Day: "Travel"."Day"
+)
+returns Boolean as $ok
+folder 'NewEdit'
+begin
+  $NewActivity = create "Travel"."Activity" (Name = 'New activity', StartTime = $Day/DayDate, EndTime = $Day/DayDate);
+  set $NewActivity/Travel.Day_Activity = $Day;
+  change $NewActivity (TimeLabel = formatDateTime($NewActivity/StartTime, 'HH:mm'));
+  show page "Travel"."Activity_NewEdit"($Activity = $NewActivity);
+  return true;
+end;
+/

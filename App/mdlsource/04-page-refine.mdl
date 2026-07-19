@@ -1,0 +1,155 @@
+-- ============================================================================
+-- Travel Itinerary Planner — page refinements
+-- ============================================================================
+-- Fixes discovered from live screenshots:
+--   * A background-image Image widget drops nested children, so the status
+--     badge / header overlay are moved OUT to be siblings layered over a
+--     positioned cover wrapper.
+--   * Dates bind via `Attribute:` so a Date renders date-only (no 12:00 AM).
+-- ============================================================================
+
+/**
+ * Trips overview — responsive card gallery.
+ */
+create or replace page "Travel"."Trips_Overview"
+(
+  title: 'Trips',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  container ctnHeader (class: 'page-header') {
+    dynamictext dtPageTitle (content: 'My Trips', rendermode: H1)
+    dynamictext dtPageSub (content: 'Plan your next adventure, day by day.')
+    actionbutton btnNewTrip (caption: 'New Trip', action: create_object "Travel"."Trip" then show_page Travel.Trip_NewEdit, buttonstyle: primary)
+  }
+
+  gallery galTrips (
+    datasource: database from "Travel"."Trip" sort by StartDate asc,
+    selection: none,
+    DesktopColumns: 3, TabletColumns: 2, PhoneColumns: 1,
+    class: 'trips-gallery'
+  ) {
+    template tplTrip {
+      container ctnCard (class: 'trip-card', OnClick: show_page Travel.Trip_Detail($Trip = $currentObject)) {
+        container ctnCover (class: 'trip-cover') {
+          pluggablewidget 'com.mendix.widget.web.image.Image' imgCover (
+            ImageType: 'imageUrl',
+            imageUrl: '{CoverImageUrl}',
+            isBackgroundImage: true,
+            widthUnit: percentage, width: 100,
+            heightUnit: pixels, height: 160
+          )
+          container ctnBadge (class: 'trip-status-badge') {
+            dynamictext dtStatus (content: '{1}', contentparams: [{1} = "Status"])
+          }
+        }
+        container ctnCardBody (class: 'trip-card-body') {
+          dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H4)
+          dynamictext dtDest (content: '{1}', contentparams: [{1} = Destination])
+          container ctnDates (class: 'trip-dates') {
+            dynamictext dtStart (Attribute: StartDate)
+            dynamictext dtDash (content: '—')
+            dynamictext dtEnd (Attribute: EndDate)
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+/**
+ * Trip detail — master-detail with cover header, days list and activity timeline.
+ */
+create or replace page "Travel"."Trip_Detail"
+(
+  params: { $Trip: "Travel"."Trip" },
+  title: 'Trip detail',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  dataview dvTripHeader (datasource: $Trip, class: 'trip-header') {
+    container ctnCover (class: 'trip-cover trip-cover-lg') {
+      pluggablewidget 'com.mendix.widget.web.image.Image' imgHeaderCover (
+        ImageType: 'imageUrl',
+        imageUrl: '{CoverImageUrl}',
+        isBackgroundImage: true,
+        widthUnit: percentage, width: 100,
+        heightUnit: pixels, height: 220
+      )
+      container ctnHeaderOverlay (class: 'trip-header-overlay') {
+        dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H1)
+        dynamictext dtDestination (content: '{1}', contentparams: [{1} = Destination], rendermode: H4)
+      }
+    }
+    container ctnHeaderMeta (class: 'trip-header-meta') {
+      container ctnBadge (class: 'trip-status-badge') {
+        dynamictext dtStatus (content: '{1}', contentparams: [{1} = "Status"])
+      }
+      container ctnMetaDates (class: 'trip-dates') {
+        dynamictext dtStart (Attribute: StartDate)
+        dynamictext dtDash (content: '—')
+        dynamictext dtEnd (Attribute: EndDate)
+      }
+      dynamictext dtBudget (content: 'Budget  {1}', contentparams: [{1} = Budget])
+      actionbutton btnEditTrip (caption: 'Edit Trip', action: show_page Travel.Trip_NewEdit($Trip = $Trip), buttonstyle: default)
+    }
+    container ctnSummary (class: 'trip-summary') {
+      dynamictext dtSummary (content: '{1}', contentparams: [{1} = Summary])
+    }
+  }
+
+  layoutgrid gridDetail {
+    row rowDetail {
+      column colDays (desktopwidth: 4, class: 'agenda-days') {
+        container ctnDaysHead (class: 'section-head') {
+          dynamictext dtDaysTitle (content: 'Itinerary', rendermode: H3)
+          actionbutton btnAddDay (caption: 'Add Day', action: microflow Travel.ACT_Day_New($Trip = $Trip), buttonstyle: primary)
+        }
+        gallery galDays (
+          datasource: database from "Travel"."Day" where [Travel.Trip_Day = $Trip] sort by DayNumber asc,
+          selection: single,
+          DesktopColumns: 1, TabletColumns: 1, PhoneColumns: 1
+        ) {
+          template tplDay {
+            container ctnDayCard (class: 'day-card') {
+              dynamictext dtDayNum (content: 'Day {1}', contentparams: [{1} = DayNumber], rendermode: H5)
+              dynamictext dtDayHeading (content: '{1}', contentparams: [{1} = Heading])
+              dynamictext dtDayDate (Attribute: DayDate)
+            }
+          }
+        }
+      }
+      column colAgenda (desktopwidth: 8, class: 'agenda-timeline') {
+        dataview dvDay (datasource: selection galDays) {
+          container ctnDayHead (class: 'section-head') {
+            dynamictext dtSelDay (content: 'Day {1}  ·  {2}', contentparams: [{1} = DayNumber, {2} = Heading], rendermode: H3)
+            actionbutton btnEditDay (caption: 'Edit Day', action: show_page Travel.Day_NewEdit($Day = $currentObject), buttonstyle: default)
+            actionbutton btnAddActivity (caption: 'Add Activity', action: microflow Travel.ACT_Activity_New($Day = $currentObject), buttonstyle: primary)
+          }
+          listview lvActivities (datasource: $currentObject/Travel.Day_Activity) {
+            template tplActivity {
+              container ctnActivityRow (class: 'activity-row') {
+                container ctnActivityTime (class: 'activity-time') {
+                  dynamictext dtActTime (Attribute: StartTime)
+                }
+                container ctnActivityBody (class: 'activity-body') {
+                  container ctnActivityCat (class: 'activity-cat') {
+                    dynamictext dtActCat (content: '{1}', contentparams: [{1} = "Category"])
+                  }
+                  dynamictext dtActName (content: '{1}', contentparams: [{1} = Name], rendermode: H5)
+                  dynamictext dtActLoc (content: '{1}', contentparams: [{1} = Location])
+                  dynamictext dtActCost (content: 'Cost  {1}', contentparams: [{1} = Cost])
+                }
+                container ctnActivityActions (class: 'activity-actions') {
+                  actionbutton btnEditAct (caption: 'Edit', action: show_page Travel.Activity_NewEdit($Activity = $currentObject), buttonstyle: default)
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
