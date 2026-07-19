@@ -1,0 +1,160 @@
+-- ============================================================================
+-- Travel Itinerary Planner — Domain Model
+-- ============================================================================
+-- A traveler plans Trips; each Trip has a day-by-day agenda (Days); each Day
+-- has timed Activities (sights, food, lodging, transport).
+-- ============================================================================
+
+/**
+ * Travel itinerary planning module.
+ *
+ * Contains the Trip / Day / Activity model that powers a Wanderlog-style
+ * day-by-day travel planner.
+ *
+ * @since 1.0.0
+ */
+create module "Travel";
+
+-- MARK: ENUMERATIONS
+
+/**
+ * Lifecycle status of a Trip.
+ *
+ * Drives the colored status badge shown on the trips overview.
+ *
+ * @since 1.0.0
+ */
+create enumeration "Travel"."ENUM_TripStatus" (
+  "Planning"  'Planning',
+  "Booked"    'Booked',
+  "Completed" 'Completed'
+);
+
+/**
+ * Category of an Activity within a day's agenda.
+ *
+ * Used to group / icon activities on the timeline (sightseeing, meals,
+ * lodging check-ins, transport legs, etc.).
+ *
+ * @since 1.0.0
+ */
+create enumeration "Travel"."ENUM_ActivityCategory" (
+  "Sightseeing" 'Sightseeing',
+  "Food"        'Food & Drink',
+  "Lodging"     'Lodging',
+  "Transport"   'Transport',
+  "Activity"    'Activity',
+  "Other"       'Other'
+);
+
+-- MARK: CORE ENTITIES
+
+/**
+ * A planned trip.
+ *
+ * Top-level container for an itinerary. Owns a collection of Days.
+ *
+ * @since 1.0.0
+ * @see Travel.Day
+ */
+@position(100, 100)
+create persistent entity "Travel"."Trip" (
+  /** Trip title, e.g. "Tokyo Spring" */
+  "Title": string(200) not null error 'Title is required',
+  /** Primary destination, e.g. "Tokyo, Japan" */
+  "Destination": string(200) not null error 'Destination is required',
+  /** First day of the trip */
+  "StartDate": date,
+  /** Last day of the trip */
+  "EndDate": date,
+  /** Public URL of a cover image shown on the trip card */
+  "CoverImageUrl": string(500),
+  /** Free-text overview / summary of the trip */
+  "Summary": string,
+  /** Estimated total budget for the trip */
+  "Budget": decimal,
+  /** Planning lifecycle status */
+  "Status": enumeration("Travel"."ENUM_TripStatus") not null error 'Status is required' default "Travel"."ENUM_TripStatus"."Planning"
+);
+
+/**
+ * A single day within a Trip's agenda.
+ *
+ * Holds the foreign key to its Trip and owns a collection of Activities.
+ *
+ * @since 1.0.0
+ * @see Travel.Trip
+ * @see Travel.Activity
+ */
+@position(450, 100)
+create persistent entity "Travel"."Day" (
+  /** Calendar date of this day */
+  "DayDate": date,
+  /** Sequential day number within the trip (Day 1, Day 2, ...) */
+  "DayNumber": integer,
+  /** Short heading for the day, e.g. "Arrival & Shibuya" */
+  "Heading": string(200)
+);
+
+/**
+ * A timed activity within a Day.
+ *
+ * Holds the foreign key to its Day. Represents a sight, meal, lodging
+ * check-in, transport leg, or other planned item with a time and place.
+ *
+ * @since 1.0.0
+ * @see Travel.Day
+ */
+@position(800, 100)
+create persistent entity "Travel"."Activity" (
+  /** Activity name, e.g. "Senso-ji Temple" */
+  "Name": string(200) not null error 'Name is required',
+  /** Activity category (drives the timeline icon) */
+  "Category": enumeration("Travel"."ENUM_ActivityCategory") not null error 'Category is required' default "Travel"."ENUM_ActivityCategory"."Sightseeing",
+  /** Scheduled start time */
+  "StartTime": datetime,
+  /** Scheduled end time */
+  "EndTime": datetime,
+  /** Place / venue name */
+  "Location": string(300),
+  /** Full street address */
+  "Address": string(500),
+  /** Free-text notes and tips */
+  "Notes": string,
+  /** Estimated cost of this activity */
+  "Cost": decimal,
+  /** Whether this activity is already booked / reserved */
+  "Booked": boolean default false
+);
+
+-- MARK: ASSOCIATIONS
+
+/**
+ * Links each Day to its Trip.
+ *
+ * The foreign key lives on Day, so the association runs from Day to Trip.
+ * A Trip therefore has many Days (the reverse navigation is a collection).
+ *
+ * @since 1.0.0
+ */
+create association "Travel"."Trip_Day"
+from "Travel"."Day" to "Travel"."Trip"
+type reference
+owner default
+delete_behavior DELETE_AND_REFERENCES
+comment 'A Trip has many Days; deleting a Trip deletes its Days.';
+
+/**
+ * Links each Activity to its Day.
+ *
+ * The foreign key lives on Activity, so the association runs from Activity
+ * to Day. A Day therefore has many Activities (the reverse is a collection).
+ *
+ * @since 1.0.0
+ */
+create association "Travel"."Day_Activity"
+from "Travel"."Activity" to "Travel"."Day"
+type reference
+owner default
+delete_behavior DELETE_AND_REFERENCES
+comment 'A Day has many Activities; deleting a Day deletes its Activities.';
