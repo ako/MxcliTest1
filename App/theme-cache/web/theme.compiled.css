@@ -29766,10 +29766,6 @@ Do not change this file because it is core styling. Customizing core files will 
 .agenda-days {
   padding-right: 8px;
 }
-.agenda-days .widget-gallery-selection-count,
-.agenda-days .widget-gallery-clear-selection {
-  display: none !important;
-}
 
 .day-card {
   padding: 12px 14px;

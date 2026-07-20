@@ -1,0 +1,188 @@
+-- ============================================================================
+-- Travel Itinerary Planner — Marketplace widget integrations
+-- ============================================================================
+-- Weaves four widget families into the existing pages:
+--   * Badge (pill)  — trip status pills; activity category labels
+--   * Charts        — Pie (spend by category) + Column (budget by trip)
+--   * Timeline      — the trip's activities as a grouped vertical timeline
+--   * Tree node     — the itinerary outline (Day -> Activities)
+-- ============================================================================
+
+-- MARK: TRIPS OVERVIEW (charts + status pills)
+
+create or replace page "Travel"."Trips_Overview"
+(
+  title: 'Trips',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  container ctnHeader (class: 'page-header') {
+    dynamictext dtPageTitle (content: 'My Trips', rendermode: H1)
+    dynamictext dtPageSub (content: 'Plan your next adventure, day by day.')
+    actionbutton btnNewTrip (caption: 'New Trip', action: create_object "Travel"."Trip" then show_page Travel.Trip_NewEdit, buttonstyle: primary)
+  }
+
+  -- Insights strip: two Charts widgets over aggregated view entities
+  container ctnInsights (class: 'insights-strip') {
+    container ctnChartSpend (class: 'insight-card') {
+      dynamictext dtSpendTitle (content: 'Spend by category', rendermode: H5)
+      pluggablewidget 'com.mendix.widget.web.piechart.PieChart' chartSpend (
+        datasource: database from "Travel"."CostByCategory",
+        seriesName: '{CategoryName}',
+        seriesValueAttribute: TotalCost,
+        holeRadius: 55,
+        showLegend: true,
+        heightUnit: pixels, height: 240
+      )
+    }
+    container ctnChartBudget (class: 'insight-card') {
+      dynamictext dtBudgetTitle (content: 'Budget by trip', rendermode: H5)
+      pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartBudget (
+        showLegend: false,
+        heightUnit: pixels, height: 240
+      ) {
+        series sBudget (
+          dataSet: static,
+          staticDataSource: database from "Travel"."BudgetByTrip",
+          staticXAttribute: TripTitle,
+          staticYAttribute: Budget,
+          staticName: 'Budget'
+        )
+      }
+    }
+  }
+
+  gallery galTrips (
+    datasource: database from "Travel"."Trip" sort by StartDate asc,
+    selection: none,
+    DesktopColumns: 3, TabletColumns: 2, PhoneColumns: 1,
+    class: 'trips-gallery'
+  ) {
+    template tplTrip {
+      container ctnCard (class: 'trip-card') {
+        linkbutton lnkOpen (caption: ' ', action: show_page Travel.Trip_Detail($Trip = $currentObject), class: 'card-hit')
+        container ctnCover (class: 'trip-cover') {
+          pluggablewidget 'com.mendix.widget.web.image.Image' imgCover (
+            ImageType: 'imageUrl',
+            imageUrl: '{CoverImageUrl}',
+            isBackgroundImage: true,
+            widthUnit: percentage, width: 100,
+            heightUnit: pixels, height: 160
+          )
+          container ctnBadge (class: 'trip-status-badge') {
+            pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgStatus (
+              type: 'badge',
+              value: '{Status}'
+            )
+          }
+        }
+        container ctnCardBody (class: 'trip-card-body') {
+          dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H4)
+          dynamictext dtDest (content: '{1}', contentparams: [{1} = Destination])
+          container ctnDates (class: 'trip-dates') {
+            dynamictext dtDates (content: '{1}', contentparams: [{1} = DateRangeLabel])
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+-- MARK: TRIP DETAIL (tree outline + timeline + status pill)
+
+create or replace page "Travel"."Trip_Detail"
+(
+  params: { $Trip: "Travel"."Trip" },
+  title: 'Trip detail',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  dataview dvTripHeader (datasource: $Trip, class: 'trip-header') {
+    container ctnCover (class: 'trip-cover trip-cover-lg') {
+      pluggablewidget 'com.mendix.widget.web.image.Image' imgHeaderCover (
+        ImageType: 'imageUrl',
+        imageUrl: '{CoverImageUrl}',
+        isBackgroundImage: true,
+        widthUnit: percentage, width: 100,
+        heightUnit: pixels, height: 220
+      )
+      container ctnHeaderOverlay (class: 'trip-header-overlay') {
+        dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H1)
+        dynamictext dtDestination (content: '{1}', contentparams: [{1} = Destination], rendermode: H4)
+      }
+    }
+    container ctnHeaderMeta (class: 'trip-header-meta') {
+      container ctnBadge (class: 'trip-status-badge') {
+        pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgStatus (
+          type: 'badge',
+          value: '{Status}'
+        )
+      }
+      container ctnMetaDates (class: 'trip-dates') {
+        dynamictext dtDates (content: '{1}', contentparams: [{1} = DateRangeLabel])
+      }
+      dynamictext dtBudget (content: 'Budget  ${1}', contentparams: [{1} = Budget])
+      actionbutton btnEditTrip (caption: 'Edit Trip', action: show_page Travel.Trip_NewEdit($Trip = $Trip), buttonstyle: default)
+    }
+    container ctnSummary (class: 'trip-summary') {
+      dynamictext dtSummary (content: '{1}', contentparams: [{1} = Summary])
+    }
+  }
+
+  layoutgrid gridDetail {
+    row rowDetail {
+      -- Left: Tree node itinerary outline (Day -> Activities)
+      column colDays (desktopwidth: 5, class: 'agenda-days') {
+        container ctnDaysHead (class: 'section-head') {
+          dynamictext dtDaysTitle (content: 'Itinerary outline', rendermode: H3)
+          actionbutton btnAddDay (caption: 'Add Day', action: microflow Travel.ACT_Day_New($Trip = $Trip), buttonstyle: primary)
+        }
+        pluggablewidget 'com.mendix.widget.web.treenode.TreeNode' tnDays (
+          datasource: database from "Travel"."Day" where [Travel.Trip_Day = $Trip] sort by DayNumber asc,
+          headerType: 'text',
+          headerCaption: 'Day {DayNumber} — {Heading}',
+          hasChildren: true,
+          startExpanded: true,
+          showIcon: 'left'
+        ) {
+          container children {
+            container ctnNodeActions (class: 'tree-node-actions') {
+              linkbutton lnkAddAct (caption: '+ Activity', action: microflow Travel.ACT_Activity_New($Day = $currentObject))
+              linkbutton lnkEditDay (caption: 'Edit day', action: show_page Travel.Day_NewEdit($Day = $currentObject))
+            }
+            listview lvNodeActs (datasource: $currentObject/Travel.Day_Activity) {
+              template tplNodeAct {
+                container ctnTreeAct (class: 'tree-activity') {
+                  dynamictext dtTreeTime (content: '{1}', contentparams: [{1} = TimeLabel], class: 'tree-time')
+                  pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgCat (
+                    type: 'label',
+                    value: '{Category}'
+                  )
+                  dynamictext dtTreeName (content: '{1}', contentparams: [{1} = Name], class: 'tree-name')
+                  linkbutton lnkEditAct (caption: 'Edit', action: show_page Travel.Activity_NewEdit($Activity = $currentObject))
+                }
+              }
+            }
+          }
+        }
+      }
+      -- Right: Timeline of the whole trip's activities, grouped by day
+      column colAgenda (desktopwidth: 7, class: 'agenda-timeline') {
+        container ctnTlHead (class: 'section-head') {
+          dynamictext dtTlTitle (content: 'Timeline', rendermode: H3)
+        }
+        pluggablewidget 'com.mendix.widget.web.timeline.Timeline' tlTrip (
+          datasource: database from "Travel"."Activity" where [Travel.Day_Activity/Travel.Trip_Day = $Trip] sort by StartTime asc,
+          title: '{Name}',
+          description: '{Location}',
+          timeIndication: '{TimeLabel}',
+          groupEvents: true,
+          groupAttribute: StartTime,
+          groupByKey: 'day'
+        )
+      }
+    }
+  }
+}
+/
