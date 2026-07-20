@@ -29766,10 +29766,8 @@ Do not change this file because it is core styling. Customizing core files will 
 .agenda-days {
   padding-right: 8px;
 }
-.agenda-days .mx-gallery-selection-help,
-.agenda-days .mx-gallery-control-bar,
-.agenda-days [class*=selection-help],
-.agenda-days [class*=gallery-selection] {
+.agenda-days .widget-gallery-selection-count,
+.agenda-days .widget-gallery-clear-selection {
   display: none !important;
 }
 
@@ -29792,10 +29790,12 @@ Do not change this file because it is core styling. Customizing core files will 
   font-size: 12px;
   letter-spacing: 0.04em;
 }
-.day-card .mx-text {
+.day-card > .mx-text {
+  display: block;
   color: #1f2733;
+  line-height: 1.45;
 }
-.day-card .mx-text:last-child {
+.day-card > .mx-text:last-child {
   color: #6b7684;
   font-size: 13px;
 }
