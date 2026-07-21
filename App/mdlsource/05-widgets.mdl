@@ -22,9 +22,8 @@ create or replace page "Travel"."Trips_Overview"
     actionbutton btnNewTrip (caption: 'New Trip', action: create_object "Travel"."Trip" then show_page Travel.Trip_NewEdit, buttonstyle: primary)
   }
 
-  -- Insights strip: Pie chart over an aggregated view entity.
-  -- (The Column chart lives in 05-charts.mdl as a repro — it passes mx check but
-  --  fails to render at runtime; see WIDGET-FINDINGS.md. Only the working Pie ships.)
+  -- Insights strip: Pie (spend by category) + Column (budget by trip), both over
+  -- aggregated view entities.
   container ctnInsights (class: 'insights-strip') {
     container ctnChartSpend (class: 'insight-card') {
       dynamictext dtSpendTitle (content: 'Spend by category', rendermode: H5)
@@ -34,10 +33,24 @@ create or replace page "Travel"."Trips_Overview"
         seriesValueAttribute: TotalCost,
         holeRadius: 55,
         showLegend: true,
-        customLayout: '{}',
-        customConfigurations: '{}',
         heightUnit: pixels, height: 240
       )
+    }
+    container ctnChartBudget (class: 'insight-card') {
+      dynamictext dtBudgetTitle (content: 'Budget by trip', rendermode: H5)
+      pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartBudget (
+        showLegend: false,
+        heightUnit: pixels, height: 240
+      ) {
+        series sBudget (
+          dataSet: static,
+          staticDataSource: database from "Travel"."BudgetByTrip",
+          staticXAttribute: TripTitle,
+          staticYAttribute: Budget,
+          staticName: 'Budget',
+          aggregationType: sum
+        )
+      }
     }
   }
 

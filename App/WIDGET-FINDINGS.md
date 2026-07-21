@@ -3,13 +3,13 @@
 Exercising four marketplace widget families (**Tree node**, **Timeline**, **Badge/pill**,
 **Charts**) against `mxcli` on this **MPR v2** project. An earlier round (mxcli `752ffa2`)
 found several page-writer gaps that blocked shipping these widgets. The **ako/mxcli main**
-build (`4bd3bc8`, 2026-07-21) lands targeted fixes for every one of them; this documents the
-**re-verified** results — what now works, the single residual, and how to reproduce.
+build (`2596c5f`, 2026-07-21) lands targeted fixes for **every one of them**; this documents
+the **re-verified** results — all six widget families now author and render — and how to reproduce.
 
 Reproducible scripts live in `mdlsource/`:
 - `04-insights-views.mdl` — the aggregation view entities the charts read
-- `05-charts.mdl` — Pie + Column charts (the Column chart is the residual repro)
-- `05-widgets.mdl` — the **shipped** integration: Pie + status pills on `Trips_Overview`;
+- `05-charts.mdl` — Pie + Column charts (both now render)
+- `05-widgets.mdl` — the **shipped** integration: Pie + Column + status pills on `Trips_Overview`;
   TreeNode outline + Timeline + status/category pills on `Trip_Detail`
 
 ## The mxcli fixes (ako/mxcli main, after `752ffa2`)
@@ -22,6 +22,7 @@ Reproducible scripts live in `mdlsource/`:
 | Timeline custom-visualization → empty ClientTemplate CE0463 | `c397745` merge hand-authored visibility fallback with extracted rules |
 | Timeline 2-hop XPath `[A/B = $x]` → **CE1613** | `e9339ec` expand multi-hop association paths (insert intermediate entity) |
 | TimeSeries `markerColor` empty ClientTemplate CE0463 | `4a00aad` null hidden chart-series textTemplates by item config |
+| Column chart **runtime `JSON.parse('')`** — unset series String emitted as `" "` | `fc67ef2` don't emit `" "` for unset chart-series String props |
 
 ## Marketplace updates applied (PAT via `mxcli auth login`)
 
@@ -57,30 +58,31 @@ widgets render with real data).
 
 ### Pie chart — ✅ works
 - `seriesName: '{CategoryName}'` + `seriesValueAttribute` persist; **CE0463 is gone**. Renders
-  as a donut with a category legend and percentages over the `CostByCategory` view.
-- One wrinkle: the chart's `customLayout` / `customConfigurations` JSON-string props are emitted
-  empty by default, which the widget's client code `JSON.parse`s → a (non-fatal) console error.
-  Setting them explicitly to `'{}'` in MDL clears it — done on the shipped pie.
+  as a donut with a category legend and percentages over the `CostByCategory` view, with **0
+  console errors** (no `'{}'` workaround needed — the top-level String path already emits `""`,
+  which the chart client's empty-guard turns into `{}`).
 
-### Column chart — ⚠️ the one residual (build-valid, runtime render failure)
+### Column chart — ✅ works (was the last residual, fixed by `fc67ef2`)
 - Passes `mx check` (0 errors, CE0463 gone) and all series props persist (`staticDataSource`,
-  `staticXAttribute`/`staticYAttribute`, `staticName`, `aggregationType`, `customSeriesOptions`).
-- **But it fails to render at runtime**: `Could not render widget 'Travel.Trips_Overview.chartBudget'`,
-  from a client-side `JSON.parse('Unexpected end of JSON input')` in the ColumnChart's render path.
-  Setting `customLayout` / `customConfigurations` / series `customSeriesOptions` all to `'{}'`
-  (verified stored as `"{}"` in the BSON) does **not** clear it — so the empty-JSON source is a
-  different, still-unidentified ColumnChart property the writer emits blank. The Pie over the same
-  kind of view entity renders fine, so this is specific to the Column/static-series path.
-- Because it can't render, the Column chart is **not shipped**. It remains in `05-charts.mdl` as
-  a runnable repro.
+  `staticXAttribute`/`staticYAttribute`, `staticName`, `aggregationType`).
+- Earlier it passed `mx check` but failed at runtime with a client-side
+  `JSON.parse('Unexpected end of JSON input')`: the object-list-item builder emitted an **unset
+  series String property as a single space `" "`** instead of `""`. The chart client feeds
+  `customSeriesOptions`/`customLayout`/`customConfigurations` to `JSON.parse` behind a
+  `value !== "" ? value : "{}"` guard — a lone space slips past the guard, so it ran
+  `JSON.parse(" ")` and threw. `mx check` never runs the client, so it stayed green; the Pie
+  (widget-level datasource, no series object-list) was unaffected.
+- `fc67ef2` leaves an unset String empty, matching Studio Pro. Re-verified: the Column chart now
+  **renders as a bar chart** (Budget by trip: Tokyo Spring / Iceland Ring Road / Lisbon Weekend),
+  **0 console errors**, no `'{}'` workaround needed. It is now **shipped** alongside the Pie.
 
 ## Net
 
 - **Badge / pill, Tree node (header + child slot), Timeline (text + grouping + 2-hop XPath),
-  Pie chart, Image**: full-fidelity authoring **and** runtime render in MPR v2. ✅
+  Pie chart, Column chart, Image**: full-fidelity authoring **and** runtime render in MPR v2. ✅
 - **OQL view entities**: pass `mx check` and deploy cleanly (`BUILD SUCCEEDED`). ✅
-- **Column chart**: build-valid but a residual runtime `JSON.parse('')` blocks rendering. ⚠️
+- **No residuals.** Every gap found in the first round has a landed fix on ako/mxcli main.
 
-The shipped model now **integrates the five working widget families with live data**
-(previously withheld), stays a clean bootable **MPR v2** build (0 errors, `mprcontents/` intact,
-HTTP 200), and drops only the Column chart. The four widget `.mpk`s are at marketplace latest.
+The shipped model now **integrates all six widget families with live data** (previously
+withheld), and stays a clean bootable **MPR v2** build (0 errors, `mprcontents/` intact,
+HTTP 200). The four widget `.mpk`s are at marketplace latest.
