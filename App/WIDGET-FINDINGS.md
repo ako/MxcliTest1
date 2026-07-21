@@ -60,12 +60,19 @@ With **no instances** on any page, `mx check` stays at 0 errors after the update
 Badge / TreeNode / Timeline instances after `exec`, confirming the writer discarded them
 rather than `describe` merely hiding them.
 
-### OQL view entities — pass `mx check`, fail the deploy build
+### OQL view entities — deploy cleanly ✅ (earlier failure did not reproduce)
 - The two aggregation views (`Travel.CostByCategory` with an **enum-typed** `CategoryName`
   projected from `group by a.Category`, and `Travel.BudgetByTrip`) report **0 errors** under
-  `mx check`, but make the **deploy build** fail ("The project cannot be deployed, because it
-  contains errors") — the app won't boot. Removing the two views makes the build succeed
-  again. So `mx check` and the mxbuild deploy disagree on view-entity validity.
+  `mx check` **and** build cleanly under the full deploy build:
+  ```
+  mxbuild --target=deploy --java-home=<jdk21> --java-exe-path=<jdk21>/bin/java \
+          --write-errors=deploy-errors.json App.mpr
+  → BUILD SUCCEEDED (exit 0, no deploy-errors.json written)
+  ```
+  This was re-run on mxbuild **11.12.1** with both views present. An earlier note here
+  reported the deploy build failing on these views; that behavior **did not reproduce** —
+  the OQL views (including the enum-typed projection) deploy without errors. The two views
+  are therefore kept in the shipped model as the chart data sources.
 
 ## Net
 - **Image**: full-fidelity authoring in v2. ✅
@@ -75,9 +82,11 @@ rather than `describe` merely hiding them.
   which only `mx update-widgets` clears — and that downgrades v2→v1. ⚠️
 - **Badge / TreeNode / Timeline**: essential content (textTemplate + widget-slots) is not
   persisted by the page writer, so functional instances can't be authored via MDL yet. ❌
-- **OQL view entities**: pass `mx check` but fail the mxbuild deploy. ⚠️
+- **OQL view entities**: pass `mx check` **and** deploy cleanly (`BUILD SUCCEEDED`). ✅
 
 To keep this deliverable a **clean, bootable v2 build** (0 errors, `mprcontents/` intact,
-HTTP 200), the widget instances and the view entities are **not** applied to the shipped
-model — the `.mdl` scripts above remain as runnable repros. The four widget `.mpk`s are
-updated to the marketplace latest on disk, as requested.
+HTTP 200), the widget **instances** are **not** applied to the shipped model — the widget
+`.mdl` scripts above remain as runnable repros because of the CE0463 / dropped-content
+gaps. The two **view entities** *are* applied (they deploy cleanly and are the chart data
+sources). The four widget `.mpk`s are updated to the marketplace latest on disk, as
+requested.
