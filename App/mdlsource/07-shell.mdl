@@ -28,7 +28,17 @@ create or replace page "Travel"."Budget_Overview"
         container subB (class: 'panel-sub') { dynamictext dtBSub (content: 'planned') }
       }
       container bdB (class: 'panel-body') {
-        dynamictext dtBPlaceholder (content: 'Budget breakdown coming soon.')
+        listview lvBudget (datasource: database from "Travel"."Trip" sort by Budget desc, class: 'budget-list') {
+          template tplBudget {
+            container budgetRow (class: 'budget-row') {
+              container bMain (class: 'budget-main') {
+                container bName (class: 'budget-name') { dynamictext dtBName (content: '{1}', contentparams: [{1} = Title]) }
+                container bDest (class: 'budget-dest') { dynamictext dtBDest (content: '{1}', contentparams: [{1} = DateRangeLabel]) }
+              }
+              container bAmt (class: 'budget-amt is-money') { dynamictext dtBAmt (content: '{1}', contentparams: [{1} = Budget]) }
+            }
+          }
+        }
       }
     }
   }
