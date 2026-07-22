@@ -1,0 +1,308 @@
+-- ============================================================================
+-- Itinera redesign — modern SaaS dashboard port of the approved mockup.
+-- Restructures Trips_Overview + Trip_Detail and adds a KPI stats microflow.
+-- Styling lives in themesource/travel/web/main.scss.
+-- ============================================================================
+
+-- MARK: KPI stats (non-persistent + microflow datasource)
+
+@position(100, 700)
+create non-persistent entity "Travel"."DashboardStats" (
+  "TripCount": Integer,
+  "DayCount": Integer,
+  "ActivityCount": Integer,
+  "TotalBudget": Decimal
+);
+
+/**
+ * Aggregates the dashboard KPIs shown in the Trips overview stat row.
+ * @returns a transient DashboardStats
+ */
+create microflow "Travel"."DS_DashboardStats"() returns "Travel"."DashboardStats" as $Stats
+begin
+  retrieve $Trips from "Travel"."Trip";
+  retrieve $Days from "Travel"."Day";
+  retrieve $Acts from "Travel"."Activity";
+  $TripCount = count($Trips);
+  $DayCount = count($Days);
+  $ActCount = count($Acts);
+  $BudgetSum = sum($Trips.Budget);
+  $Stats = create "Travel"."DashboardStats" (
+    "TripCount" = $TripCount,
+    "DayCount" = $DayCount,
+    "ActivityCount" = $ActCount,
+    "TotalBudget" = $BudgetSum
+  );
+  return $Stats;
+end;
+/
+
+grant execute on microflow "Travel"."DS_DashboardStats" to "Travel"."User";
+
+-- MARK: TRIPS OVERVIEW
+
+create or replace page "Travel"."Trips_Overview"
+(
+  title: 'Trips',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  container ctnApp (class: 'travel-app') {
+
+    container ctnHeader (class: 'page-header') {
+      container ctnTitles (class: 'header-titles') {
+        dynamictext dtEyebrow (content: 'Overview', class: 'eyebrow')
+        dynamictext dtPageTitle (content: 'My Trips', rendermode: H1)
+        container ctnSub (class: 'page-sub') {
+          dynamictext dtPageSub (content: 'Three journeys on the board — plan them day by day.')
+        }
+      }
+      actionbutton btnNewTrip (caption: 'New trip', action: create_object "Travel"."Trip" then show_page Travel.Trip_NewEdit, buttonstyle: primary)
+    }
+
+    -- KPI stat row
+    dataview dvStats (datasource: microflow Travel.DS_DashboardStats, class: 'stat-row') {
+      container stat1 (class: 'stat') {
+        container k1 (class: 'stat-k') { dynamictext dtk1 (content: 'Active trips') }
+        container sv1 (class: 'stat-v') { dynamictext dtv1 (content: '{1}', contentparams: [{1} = TripCount]) }
+        container d1 (class: 'stat-d') { dynamictext dtd1 (content: 'across all destinations') }
+      }
+      container stat2 (class: 'stat') {
+        container k2 (class: 'stat-k') { dynamictext dtk2 (content: 'Days planned') }
+        container sv2 (class: 'stat-v') { dynamictext dtv2 (content: '{1}', contentparams: [{1} = DayCount]) }
+        container d2 (class: 'stat-d') { dynamictext dtd2 (content: 'day-by-day agenda') }
+      }
+      container stat3 (class: 'stat') {
+        container k3 (class: 'stat-k') { dynamictext dtk3 (content: 'Total budget') }
+        container sv3 (class: 'stat-v is-money') { dynamictext dtv3 (content: '{1}', contentparams: [{1} = TotalBudget]) }
+        container d3 (class: 'stat-d') { dynamictext dtd3 (content: 'planned spend') }
+      }
+      container stat4 (class: 'stat') {
+        container k4 (class: 'stat-k') { dynamictext dtk4 (content: 'Activities') }
+        container sv4 (class: 'stat-v') { dynamictext dtv4 (content: '{1}', contentparams: [{1} = ActivityCount]) }
+        container d4 (class: 'stat-d') { dynamictext dtd4 (content: 'across every day') }
+      }
+    }
+
+    -- Insights strip
+    container ctnInsights (class: 'insights-strip') {
+      container ctnChartSpend (class: 'insight-card') {
+        container hd1 (class: 'panel-head') {
+          dynamictext dtSpendTitle (content: 'Spend by category', rendermode: H5)
+          container sub1 (class: 'panel-sub') { dynamictext dtSpendSub (content: 'estimated · all trips') }
+        }
+        container bd1 (class: 'panel-body') {
+          pluggablewidget 'com.mendix.widget.web.piechart.PieChart' chartSpend (
+            datasource: database from "Travel"."CostByCategory",
+            seriesName: '{CategoryName}',
+            seriesValueAttribute: TotalCost,
+            holeRadius: 58,
+            showLegend: true,
+            heightUnit: pixels, height: 232
+          )
+        }
+      }
+      container ctnChartBudget (class: 'insight-card') {
+        container hd2 (class: 'panel-head') {
+          dynamictext dtBudgetTitle (content: 'Budget by trip', rendermode: H5)
+          container sub2 (class: 'panel-sub') { dynamictext dtBudgetSub (content: 'planned') }
+        }
+        container bd2 (class: 'panel-body') {
+          pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartBudget (
+            showLegend: false,
+            heightUnit: pixels, height: 232
+          ) {
+            series sBudget (
+              dataSet: static,
+              staticDataSource: database from "Travel"."BudgetByTrip",
+              staticXAttribute: TripTitle,
+              staticYAttribute: Budget,
+              staticName: 'Budget',
+              aggregationType: sum
+            )
+          }
+        }
+      }
+    }
+
+    container ctnSectionBar (class: 'section-bar') {
+      dynamictext dtAllTrips (content: 'All trips', rendermode: H2)
+    }
+
+    gallery galTrips (
+      datasource: database from "Travel"."Trip" sort by StartDate asc,
+      selection: none,
+      DesktopColumns: 3, TabletColumns: 2, PhoneColumns: 1,
+      class: 'trips-gallery'
+    ) {
+      template tplTrip {
+        container ctnCard (class: 'trip-card') {
+          linkbutton lnkOpen (caption: ' ', action: show_page Travel.Trip_Detail($Trip = $currentObject), class: 'card-hit')
+          container ctnCover (class: 'trip-cover') {
+            pluggablewidget 'com.mendix.widget.web.image.Image' imgCover (
+              ImageType: 'imageUrl',
+              imageUrl: '{CoverImageUrl}',
+              isBackgroundImage: true,
+              widthUnit: percentage, width: 100,
+              heightUnit: pixels, height: 140
+            )
+            container ctnBadge (class: 'trip-status-badge') {
+              pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgStatus (type: 'badge', value: '{Status}')
+            }
+            container ctnDest (class: 'trip-dest') {
+              dynamictext dtDest (content: '{1}', contentparams: [{1} = Destination])
+            }
+          }
+          container ctnBody (class: 'trip-body') {
+            dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H4)
+            container ctnMeta (class: 'trip-meta') {
+              dynamictext dtDates (content: '{1}', contentparams: [{1} = DateRangeLabel])
+            }
+          }
+          container ctnFoot (class: 'trip-foot') {
+            container ctnBudget (class: 'trip-budget is-money') {
+              dynamictext dtBudget (content: '{1}', contentparams: [{1} = Budget])
+            }
+            container ctnDays (class: 'trip-days') {
+              dynamictext dtSummary (content: '{1}', contentparams: [{1} = Summary])
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."Trips_Overview" to "Travel"."User";
+
+-- MARK: TRIP DETAIL
+
+create or replace page "Travel"."Trip_Detail"
+(
+  params: { $Trip: "Travel"."Trip" },
+  title: 'Trip detail',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  container ctnApp (class: 'travel-app') {
+    dataview dvTrip (datasource: $Trip) {
+
+      container ctnHero (class: 'trip-hero') {
+        container ctnHeroCover (class: 'hero-cover') {
+          pluggablewidget 'com.mendix.widget.web.image.Image' imgHeroCover (
+            ImageType: 'imageUrl',
+            imageUrl: '{CoverImageUrl}',
+            isBackgroundImage: true,
+            widthUnit: percentage, width: 100,
+            heightUnit: pixels, height: 220
+          )
+        }
+        container ctnTopline (class: 'hero-topline') {
+          container ctnHeroBadge (class: 'trip-status-badge') {
+            pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgHeroStatus (type: 'badge', value: '{Status}')
+          }
+          actionbutton btnEditTrip (caption: 'Edit trip', action: show_page Travel.Trip_NewEdit($Trip = $Trip), buttonstyle: default)
+        }
+        container ctnOverlay (class: 'hero-overlay') {
+          dynamictext dtHeroTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H1)
+          container ctnHeroLoc (class: 'hero-loc') {
+            dynamictext dtHeroDest (content: '{1}', contentparams: [{1} = Destination])
+          }
+        }
+      }
+
+      container ctnMetabar (class: 'trip-metabar') {
+        container m1 (class: 'meta-item') {
+          container m1l (class: 'meta-lb') { dynamictext dtm1l (content: 'Dates') }
+          container m1v (class: 'meta-vv') { dynamictext dtm1v (content: '{1}', contentparams: [{1} = DateRangeLabel]) }
+        }
+        container sep1 (class: 'meta-sep') {}
+        container m3 (class: 'meta-item') {
+          container m3l (class: 'meta-lb') { dynamictext dtm3l (content: 'Budget') }
+          container m3v (class: 'meta-vv is-money') { dynamictext dtm3v (content: '{1}', contentparams: [{1} = Budget]) }
+        }
+        container sep2 (class: 'meta-sep') {}
+        container mSum (class: 'meta-summary') {
+          dynamictext dtSummary (content: '{1}', contentparams: [{1} = Summary])
+        }
+      }
+
+      layoutgrid gridDetail (class: 'detail-cols') {
+        row rowDetail {
+          -- Itinerary outline
+          column colDays (desktopwidth: 6) {
+            container agendaPanel (class: 'agenda-panel') {
+              container hdA (class: 'panel-head') {
+                dynamictext dtAgendaTitle (content: 'Itinerary', rendermode: H5)
+                container subA (class: 'panel-sub') { dynamictext dtAgendaSub (content: 'day by day') }
+              }
+              container bdA (class: 'panel-body') {
+                listview lvDays (datasource: database from "Travel"."Day" where [Travel.Trip_Day = $Trip] sort by DayNumber asc) {
+                  template tplDay {
+                    container dayBlock (class: 'day-block') {
+                      container dayHead (class: 'day-head') {
+                        container dayNum (class: 'day-num') { dynamictext dtDayNum (content: '{1}', contentparams: [{1} = DayNumber]) }
+                        container dayTitle (class: 'day-title') { dynamictext dtDayTitle (content: '{1}', contentparams: [{1} = Heading]) }
+                        container dayDate (class: 'day-date') { dynamictext dtDayDate (content: '{1}', contentparams: [{1} = DateLabel]) }
+                      }
+                      listview lvActs (datasource: $currentObject/Travel.Day_Activity) {
+                        template tplAct {
+                          container actRow (class: 'act-row') {
+                            container actTime (class: 'act-time') { dynamictext dtActTime (content: '{1}', contentparams: [{1} = TimeLabel]) }
+                            container actMain (class: 'act-main') {
+                              container actNm (class: 'act-name') { dynamictext dtActName (content: '{1}', contentparams: [{1} = Name]) }
+                              container actTags (class: 'act-tags') {
+                                container chip (class: 'cat-chip', dynamicclasses: 'if $currentObject/Category = Travel.ENUM_ActivityCategory.Sightseeing then ''cat-sight'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Food then ''cat-food'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Lodging then ''cat-lodging'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Transport then ''cat-transport'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Activity then ''cat-activity'' else ''cat-other''') {
+                                  dynamictext dtActCat (content: '{1}', contentparams: [{1} = Category])
+                                }
+                                container actLoc (class: 'act-loc') { dynamictext dtActLoc (content: '{1}', contentparams: [{1} = Location]) }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          -- Timeline
+          column colTimeline (desktopwidth: 6) {
+            container timelinePanel (class: 'timeline-panel') {
+              container hdT (class: 'panel-head') {
+                dynamictext dtTlTitle (content: 'Timeline', rendermode: H5)
+                container subT (class: 'panel-sub') { dynamictext dtTlSub (content: 'grouped by day') }
+              }
+              container bdT (class: 'panel-body') {
+                listview lvTlDays (datasource: database from "Travel"."Day" where [Travel.Trip_Day = $Trip] sort by DayNumber asc) {
+                  template tplTlDay {
+                    container tlDay (class: 'tl-day') {
+                      container tlLabel (class: 'tl-daylabel') { dynamictext dtTlDayLabel (content: 'Day {1}', contentparams: [{1} = DayNumber]) }
+                      listview lvTlActs (datasource: $currentObject/Travel.Day_Activity) {
+                        template tplTlAct {
+                          container tlItem (class: 'tl-item') {
+                            container tlNode (class: 'tl-node', dynamicclasses: 'if $currentObject/Category = Travel.ENUM_ActivityCategory.Sightseeing then ''cat-sight'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Food then ''cat-food'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Lodging then ''cat-lodging'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Transport then ''cat-transport'' else if $currentObject/Category = Travel.ENUM_ActivityCategory.Activity then ''cat-activity'' else ''cat-other''') {}
+                            container tlHead (class: 'tl-head') {
+                              container tlNm (class: 'tl-name') { dynamictext dtTlName (content: '{1}', contentparams: [{1} = Name]) }
+                              container tlTime (class: 'tl-time') { dynamictext dtTlTime (content: '{1}', contentparams: [{1} = TimeLabel]) }
+                            }
+                            container tlSub (class: 'tl-sub') { dynamictext dtTlSub2 (content: '{1}', contentparams: [{1} = Location]) }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."Trip_Detail" to "Travel"."User";

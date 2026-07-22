@@ -5,13 +5,17 @@ $form-input-style: default;
 $btn-bordered: false; // Default value false, set to true if you want this effect
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 
 //   /* Hover Color Variants */
 //   --brand-default-hover: var(--brand-default-100);

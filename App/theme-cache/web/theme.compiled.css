@@ -3116,13 +3116,16 @@
 }
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -3173,13 +3176,16 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -3230,13 +3236,16 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -4295,13 +4304,16 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -26928,13 +26940,16 @@ html div.dj_ios .widget-switch.auto .widget-switch-btn-wrapper.checked.widget-sw
 }
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -29054,13 +29069,16 @@ input[type=checkbox].three-state-checkbox + .control-label {
     ==| Variables |=========================================================================================
 */
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -29446,13 +29464,16 @@ Do not render = "none"
 }
 
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -29503,13 +29524,16 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
@@ -29559,34 +29583,258 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Labels */
 /* Groupbox */
 /* Callouts */
+:root {
+  --tv-bg: #eef1f7;
+  --tv-surface: #ffffff;
+  --tv-surface-2: #f7f9fc;
+  --tv-ink: #0e1626;
+  --tv-ink-2: #384457;
+  --tv-muted: #5c6779;
+  --tv-faint: #8a94a6;
+  --tv-line: #e4e8f0;
+  --tv-line-2: #eef1f6;
+  --tv-accent: #1f6feb;
+  --tv-accent-wash: rgba(31,111,235,.10);
+  --tv-good: #0f7a5a;
+  --tv-good-wash: rgba(15,122,90,.12);
+  --tv-info: #1f6feb;
+  --tv-info-wash: rgba(31,111,235,.12);
+  --tv-warn: #b4791f;
+  --tv-warn-wash: rgba(180,121,31,.14);
+  --tv-cat-sight:#eda100;
+  --tv-cat-food:#1baf7a;
+  --tv-cat-lodging:#eb6834;
+  --tv-cat-transport:#e87ba4;
+  --tv-cat-activity:#2a78d6;
+  --tv-cat-other:#8a94a6;
+  --tv-shadow-sm: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.05);
+  --tv-shadow-md: 0 2px 6px rgba(16,24,40,.06), 0 12px 28px rgba(16,24,40,.09);
+  --tv-radius: 14px;
+  --tv-radius-sm: 10px;
+  --tv-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tv-bg:#080b13;
+    --tv-surface:#101725;
+    --tv-surface-2:#0c1220;
+    --tv-ink:#eef2f9;
+    --tv-ink-2:#c3ccdb;
+    --tv-muted:#8f9bb0;
+    --tv-faint:#66728a;
+    --tv-line:#1e2739;
+    --tv-line-2:#161e2e;
+    --tv-accent:#4f8cff;
+    --tv-accent-wash:rgba(79,140,255,.14);
+    --tv-good:#3bbb8f;
+    --tv-good-wash:rgba(59,187,143,.15);
+    --tv-info:#4f8cff;
+    --tv-info-wash:rgba(79,140,255,.15);
+    --tv-warn:#e0a94a;
+    --tv-warn-wash:rgba(224,169,74,.16);
+    --tv-cat-sight:#c98500;
+    --tv-cat-food:#199e70;
+    --tv-cat-lodging:#d95926;
+    --tv-cat-transport:#d55181;
+    --tv-cat-activity:#3987e5;
+    --tv-shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+    --tv-shadow-md: 0 2px 8px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.45);
+  }
+}
+.mx-page, .mx-scrollcontainer-wrapper {
+  background: var(--tv-bg);
+}
+
+.travel-app {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 8px 6px 60px;
+  color: var(--tv-ink);
+}
+
+.travel-app .mono .mx-text, .travel-app .tv-mono .mx-text {
+  font-family: var(--tv-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow .mx-text, .eyebrow.mx-text {
+  font-family: var(--tv-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tv-faint);
+  font-weight: 500;
+}
+
+.panel {
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  box-shadow: var(--tv-shadow-sm);
+  overflow: hidden;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 17px 4px;
+}
+.panel-head h1, .panel-head h2, .panel-head h3, .panel-head h4, .panel-head h5 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--tv-ink);
+}
+.panel-head .panel-sub .mx-text {
+  color: var(--tv-faint);
+  font-size: 12px;
+}
+
+.panel-body {
+  padding: 14px 17px 18px;
+}
+
+.is-money .mx-text {
+  font-family: var(--tv-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.is-money .mx-text::before {
+  content: "$";
+  opacity: 0.7;
+}
+
 .page-header {
   display: flex;
+  align-items: flex-end;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 20px;
-  padding: 28px 4px 20px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #e6eaf0;
+  gap: 6px 18px;
+  padding: 20px 4px 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--tv-line);
 }
 .page-header h1 {
-  margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  color: #1f2733;
-}
-.page-header > .mx-text:not(h1) {
-  flex-basis: 100%;
   margin: 2px 0 0;
-  color: #6b7684;
-  font-size: 15px;
+  font-size: 27px;
+  font-weight: 750;
+  letter-spacing: -0.025em;
+  color: var(--tv-ink);
+}
+.page-header .page-sub .mx-text {
+  color: var(--tv-muted);
+  font-size: 14.5px;
+}
+.page-header .header-titles {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 .page-header .mx-button, .page-header .btn {
   margin-left: auto;
-  align-self: flex-start;
+  align-self: center;
 }
 
-.trips-gallery .mx-gallery-item,
-.trips-gallery li {
+.travel-app .btn-primary.mx-button, .travel-app .mx-button.btn-primary {
+  background: var(--tv-accent);
+  border-color: var(--tv-accent);
+  color: #fff;
+  border-radius: 9px;
+  font-weight: 600;
+  box-shadow: var(--tv-shadow-sm);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.travel-app .btn-primary.mx-button:hover, .travel-app .mx-button.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--tv-shadow-md);
+}
+
+.travel-app .btn-default.mx-button {
+  border-radius: 9px;
+  border-color: var(--tv-line);
+  background: var(--tv-surface);
+  font-weight: 600;
+}
+
+.stat-row .mx-dataview-content {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.stat {
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  padding: 15px 16px;
+  box-shadow: var(--tv-shadow-sm);
+}
+.stat .stat-k .mx-text {
+  color: var(--tv-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+}
+.stat .stat-v {
+  margin-top: 7px;
+}
+.stat .stat-v .mx-text {
+  font-family: var(--tv-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--tv-ink);
+}
+.stat .stat-d {
+  margin-top: 3px;
+}
+.stat .stat-d .mx-text {
+  color: var(--tv-faint);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.insights-strip {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 14px;
+  margin: 20px 0 24px;
+}
+
+.insight-card {
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  box-shadow: var(--tv-shadow-sm);
+  overflow: hidden;
+}
+
+.section-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 4px 0 14px;
+}
+.section-bar h2, .section-bar h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 650;
+  color: var(--tv-ink);
+}
+.section-bar .section-count .mx-text {
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  color: var(--tv-faint);
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  padding: 1px 8px;
+  border-radius: 20px;
+}
+
+.trips-gallery .mx-gallery-item, .trips-gallery li {
   outline: none;
 }
 
@@ -29594,19 +29842,19 @@ Do not change this file because it is core styling. Customizing core files will 
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 10px;
-  background: #fff;
-  border: 1px solid #e6eaf0;
-  border-radius: 14px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 6px 20px rgba(16, 24, 40, 0.08);
+  margin: 8px;
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  box-shadow: var(--tv-shadow-sm);
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
 }
 .trip-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.1), 0 16px 40px rgba(16, 24, 40, 0.16);
-  border-color: #d3dae5;
+  box-shadow: var(--tv-shadow-md);
+  border-color: color-mix(in srgb, var(--tv-accent) 30%, var(--tv-line));
 }
 
 .card-hit {
@@ -29626,271 +29874,457 @@ Do not change this file because it is core styling. Customizing core files will 
 .trip-cover {
   position: relative;
   width: 100%;
+  height: 140px;
   overflow: hidden;
 }
 .trip-cover .mx-image-background, .trip-cover .mx-image, .trip-cover [class*=image] {
   background-size: cover !important;
   background-position: center !important;
-  background-color: #dfe6f1;
+  background-color: #cfd8e6;
+}
+.trip-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(8, 12, 22, 0.5) 0%, rgba(8, 12, 22, 0.05) 45%, rgba(8, 12, 22, 0) 100%);
 }
 
-.trip-card-body {
-  padding: 14px 16px 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.trip-dest {
+  position: absolute;
+  left: 13px;
+  bottom: 11px;
+  z-index: 2;
 }
-.trip-card-body h4 {
-  margin: 0 0 1px;
-  font-weight: 700;
-  color: #1f2733;
-  letter-spacing: -0.01em;
-}
-.trip-card-body > .mx-text {
-  color: #6b7684;
-  font-size: 14px;
-}
-
-.trip-dates {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.trip-dates .mx-text {
-  color: #98a2b3;
-  font-size: 13px;
-  white-space: nowrap;
+.trip-dest .mx-text {
+  font-family: var(--tv-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  color: #fff;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
 }
 
 .trip-status-badge {
   position: absolute;
-  top: 12px;
-  right: 12px;
-  z-index: 2;
+  top: 11px;
+  right: 11px;
+  z-index: 3;
 }
 .trip-status-badge .mx-text {
-  display: inline-block;
-  padding: 4px 11px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #fff;
-  background: rgba(31, 39, 51, 0.78);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  text-transform: uppercase;
-}
-
-.trip-header {
-  border: 1px solid #e6eaf0;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #fff;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 6px 20px rgba(16, 24, 40, 0.08);
-  margin-bottom: 22px;
-}
-
-.trip-cover-lg {
-  min-height: 220px;
-}
-
-.trip-header-overlay {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 22px 26px 18px;
-  background: linear-gradient(to top, rgba(10, 14, 20, 0.78) 0%, rgba(10, 14, 20, 0.28) 55%, rgba(10, 14, 20, 0) 100%);
-  color: #fff;
-}
-.trip-header-overlay h1 {
-  margin: 0;
-  color: #fff;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-}
-.trip-header-overlay h4 {
-  margin: 4px 0 0;
-  color: rgba(255, 255, 255, 0.92);
-  font-weight: 500;
-}
-
-.trip-header-meta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 10px 18px;
-  padding: 16px 24px;
-  border-bottom: 1px solid #e6eaf0;
-}
-.trip-header-meta .trip-status-badge {
-  position: static;
-}
-.trip-header-meta .mx-text {
-  color: #6b7684;
-  font-size: 14px;
-}
-.trip-header-meta .mx-button, .trip-header-meta .btn {
-  margin-left: auto;
-}
-
-.trip-summary {
-  padding: 16px 26px 20px;
-}
-.trip-summary .mx-text {
-  color: #1f2733;
-  font-size: 15px;
-  line-height: 1.55;
-}
-
-.section-head {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 12px;
-  margin-bottom: 12px;
-}
-.section-head h3 {
-  margin: 0;
-  font-weight: 700;
-  color: #1f2733;
-}
-.section-head .mx-button, .section-head .btn {
-  margin-left: auto;
-}
-.section-head .mx-button + .mx-button, .section-head .btn + .btn {
-  margin-left: 8px;
-}
-
-.agenda-days {
-  padding-right: 8px;
-}
-
-.day-card {
-  padding: 12px 14px;
-  margin-bottom: 10px;
-  background: #fff;
-  border: 1px solid #e6eaf0;
-  border-left: 4px solid #2f6df6;
-  border-radius: 10px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 6px 20px rgba(16, 24, 40, 0.08);
-  cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease, border-color 0.12s ease;
-}
-.day-card h5 {
-  margin: 0 0 2px;
-  font-weight: 700;
-  color: #2f6df6;
-  text-transform: uppercase;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-}
-.day-card > .mx-text {
-  display: block;
-  color: #1f2733;
-  line-height: 1.45;
-}
-.day-card > .mx-text:last-child {
-  color: #6b7684;
-  font-size: 13px;
-}
-.day-card:hover {
-  transform: translateX(2px);
-  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.1), 0 16px 40px rgba(16, 24, 40, 0.16);
-}
-
-.agenda-days .mx-gallery-item.selected .day-card,
-.agenda-days .selected .day-card {
-  border-color: #2f6df6;
-  background: #f2f7ff;
-}
-
-.agenda-timeline {
-  padding-left: 20px;
-  border-left: 1px solid #e6eaf0;
-}
-
-.activity-row {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 14px 12px;
-  margin-bottom: 10px;
-  background: #fff;
-  border: 1px solid #e6eaf0;
-  border-radius: 12px;
-  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 6px 20px rgba(16, 24, 40, 0.08);
-  transition: box-shadow 0.12s ease;
-}
-.activity-row:hover {
-  box-shadow: 0 4px 10px rgba(16, 24, 40, 0.1), 0 16px 40px rgba(16, 24, 40, 0.16);
-}
-
-.activity-time {
-  flex: 0 0 78px;
-  padding-top: 3px;
-}
-.activity-time .mx-text {
-  font-weight: 700;
-  color: #1f2733;
-  font-size: 13px;
-  line-height: 1.3;
-}
-
-.activity-body {
-  flex: 1 1 auto;
-  min-width: 0;
-}
-.activity-body h5 {
-  margin: 4px 0 2px;
-  font-weight: 700;
-  color: #1f2733;
-}
-.activity-body > .mx-text {
-  display: block;
-  color: #6b7684;
-  font-size: 13px;
-  line-height: 1.5;
-}
-.activity-body .activity-cat .mx-text {
-  display: inline-block;
-}
-
-.activity-cat .mx-text {
-  display: inline-block;
-  padding: 2px 9px;
-  border-radius: 6px;
+  font-family: var(--tv-mono);
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.03em;
   text-transform: uppercase;
-  color: #3b4a5a;
-  background: #eef1f6;
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: #fff;
+  background: rgba(8, 12, 22, 0.55);
+  backdrop-filter: blur(4px);
+  border: 0;
 }
 
-.activity-actions {
+.trip-body {
+  padding: 13px 15px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.trip-body h3, .trip-body h4 {
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 680;
+  letter-spacing: -0.01em;
+  color: var(--tv-ink);
+}
+
+.trip-meta .mx-text {
+  font-family: var(--tv-mono);
+  color: var(--tv-ink-2);
+  font-size: 12.5px;
+}
+
+.trip-foot {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin: 12px 15px 15px;
+  padding-top: 12px;
+  border-top: 1px solid var(--tv-line-2);
+}
+.trip-foot .trip-budget {
   flex: 0 0 auto;
-  align-self: center;
+}
+.trip-foot .trip-budget .mx-text {
+  font-family: var(--tv-mono);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--tv-ink);
+  font-variant-numeric: tabular-nums;
+}
+.trip-foot .trip-days {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.trip-foot .trip-days .mx-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  color: var(--tv-muted);
+  font-size: 12px;
+  line-height: 1.42;
 }
 
-.agenda-timeline .mx-dataview-empty,
-.mx-gallery-empty {
+.trip-hero {
+  position: relative;
+  border-radius: var(--tv-radius);
+  overflow: hidden;
+  border: 1px solid var(--tv-line);
+  box-shadow: var(--tv-shadow-sm);
+  margin-bottom: 16px;
+}
+
+.hero-cover {
+  position: relative;
+  height: 220px;
+  width: 100%;
+}
+.hero-cover .mx-image-background, .hero-cover .mx-image, .hero-cover [class*=image] {
+  background-size: cover !important;
+  background-position: center !important;
+  background-color: #cfd8e6;
+}
+
+.hero-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 22px 24px 20px;
+  background: linear-gradient(to top, rgba(6, 9, 16, 0.82) 0%, rgba(6, 9, 16, 0.3) 48%, rgba(6, 9, 16, 0.02) 100%);
+}
+.hero-overlay h1 {
+  margin: 0;
+  color: #fff;
+  font-size: 30px;
+  font-weight: 760;
+  letter-spacing: -0.025em;
+}
+.hero-overlay .hero-loc .mx-text {
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--tv-mono);
+  font-size: 13px;
+}
+
+.hero-topline {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  right: 15px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hero-topline .mx-button {
+  margin-left: auto;
+  border-radius: 9px;
+  font-weight: 600;
+  background: rgba(12, 18, 30, 0.42) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  color: #fff !important;
+  backdrop-filter: blur(6px);
+}
+.hero-topline .mx-button:hover {
+  background: rgba(12, 18, 30, 0.6) !important;
+}
+.hero-topline .trip-status-badge {
+  position: static;
+}
+
+.trip-metabar {
+  display: flex;
+  align-items: center;
+  gap: 0 22px;
+  flex-wrap: wrap;
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  padding: 14px 20px;
+  box-shadow: var(--tv-shadow-sm);
+  margin-bottom: 16px;
+}
+.trip-metabar .meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.trip-metabar .meta-lb .mx-text {
+  font-size: 11px;
+  color: var(--tv-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.trip-metabar .meta-vv .mx-text {
+  font-family: var(--tv-mono);
+  font-weight: 650;
+  font-size: 15px;
+  color: var(--tv-ink);
+}
+.trip-metabar .meta-sep {
+  width: 1px;
+  height: 30px;
+  background: var(--tv-line);
+}
+.trip-metabar .meta-summary {
+  flex: 1 1 260px;
+  min-width: 220px;
+}
+.trip-metabar .meta-summary .mx-text {
+  color: var(--tv-ink-2);
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.agenda-panel, .timeline-panel {
+  background: var(--tv-surface);
+  border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius);
+  box-shadow: var(--tv-shadow-sm);
+  overflow: hidden;
+}
+
+.day-block {
+  padding: 2px 4px 8px;
+}
+
+.day-head {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 6px 7px;
+}
+.day-head .day-num .mx-text {
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  background: var(--tv-accent-wash);
+  color: var(--tv-accent);
+  font-family: var(--tv-mono);
+  font-weight: 700;
+  font-size: 12.5px;
+}
+.day-head .day-title .mx-text {
+  font-weight: 650;
+  font-size: 14.5px;
+  color: var(--tv-ink);
+}
+.day-head .day-date {
+  margin-left: auto;
+}
+.day-head .day-date .mx-text {
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  color: var(--tv-faint);
+}
+
+.act-row {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 9px 8px;
+  border-radius: var(--tv-radius-sm);
+}
+.act-row:hover {
+  background: var(--tv-surface-2);
+}
+.act-row .act-time .mx-text {
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  color: var(--tv-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+.act-row .act-name .mx-text {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--tv-ink);
+}
+.act-row .act-tags {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 5px;
+  flex-wrap: wrap;
+}
+.act-row .act-loc .mx-text {
+  color: var(--tv-faint);
+  font-size: 12px;
+}
+
+.cat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 9px 2px 8px;
+  border: 1px solid var(--tv-line);
+  background: var(--tv-surface-2);
+  border-radius: 20px;
+}
+.cat-chip .mx-text {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--tv-ink-2);
+}
+.cat-chip::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--tv-cat-other);
+  flex: 0 0 auto;
+}
+
+.cat-chip.cat-sight::before {
+  background: var(--tv-cat-sight);
+}
+
+.cat-chip.cat-food::before {
+  background: var(--tv-cat-food);
+}
+
+.cat-chip.cat-lodging::before {
+  background: var(--tv-cat-lodging);
+}
+
+.cat-chip.cat-transport::before {
+  background: var(--tv-cat-transport);
+}
+
+.cat-chip.cat-activity::before {
+  background: var(--tv-cat-activity);
+}
+
+.tl-daylabel .mx-text {
+  display: inline-block;
+  font-family: var(--tv-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--tv-faint);
+  background: var(--tv-surface-2);
+  border: 1px solid var(--tv-line);
+  padding: 3px 10px;
+  border-radius: 20px;
+  margin: 8px 0 6px 20px;
+}
+
+.tl-item {
+  position: relative;
+  padding: 4px 0 14px 34px;
+}
+.tl-item::before {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--tv-line);
+}
+.tl-item .tl-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.tl-item .tl-name .mx-text {
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--tv-ink);
+}
+.tl-item .tl-time {
+  margin-left: auto;
+}
+.tl-item .tl-time .mx-text {
+  font-family: var(--tv-mono);
+  font-size: 12px;
+  color: var(--tv-muted);
+  white-space: nowrap;
+}
+.tl-item .tl-sub .mx-text {
+  color: var(--tv-faint);
+  font-size: 12px;
+}
+
+.tl-node {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  z-index: 1;
+  background: var(--tv-cat-other);
+  border: 3px solid var(--tv-surface);
+  box-shadow: 0 0 0 1.5px var(--tv-line);
+}
+
+.tl-node.cat-sight {
+  background: var(--tv-cat-sight);
+}
+
+.tl-node.cat-food {
+  background: var(--tv-cat-food);
+}
+
+.tl-node.cat-lodging {
+  background: var(--tv-cat-lodging);
+}
+
+.tl-node.cat-transport {
+  background: var(--tv-cat-transport);
+}
+
+.tl-node.cat-activity {
+  background: var(--tv-cat-activity);
+}
+
+.mx-gallery-empty, .mx-listview-empty {
   padding: 28px;
   text-align: center;
-  color: #6b7684;
+  color: var(--tv-muted);
   font-size: 14px;
 }
 
+@media (max-width: 900px) {
+  .stat-row .mx-dataview-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .insights-strip {
+    grid-template-columns: 1fr;
+  }
+}
 :root {
-  /* Brand Colors */
-  --brand-primary: #264ae5;
-  --brand-success: #16aa16;
-  --brand-warning: #cd8501;
-  --brand-danger: #EA3337;
+  /* Brand Colors — Itinera design language */
+  --brand-primary: #1f6feb;
+  --brand-success: #0f7a5a;
+  --brand-warning: #b4791f;
+  --brand-danger: #e5484d;
   --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
   --gray: #B8BABF;
+  /* App background — cool near-white */
+  --bg-color: #eef1f7;
+  --bg-color-secondary: #ffffff;
 }
 
 /*
