@@ -29642,6 +29642,99 @@ Do not change this file because it is core styling. Customizing core files will 
     --tv-shadow-md: 0 2px 8px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.45);
   }
 }
+.layout-atlas-responsive-sidebar {
+  background: var(--tv-bg);
+}
+
+.region-sidebar {
+  width: 244px !important;
+  flex: 0 0 244px !important;
+  background: var(--tv-surface) !important;
+  border-right: 1px solid var(--tv-line);
+  box-shadow: none;
+  --navsidebar-bg: transparent;
+  --navsidebar-bg-hover: var(--tv-surface-2);
+  --navsidebar-bg-active: var(--tv-accent-wash);
+  --navigation-bg-hover: var(--tv-surface-2);
+  --navigation-bg-active: var(--tv-accent-wash);
+  --navsidebar-color: var(--tv-muted);
+  --navsidebar-color-hover: var(--tv-ink);
+  --navsidebar-color-active: var(--tv-accent);
+}
+
+.region-sidebar .sidebar-wrapper,
+.region-sidebar .navbar-inner {
+  background: transparent !important;
+}
+
+.region-sidebar .mx-name-staticImage1,
+.region-sidebar .mx-image-viewer {
+  display: none !important;
+}
+
+.region-sidebar .sidebar-wrapper::before {
+  content: "Itinera";
+  display: flex;
+  align-items: center;
+  margin: 4px 12px 10px;
+  padding: 10px 6px 14px 42px;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.015em;
+  color: var(--tv-ink);
+  border-bottom: 1px solid var(--tv-line-2);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='8' fill='%231f6feb'/%3E%3Cpath d='M14 7l6 3.5v7L14 21l-6-3.5v-7z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 6px center/28px 28px no-repeat;
+}
+
+.region-sidebar .mx-navigationtree {
+  padding: 8px 10px 0 !important;
+  margin-top: 0 !important;
+}
+
+.region-sidebar .mx-navigationtree a {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 11px;
+  margin-bottom: 2px;
+  border-radius: 9px;
+  color: var(--tv-muted) !important;
+  font-weight: 500;
+  font-size: 13.5px;
+  text-decoration: none;
+  transition: background 0.12s ease, color 0.12s ease;
+}
+.region-sidebar .mx-navigationtree a .mx-navigationtree-item-text, .region-sidebar .mx-navigationtree a span {
+  color: inherit !important;
+}
+.region-sidebar .mx-navigationtree a .glyphicon, .region-sidebar .mx-navigationtree a .mx-icon, .region-sidebar .mx-navigationtree a [class*=mx-icon] {
+  color: var(--tv-faint);
+  font-size: 17px;
+}
+
+.region-sidebar .mx-navigationtree a:hover {
+  background: var(--tv-surface-2);
+  color: var(--tv-ink) !important;
+}
+
+.region-sidebar .mx-navigationtree .active > a,
+.region-sidebar .mx-navigationtree a.active,
+.region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected {
+  background: var(--tv-accent-wash);
+  color: var(--tv-accent) !important;
+}
+.region-sidebar .mx-navigationtree .active > a [class*=mx-icon], .region-sidebar .mx-navigationtree .active > a .glyphicon,
+.region-sidebar .mx-navigationtree a.active [class*=mx-icon],
+.region-sidebar .mx-navigationtree a.active .glyphicon,
+.region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected [class*=mx-icon],
+.region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected .glyphicon {
+  color: var(--tv-accent);
+}
+
+.region-sidebar .toggle-btn-sidebar.hide-phone {
+  display: none !important;
+}
+
 .mx-page, .mx-scrollcontainer-wrapper {
   background: var(--tv-bg);
 }
@@ -30296,6 +30389,42 @@ Do not change this file because it is core styling. Customizing core files will 
 
 .tl-node.cat-activity {
   background: var(--tv-cat-activity);
+}
+
+.budget-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 6px;
+  border-bottom: 1px solid var(--tv-line-2);
+}
+.budget-row .budget-main {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.budget-row .budget-name .mx-text {
+  font-weight: 650;
+  font-size: 14.5px;
+  color: var(--tv-ink);
+}
+.budget-row .budget-dest .mx-text {
+  font-family: var(--tv-mono);
+  color: var(--tv-faint);
+  font-size: 12px;
+}
+.budget-row .budget-badge {
+  position: static;
+}
+.budget-row .budget-amt .mx-text {
+  font-family: var(--tv-mono);
+  font-weight: 700;
+  font-size: 17px;
+  color: var(--tv-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.budget-list .mx-listview-item:last-child .budget-row {
+  border-bottom: 0;
 }
 
 .mx-gallery-empty, .mx-listview-empty {

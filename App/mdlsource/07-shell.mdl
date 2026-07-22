@@ -1,0 +1,48 @@
+-- ============================================================================
+-- Itinera app shell — sidebar navigation + a second real destination (Budget).
+-- Pages use the Atlas_SideBar layout; the rail is styled in main.scss.
+-- ============================================================================
+
+-- MARK: BUDGET (second nav section — reuses the insight charts)
+
+create or replace page "Travel"."Budget_Overview"
+(
+  title: 'Budget',
+  layout: Atlas_Core.Atlas_SideBar
+)
+{
+  container ctnApp (class: 'travel-app') {
+    container ctnHeader (class: 'page-header') {
+      container ctnTitles (class: 'header-titles') {
+        dynamictext dtEyebrow (content: 'Insights', class: 'eyebrow')
+        dynamictext dtPageTitle (content: 'Budget', rendermode: H1)
+        container ctnSub (class: 'page-sub') {
+          dynamictext dtPageSub (content: 'Planned spend per trip, highest first.')
+        }
+      }
+    }
+
+    container ctnBudgetPanel (class: 'panel') {
+      container hdB (class: 'panel-head') {
+        dynamictext dtBTitle (content: 'Budget by trip', rendermode: H5)
+        container subB (class: 'panel-sub') { dynamictext dtBSub (content: 'planned') }
+      }
+      container bdB (class: 'panel-body') {
+        dynamictext dtBPlaceholder (content: 'Budget breakdown coming soon.')
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."Budget_Overview" to "Travel"."User";
+
+-- MARK: NAVIGATION (sidebar menu)
+
+create or replace navigation Responsive
+  home page Travel.Trips_Overview
+  menu (
+    menu item 'Trips' page Travel.Trips_Overview;
+    menu item 'Budget' page Travel.Budget_Overview;
+  )
+;
