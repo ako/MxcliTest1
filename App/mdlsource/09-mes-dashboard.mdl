@@ -1,0 +1,372 @@
+-- ============================================================================
+-- Atlas MES — a real "Line Overview" operations dashboard.
+-- Purpose: verify that mxcli can BUILD a bespoke dashboard (not just re-skin an
+-- existing page) — custom top-bar+tabs shell (Blank layout), status-driven
+-- dynamicclasses colouring, KPI grid, live-ish line cards, a chart + event feed.
+-- ============================================================================
+
+create module MES;
+
+-- MARK: DOMAIN ---------------------------------------------------------------
+
+create enumeration "MES"."ENUM_LineStatus" (
+  Running 'Running',
+  Idle 'Idle',
+  Down 'Down'
+);
+/
+
+create enumeration "MES"."ENUM_Severity" (
+  Info 'Info',
+  Warn 'Warning',
+  Crit 'Critical'
+);
+/
+
+@Position(100, 100)
+create persistent entity "MES"."ProductionLine" (
+  "LineCode": String(20),
+  "Name": String(100),
+  "Product": String(100),
+  "Operator": String(100),
+  "Status": Enumeration("MES"."ENUM_LineStatus") not null default "MES"."ENUM_LineStatus".Idle,
+  "OEE": Integer,
+  "Produced": Integer,
+  "Target": Integer,
+  "Takt": Integer,
+  "Cycle": Decimal,
+  "Faults": Integer,
+  "Zero": Integer default 0
+);
+/
+
+@Position(400, 100)
+create persistent entity "MES"."PlantEvent" (
+  "EventTime": String(20),
+  "Severity": Enumeration("MES"."ENUM_Severity") not null default "MES"."ENUM_Severity".Info,
+  "Text": String(300),
+  "Seq": Integer
+);
+/
+
+-- Aggregated feed for the throughput chart (one row per line)
+@Position(100, 400)
+create view entity "MES"."OutputByLine" (
+  "LineName": String(100),
+  "Produced": Integer
+) as (
+  select l."Name" as LineName, l."Produced" as Produced
+    from "MES"."ProductionLine" as l
+);
+/
+
+-- KPI carrier (non-persistent) for the stat row
+@Position(400, 400)
+create non-persistent entity "MES"."MESStats" (
+  "PlantOEE": Decimal,
+  "UnitsToday": Integer,
+  "LinesRunning": String(10),
+  "DownCount": Integer,
+  "FPY": String(10),
+  "OpenAlarms": Integer
+);
+/
+
+-- MARK: SECURITY -------------------------------------------------------------
+
+create module role "MES"."User";
+alter user role "User" add module roles ("MES"."User");
+
+grant "MES"."User" on "MES"."ProductionLine" (read *);
+grant "MES"."User" on "MES"."PlantEvent" (read *);
+grant "MES"."User" on "MES"."OutputByLine" (read *);
+grant "MES"."User" on "MES"."MESStats" (create, read *, write *);
+
+-- MARK: KPI DATASOURCE -------------------------------------------------------
+
+create or replace microflow "MES"."DS_MESStats" ()
+  returns "MES"."MESStats" as $Stats
+begin
+  retrieve $Lines from "MES"."ProductionLine";
+  retrieve $Running from "MES"."ProductionLine" where "Status" = "MES"."ENUM_LineStatus".Running;
+  retrieve $Down from "MES"."ProductionLine" where "Status" = "MES"."ENUM_LineStatus".Down;
+  retrieve $OpenEv from "MES"."PlantEvent" where "Severity" != "MES"."ENUM_Severity".Info;
+
+  $Total = count($Lines);
+  $Run = count($Running);
+  $DownN = count($Down);
+  $AlarmN = count($OpenEv);
+  $AvgRaw = avg($Lines.OEE);
+  $Units = sum($Lines.Produced);
+  set $AvgOEE = round($AvgRaw);
+  set $LR = toString($Run) + '/' + toString($Total);
+
+  $Stats = create "MES"."MESStats" (
+    "PlantOEE" = $AvgOEE,
+    "UnitsToday" = $Units,
+    "LinesRunning" = $LR,
+    "DownCount" = $DownN,
+    "FPY" = '98.2',
+    "OpenAlarms" = $AlarmN
+  );
+  return $Stats;
+end;
+/
+
+grant execute on microflow "MES"."DS_MESStats" to "MES"."User";
+
+-- MARK: DEMO SEED (idempotent) ----------------------------------------------
+
+create or replace microflow "MES"."ACT_SeedMES" ()
+  returns Boolean as $ok
+  folder 'DemoData'
+begin
+  retrieve $Existing from "MES"."ProductionLine" limit 1;
+  if $Existing != empty then
+    return true;
+  end if;
+
+  $l1 = create "MES"."ProductionLine" ("LineCode" = 'L1', "Name" = 'ECU Assembly', "Product" = 'ECU-X4 Controller', "Operator" = 'M. Reyes', "Status" = "MES"."ENUM_LineStatus".Running, "OEE" = 87, "Produced" = 412, "Target" = 480, "Takt" = 38, "Cycle" = 36.4, "Faults" = 0);
+  $l2 = create "MES"."ProductionLine" ("LineCode" = 'L2', "Name" = 'SMT Placement', "Product" = 'Board R7 Rev.C', "Operator" = 'A. Castillo', "Status" = "MES"."ENUM_LineStatus".Running, "OEE" = 92, "Produced" = 1840, "Target" = 2000, "Takt" = 9, "Cycle" = 8.6, "Faults" = 1);
+  $l3 = create "MES"."ProductionLine" ("LineCode" = 'L3', "Name" = 'Harness Build', "Product" = 'Wire Harness B2', "Operator" = 'J. Okafor', "Status" = "MES"."ENUM_LineStatus".Idle, "OEE" = 64, "Produced" = 128, "Target" = 240, "Takt" = 55, "Cycle" = 0.0, "Faults" = 0);
+  $l4 = create "MES"."ProductionLine" ("LineCode" = 'L4', "Name" = 'Final Test', "Product" = 'ECU-X4 Pack', "Operator" = 'unassigned', "Status" = "MES"."ENUM_LineStatus".Down, "OEE" = 0, "Produced" = 96, "Target" = 200, "Takt" = 42, "Cycle" = 0.0, "Faults" = 3);
+  commit $l1;
+  commit $l2;
+  commit $l3;
+  commit $l4;
+
+  $e1 = create "MES"."PlantEvent" ("EventTime" = '11:24', "Severity" = "MES"."ENUM_Severity".Info, "Text" = 'WO-48213 reached 412/480 units on ECU Assembly', "Seq" = 6);
+  $e2 = create "MES"."PlantEvent" ("EventTime" = '11:21', "Severity" = "MES"."ENUM_Severity".Crit, "Text" = 'M-401 EOL Tester faulted — Final Test line stopped', "Seq" = 5);
+  $e3 = create "MES"."PlantEvent" ("EventTime" = '11:18', "Severity" = "MES"."ENUM_Severity".Warn, "Text" = 'Glue Dispenser viscosity alarm raised on Line 1', "Seq" = 4);
+  $e4 = create "MES"."PlantEvent" ("EventTime" = '11:09', "Severity" = "MES"."ENUM_Severity".Crit, "Text" = 'Label & Pack conveyor blocked — operator paged', "Seq" = 3);
+  $e5 = create "MES"."PlantEvent" ("EventTime" = '10:47', "Severity" = "MES"."ENUM_Severity".Info, "Text" = 'WO-48198 Board R6 completed — 800/800 units', "Seq" = 2);
+  $e6 = create "MES"."PlantEvent" ("EventTime" = '10:32', "Severity" = "MES"."ENUM_Severity".Info, "Text" = 'Shift A handover logged — 2 open items', "Seq" = 1);
+  commit $e1;
+  commit $e2;
+  commit $e3;
+  commit $e4;
+  commit $e5;
+  commit $e6;
+
+  return true;
+end;
+/
+
+grant execute on microflow "MES"."ACT_SeedMES" to "MES"."User";
+
+-- Chain the MES seed onto the existing after-startup seed.
+create or replace microflow "Travel"."ACT_Startup" ()
+  returns Boolean as $ok
+  folder 'DemoData'
+begin
+  $a = call microflow "Travel"."ACT_Seed" ();
+  $b = call microflow "MES"."ACT_SeedMES" ();
+  return true;
+end;
+/
+grant execute on microflow "Travel"."ACT_Startup" to "Travel"."User";
+alter settings model AfterStartupMicroflow = "Travel"."ACT_Startup";
+
+-- MARK: PAGE — LINE OVERVIEW (Blank layout = custom top-bar + tabs shell) -----
+
+create or replace page "MES"."LineOverview"
+(
+  title: 'Atlas MES',
+  layout: Atlas_Core.Atlas_SideBar
+)
+{
+  container mesApp (class: 'mes-app') {
+
+    -- ===== TOP BAR =====
+    container mesTop (class: 'mes-topbar') {
+      container mesBrand (class: 'mes-brand') {
+        container mesMark (class: 'mes-mark') {}
+        container mesWord (class: 'mes-word') {
+          dynamictext dtBrand (content: 'ATLAS MES')
+          dynamictext dtBrandSub (content: 'EXECUTION SYSTEM', class: 'mes-brand-sub')
+        }
+      }
+      container mesPlant (class: 'mes-plant') {
+        dynamictext dtPlant (content: 'Plant 04', class: 'mes-plant-name')
+        dynamictext dtPlantLoc (content: 'Guadalajara · Bldg B')
+      }
+      container mesSpacer (class: 'mes-spacer') {}
+      container mesAlarm (class: 'mes-alarm') {
+        container mesAlarmDot (class: 'mes-alarm-dot') {}
+        dynamictext dtAlarmN (content: '02', class: 'mes-alarm-n')
+        dynamictext dtAlarmL (content: 'ALARMS', class: 'mes-alarm-l')
+      }
+      container mesClock (class: 'mes-clock') {
+        dynamictext dtClock (content: '11:24', class: 'mes-clock-time')
+        dynamictext dtShift (content: 'SHIFT A · JUL 24')
+      }
+    }
+
+    -- ===== NAV TABS =====
+    container mesTabs (class: 'mes-tabs') {
+      container tabA (class: 'mes-tab is-active') {
+        dynamictext dtTabA1 (content: '01', class: 'mes-tab-num')
+        dynamictext dtTabA2 (content: 'LINE OVERVIEW')
+      }
+      container tabB (class: 'mes-tab') {
+        dynamictext dtTabB1 (content: '02', class: 'mes-tab-num')
+        dynamictext dtTabB2 (content: 'WORK ORDERS')
+      }
+      container tabC (class: 'mes-tab') {
+        dynamictext dtTabC1 (content: '03', class: 'mes-tab-num')
+        dynamictext dtTabC2 (content: 'MACHINE STATUS')
+      }
+      container mesLive (class: 'mes-live') {
+        container mesLiveDot (class: 'mes-live-dot') {}
+        dynamictext dtLive (content: 'LIVE · synced')
+      }
+    }
+
+    -- ===== BODY =====
+    container mesBody (class: 'mes-body') {
+
+      -- KPI ROW
+      dataview dvStats (datasource: microflow "MES"."DS_MESStats", class: 'mes-kpis') {
+        container kpi1 (class: 'mes-kpi kpi-green') {
+          dynamictext k1l (content: 'Plant OEE', class: 'mes-kpi-l')
+          container k1v (class: 'mes-kpi-v is-mono') { dynamictext k1vt (content: '{1}', contentparams: [{1} = PlantOEE]) dynamictext k1u (content: '%', class: 'mes-kpi-u') }
+          dynamictext k1d (content: '▲ 2.1 vs target', class: 'mes-kpi-d good')
+        }
+        container kpi2 (class: 'mes-kpi kpi-blue') {
+          dynamictext k2l (content: 'Units Today', class: 'mes-kpi-l')
+          container k2v (class: 'mes-kpi-v is-mono') { dynamictext k2vt (content: '{1}', contentparams: [{1} = UnitsToday]) }
+          dynamictext k2d (content: '64% of 4,000 plan', class: 'mes-kpi-d')
+        }
+        container kpi3 (class: 'mes-kpi kpi-green') {
+          dynamictext k3l (content: 'Lines Running', class: 'mes-kpi-l')
+          container k3v (class: 'mes-kpi-v is-mono') { dynamictext k3vt (content: '{1}', contentparams: [{1} = LinesRunning]) }
+          dynamictext k3d (content: '1 idle · 1 down', class: 'mes-kpi-d warn')
+        }
+        container kpi4 (class: 'mes-kpi kpi-blue') {
+          dynamictext k4l (content: 'Down Lines', class: 'mes-kpi-l')
+          container k4v (class: 'mes-kpi-v is-mono') { dynamictext k4vt (content: '{1}', contentparams: [{1} = DownCount]) }
+          dynamictext k4d (content: 'needs attention', class: 'mes-kpi-d')
+        }
+        container kpi5 (class: 'mes-kpi kpi-green') {
+          dynamictext k5l (content: 'First Pass Yield', class: 'mes-kpi-l')
+          container k5v (class: 'mes-kpi-v is-mono') { dynamictext k5vt (content: '{1}', contentparams: [{1} = FPY]) dynamictext k5u (content: '%', class: 'mes-kpi-u') }
+          dynamictext k5d (content: '▲ 0.4 this shift', class: 'mes-kpi-d good')
+        }
+        container kpi6 (class: 'mes-kpi kpi-red') {
+          dynamictext k6l (content: 'Open Alarms', class: 'mes-kpi-l')
+          container k6v (class: 'mes-kpi-v is-mono') { dynamictext k6vt (content: '{1}', contentparams: [{1} = OpenAlarms]) }
+          dynamictext k6d (content: '2 critical', class: 'mes-kpi-d danger')
+        }
+      }
+
+      -- MAIN GRID: line cards (left) + rail (right)
+      container mesMain (class: 'mes-main') {
+
+        container mesLines (class: 'mes-lines') {
+          gallery galLines (
+            datasource: database from "MES"."ProductionLine" sort by LineCode asc,
+            selection: none,
+            DesktopColumns: 2, TabletColumns: 1, PhoneColumns: 1,
+            class: 'mes-line-gallery'
+          ) {
+            template tplLine {
+              container lineCard (class: 'line-card', dynamicclasses: 'if $currentObject/Status = MES.ENUM_LineStatus.Running then ''status-running'' else if $currentObject/Status = MES.ENUM_LineStatus.Idle then ''status-idle'' else ''status-down''') {
+                container lineHead (class: 'line-head') {
+                  container lineId (class: 'line-id') {
+                    dynamictext lc (content: '{1}', contentparams: [{1} = LineCode], class: 'line-code')
+                    dynamictext ln (content: '{1}', contentparams: [{1} = Name], class: 'line-name')
+                  }
+                  container linePill (class: 'line-pill') {
+                    container lineDot (class: 'line-dot') {}
+                    dynamictext lst (content: '{1}', contentparams: [{1} = Status], class: 'line-st')
+                  }
+                }
+                container lineSub (class: 'line-sub') {
+                  dynamictext lprod (content: '{1}', contentparams: [{1} = Product])
+                  dynamictext lop (content: ' · {1}', contentparams: [{1} = Operator])
+                }
+                container lineMetrics (class: 'line-metrics') {
+                  container lmOee (class: 'lm-oee') {
+                    dynamictext lmOeeL (content: 'OEE', class: 'lm-l')
+                    container lmOeeV (class: 'lm-oee-v is-mono') { dynamictext lmOeeVt (content: '{1}', contentparams: [{1} = OEE]) dynamictext lmOeeU (content: '%', class: 'lm-u') }
+                  }
+                  container lmGrid (class: 'lm-grid') {
+                    container lmTakt (class: 'lm-cell') { dynamictext lmTaktL (content: 'TAKT', class: 'lm-l') dynamictext lmTaktV (content: '{1}s', contentparams: [{1} = Takt], class: 'lm-v is-mono') }
+                    container lmCycle (class: 'lm-cell') { dynamictext lmCycleL (content: 'CYCLE', class: 'lm-l') dynamictext lmCycleV (content: '{1}s', contentparams: [{1} = Cycle], class: 'lm-v is-mono') }
+                    container lmFault (class: 'lm-cell') { dynamictext lmFaultL (content: 'FAULTS', class: 'lm-l') dynamictext lmFaultV (content: '{1}', contentparams: [{1} = Faults], class: 'lm-v is-mono') }
+                  }
+                }
+                container lineOut (class: 'line-out') {
+                  container lineOutHd (class: 'line-out-hd') {
+                    dynamictext loL (content: 'Output', class: 'lo-l')
+                    container loV (class: 'lo-v is-mono') { dynamictext loP (content: '{1}', contentparams: [{1} = Produced]) dynamictext loT (content: ' / {1}', contentparams: [{1} = Target], class: 'lo-t') }
+                  }
+                  pluggablewidget 'com.mendix.widget.custom.progressbar.ProgressBar' pbOut (
+                    type: dynamic,
+                    dynamicCurrentValue: "Produced",
+                    dynamicMinValue: "Zero", dynamicMaxValue: "Target",
+                    showLabel: false
+                  )
+                }
+              }
+            }
+          }
+        }
+
+        container mesRail (class: 'mes-rail') {
+          container railChart (class: 'rail-card') {
+            dynamictext rcT (content: 'Throughput · units', class: 'rail-t')
+            pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartThru (
+              showLegend: false,
+              heightUnit: pixels, height: 150,
+              customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Mono,monospace","color":"#8b949e","size":10},"margin":{"l":34,"r":8,"t":6,"b":26},"bargap":0.5,"xaxis":{"gridcolor":"rgba(140,148,166,0.08)","zeroline":false,"showline":false,"ticks":"","tickfont":{"size":9}},"yaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":""}}',
+              customConfigurations: '{"displayModeBar":false,"responsive":true}'
+            ) {
+              series sThru (
+                dataSet: static,
+                staticDataSource: database from "MES"."OutputByLine",
+                staticXAttribute: LineName,
+                staticYAttribute: Produced,
+                staticName: 'Units',
+                aggregationType: none,
+                customSeriesOptions: '{"marker":{"color":"#3fb950","line":{"width":0}}}'
+              )
+            }
+          }
+          container railFeed (class: 'rail-card rail-feed') {
+            container rfHd (class: 'rf-hd') {
+              dynamictext rfT (content: 'Event Feed', class: 'rail-t')
+              dynamictext rfLive (content: '● live', class: 'rf-live')
+            }
+            listview lvEvents (datasource: database from "MES"."PlantEvent" sort by Seq desc, class: 'event-list') {
+              template tplEvent {
+                container eventRow (class: 'event-row') {
+                  dynamictext evT (content: '{1}', contentparams: [{1} = EventTime], class: 'ev-time is-mono')
+                  container evDot (class: 'ev-dot', dynamicclasses: 'if $currentObject/Severity = MES.ENUM_Severity.Crit then ''sev-crit'' else if $currentObject/Severity = MES.ENUM_Severity.Warn then ''sev-warn'' else ''sev-info''') {}
+                  dynamictext evX (content: '{1}', contentparams: [{1} = Text], class: 'ev-text')
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "MES"."LineOverview" to "MES"."User";
+
+-- MARK: NAV — add the MES board to the sidebar menu ---------------------------
+
+create or replace navigation Responsive
+  home page Travel.Trips_Overview
+  menu (
+    menu item 'Trips' page Travel.Trips_Overview;
+    menu item 'Budget' page Travel.Budget_Overview;
+    menu item 'MES Board' page MES.LineOverview;
+    menu item 'Widget Lab · Inputs' page Travel.WidgetLab_Inputs;
+    menu item 'Widget Lab · Charts' page Travel.WidgetLab_Charts;
+    menu item 'Widget Lab · Data' page Travel.WidgetLab_Data;
+  )
+;

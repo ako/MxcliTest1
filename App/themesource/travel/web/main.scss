@@ -564,3 +564,127 @@ body, .mx-page, .mx-name-content, .region-content {
 .widget-dropdown-filter-menu-item:hover,
 .widget-dropdown-filter-menu li:hover,
 .filter-selectors li:hover { background-color: var(--tv-accent-wash) !important; }
+
+// ============================================================================
+// MES Line Overview — a bespoke operations dashboard on the Blank-ish canvas.
+// Custom top-bar + tabs shell, status-driven card colouring, live-cue anims.
+// ============================================================================
+@keyframes mesPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes mesBlink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+.is-mono .mx-text { font-family: var(--tv-mono); font-variant-numeric: tabular-nums; }
+
+// hide the Atlas sidebar only on the MES page → full-screen control room
+.mx-page:has(.mes-app) .region-sidebar { display: none !important; }
+.mx-page:has(.mes-app) .region-content { margin: 0 !important; padding: 0 !important; }
+
+.mes-app { display: flex; flex-direction: column; min-height: 100vh; background: var(--tv-bg);
+  color: var(--tv-ink); font-family: var(--tv-body); }
+
+// ---- top bar ----
+.mes-topbar {
+  display: flex; align-items: center; height: 56px; flex: none;
+  border-bottom: 1px solid var(--tv-line); background: var(--tv-topbar);
+}
+.mes-brand { display: flex; align-items: center; gap: 11px; padding: 0 20px; height: 100%; border-right: 1px solid var(--tv-line); }
+.mes-mark { width: 24px; height: 24px; border: 2px solid var(--tv-accent); transform: rotate(45deg);
+  position: relative; flex: none;
+  &::after { content: ""; position: absolute; inset: 6px; background: var(--tv-accent); } }
+.mes-word { display: flex; flex-direction: column; line-height: 1;
+  .mx-text { font-family: var(--tv-display); font-weight: 700; font-size: 15px; letter-spacing: 2px; color: var(--tv-ink); } }
+.mes-brand-sub .mx-text { font-family: var(--tv-body) !important; font-weight: 400 !important; font-size: 9px !important;
+  letter-spacing: 2px !important; color: var(--tv-faint) !important; margin-top: 3px; }
+.mes-plant { display: flex; align-items: center; gap: 8px; padding: 0 20px; font-size: 12px;
+  .mx-text { color: var(--tv-muted); } .mes-plant-name .mx-text { color: var(--tv-ink); font-weight: 600; } }
+.mes-spacer { flex: 1; }
+.mes-alarm { display: flex; align-items: center; gap: 8px; padding: 0 18px; height: 100%; border-left: 1px solid var(--tv-line); }
+.mes-alarm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tv-danger);
+  box-shadow: 0 0 8px var(--tv-danger); animation: mesBlink 1s infinite; }
+.mes-alarm-n .mx-text { font-family: var(--tv-mono); font-size: 13px; font-weight: 600; color: var(--tv-danger); }
+.mes-alarm-l .mx-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-faint); }
+.mes-clock { display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+  padding: 0 20px; height: 100%; border-left: 1px solid var(--tv-line); min-width: 132px;
+  .mes-clock-time .mx-text { font-family: var(--tv-mono); font-size: 18px; font-weight: 600; letter-spacing: 1px; color: var(--tv-ink); }
+  .mx-text { font-size: 10px; letter-spacing: 1px; color: var(--tv-faint); } }
+
+// ---- tabs ----
+.mes-tabs { display: flex; align-items: stretch; height: 44px; flex: none;
+  background: var(--tv-surface-2); border-bottom: 1px solid var(--tv-line); padding: 0 8px; }
+.mes-tab { display: flex; align-items: center; gap: 9px; padding: 0 22px; cursor: pointer;
+  font-size: 13px; font-weight: 600; letter-spacing: .3px; color: var(--tv-faint);
+  border-bottom: 2px solid transparent;
+  .mx-text { color: inherit; } .mes-tab-num .mx-text { font-family: var(--tv-mono); font-size: 11px; opacity: .6; }
+  &.is-active { color: var(--tv-ink); border-bottom-color: var(--tv-accent); background: var(--tv-accent-wash); } }
+.mes-live { display: flex; align-items: center; gap: 7px; margin-left: auto; padding: 0 18px; font-size: 11px; color: var(--tv-faint);
+  .mx-text { color: inherit; } }
+.mes-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-accent); animation: mesPulse 2s infinite; }
+
+// ---- body ----
+.mes-body { flex: 1; overflow-y: auto; padding: 16px; }
+.mes-kpis .mx-dataview-content { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
+.mes-kpi { background: var(--tv-panel); border: 1px solid var(--tv-line); border-left: 3px solid var(--tv-accent);
+  padding: 13px 15px;
+  &.kpi-blue { border-left-color: var(--tv-info); } &.kpi-red { border-left-color: var(--tv-danger); } }
+.mes-kpi-l .mx-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--tv-faint); }
+.mes-kpi-v { display: flex; align-items: baseline; gap: 4px; margin-top: 9px;
+  .mx-text { font-family: var(--tv-mono); font-size: 26px; font-weight: 600; color: var(--tv-ink); line-height: 1; } }
+.mes-kpi-u .mx-text { font-size: 12px !important; color: var(--tv-faint) !important; }
+.mes-kpi-d { margin-top: 8px; .mx-text { font-family: var(--tv-mono); font-size: 11px; color: var(--tv-muted); }
+  &.good .mx-text { color: var(--tv-good); } &.warn .mx-text { color: var(--tv-warn); } &.danger .mx-text { color: var(--tv-danger); } }
+
+.mes-main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+.mes-line-gallery .mx-gallery-content { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mes-line-gallery .mx-gallery-item, .mes-line-gallery li { outline: none; }
+
+.line-card { --st: var(--tv-muted); position: relative; background: var(--tv-panel);
+  border: 1px solid var(--tv-line); border-top: 3px solid var(--st); padding: 15px 16px;
+  &.status-running { --st: var(--tv-good); } &.status-idle { --st: var(--tv-warn); } &.status-down { --st: var(--tv-danger); border-color: color-mix(in srgb, var(--tv-danger) 30%, var(--tv-line)); } }
+.line-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+.line-id { display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  .line-code .mx-text { font-family: var(--tv-mono); font-size: 11px; color: var(--tv-faint); }
+  .line-name .mx-text { font-family: var(--tv-display); font-size: 17px; font-weight: 600; color: var(--tv-ink); } }
+.line-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--st);
+  background: color-mix(in srgb, var(--st) 10%, transparent);
+  .line-st .mx-text { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--st); font-family: var(--tv-mono); } }
+.line-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--st); box-shadow: 0 0 8px var(--st); }
+.status-running .line-dot { animation: mesPulse 1.6s infinite; }
+.status-down .line-dot { animation: mesBlink 1s infinite; }
+.line-sub { display: flex; gap: 0; margin-bottom: 14px; .mx-text { font-size: 11px; color: var(--tv-faint); } }
+.line-metrics { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 13px; }
+.lm-l .mx-text { font-size: 9px; letter-spacing: 1px; color: var(--tv-faint); text-transform: uppercase; }
+.lm-oee { flex: none; }
+.lm-oee-v { display: flex; align-items: baseline; gap: 2px; margin-top: 4px;
+  .mx-text { font-family: var(--tv-mono); font-size: 32px; font-weight: 600; color: var(--st); line-height: 1; } }
+.lm-u .mx-text { font-size: 13px !important; color: var(--tv-faint) !important; }
+.lm-grid { flex: 1; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.lm-cell .lm-v { margin-top: 3px; }
+.lm-v .mx-text { font-family: var(--tv-mono); font-size: 14px; color: var(--tv-ink-2); }
+.line-out-hd { display: flex; align-items: center; justify-content: space-between; font-size: 11px; margin-bottom: 6px;
+  .lo-l .mx-text { color: var(--tv-muted); } .lo-v .mx-text { font-family: var(--tv-mono); color: var(--tv-ink-2); } .lo-t .mx-text { color: var(--tv-faint) !important; } }
+.line-out .progress, .line-out [class*="progress"] { border-radius: 0 !important; }
+
+// ---- rail ----
+.mes-rail { display: flex; flex-direction: column; gap: 16px; }
+.rail-card { background: var(--tv-panel); border: 1px solid var(--tv-line); padding: 15px; }
+.rail-t.mx-text, .rail-t { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-muted);
+  .mx-text { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-muted); } }
+.rail-t .mx-text { font-family: var(--tv-body); }
+.rf-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.rf-live .mx-text { font-size: 10px; color: var(--tv-accent); font-family: var(--tv-mono); }
+.event-row { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--tv-line-2); align-items: flex-start; }
+.event-list .mx-listview-item:last-child .event-row { border-bottom: 0; }
+.ev-time .mx-text { font-family: var(--tv-mono); font-size: 10px; color: var(--tv-faint); white-space: nowrap; padding-top: 1px; }
+.ev-dot { --sev: var(--tv-info); width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex: none;
+  background: var(--sev); box-shadow: 0 0 6px var(--sev);
+  &.sev-crit { --sev: var(--tv-danger); } &.sev-warn { --sev: var(--tv-warn); } &.sev-info { --sev: var(--tv-info); } }
+.ev-text .mx-text { font-size: 11.5px; color: var(--tv-ink-2); line-height: 1.4; }
+
+@media (max-width: 1100px) {
+  .mes-kpis .mx-dataview-content { grid-template-columns: repeat(3, 1fr); }
+  .mes-main { grid-template-columns: 1fr; }
+  .mes-line-gallery .mx-gallery-content { grid-template-columns: 1fr; }
+}
+
+// metric label/value stacking (were rendering inline as "TAKT38s")
+.lm-cell .lm-l, .lm-cell .lm-v, .lm-oee .lm-l { display: block; }
+.lm-grid .lm-cell { min-width: 0; }
