@@ -38,7 +38,7 @@ duplicate any of it.
 |---|---|---|---|
 | `page-styling-support.md` | partial (Phase 1 done) | the 4 styling channels: `class`, inline `style`, `DynamicClasses`, typed `designproperties` | *which* classes/tokens to use and *when* (the Atlas vocabulary + palette method) |
 | `proposal_page_composition.md` | proposed (fragments impl'd) | `define/use fragment`, `alter page`, partial updates, **parameterized fragments (future)** | ships the recipe library *as* fragments; designs recipes to migrate to parameterized fragments |
-| `show-describe-building-blocks.md` | proposed (list-only today) | `Forms$BuildingBlock` introspection + (future) instantiation | uses Building Blocks as the eventual native home for recipes; maps Atlas blocks → our recipes |
+| `show-describe-building-blocks.md` | proposed (name-list only today — content unreadable) | `Forms$BuildingBlock` **read** (widget tree) → **instantiate** (`use`) → **author** (`create`) | uses Building Blocks as the eventual native home for recipes; maps Atlas blocks → our recipes; see the "what's needed" spec below |
 | `show-describe-page-templates.md` | proposed (list-only today) | `Forms$PageTemplate` introspection | the page-template → screen map (Detail_Cards, Grid_Card, Dashboard_*) |
 
 If any of these advance, `atlas-design` should shrink accordingly (e.g., once `use building block`
@@ -73,8 +73,45 @@ Several map 1:1 onto what we hand-built: **`Detail_Cards` + `Detail_Timeline`** 
 
 ### Atlas Building Blocks (`Forms$BuildingBlock`, 233 across the team's test projects)
 The Mendix-native "card/title recipe library": reusable widget compositions **copied** onto pages
-(templates, not runtime components), with preview thumbnails and categories. Today mxcli can *list*
-them; `show/describe/use` is proposed. This is the eventual native home for our recipes.
+(templates, not runtime components — dragging one in *deep-copies* its widget tree; there is no live
+link afterwards), with preview thumbnails and categories. This is the eventual native home for our
+recipes.
+
+#### Precise current state (verified in mxcli source this session)
+"Can I create pages *with* Building Blocks today?" — **No.** Building Blocks are readable at the
+name level only and cannot be inspected, instantiated, or authored via MDL:
+
+| Layer | State |
+|---|---|
+| Go type + reader (`ListBuildingBlocks()`) | ✅ present — used only by the project-tree TUI |
+| Parser | ⚠️ reads **Name + Documentation only** — *not* the widget tree |
+| `SHOW` / `DESCRIBE BUILDING BLOCK` | ❌ `cmd_describe.go` **explicitly excludes** them |
+| Grammar / AST / executor | ❌ none |
+| Instantiate onto a page / author a new one | ❌ no syntax |
+
+So mxcli can list building-block names but can't read their content, describe them, copy one onto a
+page, or create one. (`show-describe-building-blocks.md` is `status: proposed`.)
+
+#### What "create pages with Building Blocks" actually requires (three capabilities, in order)
+1. **Read their content** — extend the widget-tree reader (already implemented for `Forms$Page` /
+   `Forms$Snippet`; a Building Block carries the *same* `widgets: []` tree) to `Forms$BuildingBlock`,
+   and surface it via `SHOW BUILDING BLOCKS` (name, module, category, platform, preview) +
+   `DESCRIBE BUILDING BLOCK Mod.Name` (round-trippable MDL). Without this you can't discover-then-reuse
+   what a project already ships. **This is the prerequisite for everything else.**
+2. **Instantiate onto a page** — `USE BUILDING BLOCK Mod.Name [prefix 'p_']` inside a page/container
+   that **deep-copies** the block's widget tree in. Mechanically this is *fragment expansion sourced
+   from a persisted document* instead of a script-scoped `define fragment` — the copy semantics,
+   prefix/name-collision handling, and "no live link" behaviour are identical, so it can reuse the
+   fragment-expansion machinery. This is the capability that makes "compose a page from pre-built
+   sections" real.
+3. **Author new ones (optional)** — `CREATE BUILDING BLOCK Mod.Name { widgets }` so generated apps
+   *contribute* reusable blocks back into the Studio-Pro toolbox (category, platform, preview
+   thumbnail). Lower priority than read + instantiate.
+
+**Why this matters for `atlas-design`:** because a Building Block is a *copy template*, our recipe
+library maps onto it 1:1 (a recipe is also a copied widget shape). Once (1)+(2) land, the
+`.mdl`/fragment recipes become a thin adapter over native Building Blocks *and* become visible in
+Studio Pro — the ideal end-state. Until then, recipes ship as fragments + `.mdl` fill-in (below).
 
 **Rule of thumb — reach *down* the stack first:** need a card? `class:'card'` before a `.panel`
 rule. Brand blue on buttons? `--brand-primary` before overriding `.btn-primary`. Custom CSS is the
@@ -115,6 +152,66 @@ authored purely with mxcli's `class:` property. Result — **the Atlas-first the
   readiness probe verify `/dist/index.js` is 200 before reporting the build applied. (Theme-only SCSS
   edits hot-apply correctly — that path is unaffected.)
 
+## Styling the standard widgets (from the widget-lab exercise)
+
+Building a page that exercises every marketplace widget surfaced a second, distinct lesson: the
+**pluggable widgets Mendix ships look unfinished by default**, and closing that gap is a *separate*
+recipe from Atlas-class composition. Two families dominate: **charts** and **dark-mode surfaces**.
+
+### Charts — a `dataviz`-grade recipe for the Mendix chart widgets
+Out of the box the chart widgets (Column/Bar/Area/Pie/Line) render **raw Plotly defaults**: one flat
+primary colour, a floating mode-bar on hover, wide margins, heavy gridlines. That is the single
+biggest "not a real product" tell. The widgets expose three Plotly hooks — barely used by generated
+apps — that turn them into designed charts. All three are **plain JSON strings** (no Mendix
+expression quoting), so they are trivial to template:
+
+| Property | Plotly layer | Use it for |
+|---|---|---|
+| `customLayout` | `layout` | transparent `paper_bgcolor`+`plot_bgcolor`, system font, `#8a94a6` ticks, tight `margin`, faint `gridcolor`, `zeroline:false`/`showline:false`, dark `hoverlabel` |
+| `customConfigurations` | `config` | `{"displayModeBar":false,"responsive":true}` — removes the floating toolbar |
+| `customSeriesOptions` (per series; chart-level on Pie) | trace | brand colour, `marker.cornerradius` (rounded bars), `line.shape:"spline"` + translucent `fillcolor` (area), Pie colour array + white inside labels |
+
+**Key trick — transparent background = theme-agnostic charts.** Setting `paper_bgcolor`/`plot_bgcolor`
+to `rgba(0,0,0,0)` makes the plot inherit whatever panel it sits on, so **one config is correct in
+both light and dark** with zero per-theme CSS and no fighting Plotly's SVG. Pair it with a neutral
+tick colour (`#8a94a6`) that reads on either background. This is the chart analogue of the
+`dataviz` skill and should ship as a ready-made `chart-theme` asset (a shared `customLayout`
++ `customConfigurations`, plus per-type series snippets).
+
+**Chart gotchas (each cost real time):**
+- **BarChart "0" prefix.** A *horizontal* bar needs `staticXAttribute = value`, `staticYAttribute =
+  category`; but with `aggregationType: sum` Mendix prepends a `0` group-key to every category tick
+  (`"0Tokyo Spring"`). Use `aggregationType: none` when the datasource is already one row per
+  category (e.g. an aggregating view entity). Column charts (category on X) are unaffected.
+- **The mode-bar and the white paper are the two ugliest defaults** — always kill both
+  (`displayModeBar:false` + transparent bg).
+- **Not MDL-authorable yet:** Line/Bubble/Heatmap object-lists (per `create-page`); Column/Bar/Area/Pie
+  are. Recipes should stick to the authorable four.
+
+### Dark mode — Atlas widgets need an explicit override recipe
+This resolves the proposal's open dark-mode question with a concrete finding. A token-driven
+`@media (prefers-color-scheme: dark)` flip repaints *your* custom chrome, but **Atlas's own widgets
+and Plotly do not follow** — they ship light-only surfaces, so on a dark page they render as white
+boxes with (often) near-invisible text. Observed clashes and the fix:
+
+| Widget | Light-only surface that clashed | Override (scoped to `.travel-app`, dark media query) |
+|---|---|---|
+| Text input / textarea / combobox field | white `.form-control` | surface token bg + ink text |
+| Datagrid | white rows, near-white text; white `.filter-selector-button` chips | dark rows/headers/chips + ink text |
+| Datagrid dropdown filter | `.widget-dropdown-filter-menu` paints a **hardcoded white scroll-fade `linear-gradient`** over its (themed) bg | `background-image:none` + brighten item text |
+| Accordion / Fieldset | white group/legend surfaces | surface token bg + border/legend ink |
+| **TreeNode** | expanded child rows carry a **white card bg**; dark ink text on it is invisible | drop the white so the dark panel shows through |
+| Charts | white Plotly paper | transparent `customLayout` (above) — adapts automatically |
+| Combobox/tooltip popovers | render at `<body>`, outside `.travel-app` | theme globally in the dark media query |
+
+**Takeaways for the skill:** (1) ship a **dark-mode widget-override recipe** (the selector list above
+is the starting inventory) as an optional asset — dark mode is *not* free once you leave your own
+classes; (2) prefer the transparent-chart trick over any chart CSS; (3) if the app can't fund the
+override recipe, **ship light-only** — a half-dark result (custom chrome dark, Atlas widgets light)
+is worse than consistent light. Also a **runtime crash** to encode: the Slider/RangeSlider *tooltip*
+calls React's removed `findDOMNode` on Mendix 11's React and throws "Could not render widget" on
+drag — set `showTooltip:false`.
+
 ## The standard — a 4-layer architecture
 
 ```
@@ -142,7 +239,7 @@ designed to migrate to the roadmap.
 | `.mdl` recipe (text) | — | copy | full fill-in | today | content-varying blocks now |
 | **Fragment** (`define/use`) | No (script-scoped) | copy, DRY-in-script | `prefix_` only (params future) | **impl'd** | fixed repeated groups (header, footer, pill) |
 | Mendix **Snippet** | Yes | reference (live) | context entity only, no content slot | create/describe | genuinely-shared runtime components |
-| **Building Block** | Yes (template) | copy (dragged in) | template + preview | list-only (`use` proposed) | **eventual native home** for recipes |
+| **Building Block** | Yes (template) | copy (deep-copied in, no live link) | template + preview | name-list only (read/`use`/`create` all proposed) | **eventual native home** for recipes |
 | **Page Template** | Yes | copy (new-page) | layout + tree | list-only | screen scaffolds |
 
 **Decision:**
@@ -178,8 +275,12 @@ professional / branded / less bland", or to match a design mock. Companion to `c
   ├─ references/verify.md                 # run --watch + screenshot loop; "mx check misses client crashes"
   ├─ assets/custom-variables.scss         # Layer-1 brand-token scaffold (palette-swappable)
   ├─ assets/main.scss                     # Layer-2 token + recipe starter
+  ├─ assets/dark-mode-overrides.scss      # optional — repaint Atlas widgets for dark (form/datagrid/
+  │                                       #            accordion/fieldset/treenode/popovers)
+  ├─ references/charts.md                 # the chart-styling recipe + gotchas (dataviz-for-Mendix)
   └─ recipes/                             # fragment prelude + .mdl fill-in recipes
-       card / stat-tile / status-pill / page-header / hero-overlay / timeline-row / budget-row
+       card / stat-tile / status-pill / page-header / hero-overlay / timeline-row / budget-row /
+       chart-theme (customLayout + customConfigurations + per-type customSeriesOptions)
 ```
 
 ### Contents
@@ -188,8 +289,10 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 3. The Atlas appearance cheat-sheet (use `class:`/`designproperties` before hand CSS).
 4. Token architecture (the two-file split, both themes, style-through-tokens).
 5. The recipe library (fragments + fill-in, migrating to parameterized fragments / Building Blocks).
-6. The gotchas catalog.
-7. The verify loop (**runtime verification is mandatory** — see below).
+6. **Standard-widget styling** — the chart theme (transparent Plotly `customLayout` + `displayModeBar:false`
+   + per-type `customSeriesOptions`) and the optional dark-mode Atlas-widget override recipe.
+7. The gotchas catalog.
+8. The verify loop (**runtime verification is mandatory** — see below).
 
 ---
 
@@ -203,7 +306,12 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 | Aggregates can't be inlined in a create-object assignment (CE0117) | compute into vars first |
 | Reserved widget identifiers exist (`v3`) | prefix names (`sv3`); avoid bare `v<n>` |
 | Pluggable widgets impose their own DOM (charts/timeline/treenode) | for pixel-fidelity use native `listview`/`gallery` you fully style |
-| **`mx check` passes but the browser client crashes** (e.g. old ListView `SearchRefs`) | **always Playwright-verify a running build; never ship on `mx check` alone** |
+| Chart widgets render **raw Plotly defaults** (flat colour, floating mode-bar, white paper, heavy grid) | `customLayout` (transparent bg + font + faint grid) + `customConfigurations` `displayModeBar:false` + per-series `customSeriesOptions` (colour, `cornerradius`, spline) |
+| Horizontal **BarChart** with `aggregationType: sum` prepends a `0` group-key to category ticks (`"0Tokyo Spring"`) | use `aggregationType: none` when the datasource is already one row per category |
+| **Slider/RangeSlider** throw "Could not render widget" on drag (tooltip calls React `findDOMNode`, removed in MX 11) | set `showTooltip: false` |
+| Atlas widgets + Plotly **aren't dark-aware** — a `prefers-color-scheme` flip leaves them light on a dark page | ship the dark-mode widget-override recipe (form controls, datagrid + filters/popovers, accordion, fieldset, **treenode white rows**, transparent charts), or ship light-only |
+| `.widget-dropdown-filter-menu` paints a **hardcoded white scroll-fade gradient** even after bg is themed | override `background-image:none` and brighten menu-item text |
+| **`mx check` passes but the browser client crashes** (e.g. old ListView `SearchRefs`; the slider `findDOMNode` throw only fires on interaction) | **always Playwright-verify a running build; never ship on `mx check` alone** |
 | "SCSS cache" — edits don't show | never a cache: `--watch` (now watches theme source) or clean restart; kill stale process first |
 | Stale process serves old output, looks like a cache | `run --local` now refuses occupied ports; free them (pgrep/kill/curl 000) |
 | `ALTER PAGE SET layout … map(…)` swaps a page onto a sidebar shell | without rebuilding the widget tree |
@@ -215,7 +323,9 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 - **Phase 1 — skill core**: `atlas-design.md` + `gotchas.md` + `verify.md` (captures the method while fresh).
 - **Phase 2 — Atlas vocabulary**: `atlas-classes.md` + page-template map (pairs with `show-describe-*`).
 - **Phase 3 — token scaffold**: `custom-variables.scss` + `main.scss` starter.
-- **Phase 4 — recipe library**: fragment prelude + `.mdl` fill-in recipes extracted from Itinera.
+- **Phase 4 — recipe library**: fragment prelude + `.mdl` fill-in recipes extracted from Itinera,
+  plus the **chart-theme** recipe and the optional **dark-mode widget-override** SCSS (both extracted
+  from the widget-lab exercise, `mdlsource/08-widgetlab.mdl` + the dark block in `main.scss`).
 - **Phase 5 (optional) — lint rules**: flag hardcoded hex over tokens; flag data widgets shipped
   without a recorded runtime verification.
 
@@ -230,8 +340,11 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 - **`designproperties` vs `class` strings**: **resolved by live testing** — raw `class:` renders the full
   Atlas vocabulary today, so recipes ship on `class:` now. Typed `designproperties` becomes a *later*
   nicety (Studio-Pro Appearance-tab round-trip), not a prerequisite.
-- **Dark mode**: authored in tokens, but Atlas web apps don't runtime-toggle by default — ship
-  light-only or wire a toggle?
+- **Dark mode**: **partially resolved by this session.** A `prefers-color-scheme` flip repaints your
+  own classes but **not** Atlas widgets / Plotly (they ship light-only), producing a half-dark clash.
+  Options: (a) ship **light-only** (simplest, consistent), or (b) include the **dark-mode
+  widget-override recipe** (see "Styling the standard widgets"). Still open: whether to offer a
+  user-facing runtime toggle (Atlas has no built-in one) vs. following the OS preference only.
 - **Recipe home end-state**: parameterized fragments vs native Building Blocks — likely both, with
   Building Blocks winning once `use` lands (Studio-Pro-visible).
 - **Verification is non-skippable**: the standard's correctness depends on runtime verification
@@ -240,6 +353,9 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 ---
 
 ### Appendix — reference artifacts
-Itinera build: `mdlsource/06-redesign.mdl`, `07-shell.mdl`, `themesource/travel/web/main.scss`,
-`theme/web/custom-variables.scss`; widget-authoring findings in `WIDGET-FINDINGS.md`; approved
-visual direction in the Itinera HTML mockup.
+Itinera build: `mdlsource/06-redesign.mdl`, `07-shell.mdl`, `themesource/travel/web/main.scss`
+(the `@media (prefers-color-scheme: dark)` block is the dark-mode widget-override starting inventory),
+`theme/web/custom-variables.scss`; the styled charts + every-widget validation page in
+`mdlsource/08-widgetlab.mdl` (chart `customLayout`/`customConfigurations`/`customSeriesOptions`,
+`showTooltip:false` slider fix); widget-authoring findings in `WIDGET-FINDINGS.md`; approved visual
+direction in the Itinera HTML mockup.
