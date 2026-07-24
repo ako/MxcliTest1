@@ -421,6 +421,19 @@ The P1 Building-Block trio (read → instantiate → author) is the single bigge
 recipe library from a `.mdl`/fragment workaround into native, Studio-Pro-visible components. The two
 P0 items are small but block the tight verify loop the standard is built on.
 
+### Implementation status (built from `ako/mxcli` main + tested this session)
+A first wave landed and was verified against this app:
+
+| Item | Status | Verified |
+|---|---|---|
+| **P0** watch re-serves `/dist/*` after a structural change | ✅ **fixed** | A new-page+nav change under `--watch` now logs *"/dist/index.js not served after apply; re-bundling web client…"* and self-heals — `/dist/index.js` returns 200 and the app boots (was a blank 404 before) |
+| **P0** ports free on stop | ✅ **fixed** | SIGINT to `run` shuts down cleanly and frees `:8080`/`:6543`. *Residual:* the gen-2 **restart** still orphans the previous-generation runtime (a stray `java`, reparented to init) — it holds no port but lingers; worth reaping too |
+| **P1** cross-module page grant → CE0148 | ✅ **fixed** | `grant view on page MES.LineOverview to Travel.User` is now **rejected upfront** with an actionable message ("a page can only reference module roles from its own module… grant a MES module role instead") instead of silently producing a build-blocking CE0148 |
+| **P1** Building Blocks **read** (`SHOW`/`DESCRIBE BUILDING BLOCKS`) | 🟡 **partial** | Works and reads the full widget tree (e.g. `Card` → `container … dynamictext 'Card title' H4 …`) with category/platform metadata — **but only on the `legacy` engine**; the default `modelsdk` engine returns *"ListBuildingBlocks not implemented yet"*. Since legacy is being retired, this needs a `modelsdk` implementation to be usable by default |
+
+Still open from the table above: Building-Block **instantiate** (`USE`) and **author** (`CREATE`), parameterized
+fragments, chart colourway, typed `designproperties`, lint rules.
+
 ## Rollout
 
 - **Phase 1 — skill core**: `atlas-design.md` + `gotchas.md` + `verify.md` (captures the method while fresh).
