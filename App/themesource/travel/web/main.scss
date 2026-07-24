@@ -473,6 +473,16 @@
     fieldset, .widget-fieldset { border-color: var(--tv-line) !important; }
     fieldset > legend, .widget-fieldset legend { color: var(--tv-ink) !important; border-color: var(--tv-line) !important; }
 
+    // TreeNode — expanded content rows ship a white card bg; my ink text sits on
+    // it invisibly. Drop the white so the dark panel shows through.
+    .widget-tree-node-body, .widget-tree-node-content, .widget-tree-node-branch,
+    .widget-tree-node-body [class*="mx-name-index"] {
+      background-color: transparent !important;
+      color: var(--tv-ink) !important;
+    }
+    .widget-tree-node-branch-header:hover,
+    .widget-tree-node-branch-header-clickable:hover { background-color: var(--tv-surface-2) !important; }
+
     // headings emitted by Atlas inside panels
     .panel h1, .panel h2, .panel h3, .panel h4, .panel h5,
     .lab-cell h5, label.control-label, .control-label { color: var(--tv-ink) !important; }

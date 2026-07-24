@@ -30550,6 +30550,15 @@ Do not change this file because it is core styling. Customizing core files will 
     color: var(--tv-ink) !important;
     border-color: var(--tv-line) !important;
   }
+  .travel-app .widget-tree-node-body, .travel-app .widget-tree-node-content, .travel-app .widget-tree-node-branch,
+.travel-app .widget-tree-node-body [class*=mx-name-index] {
+    background-color: transparent !important;
+    color: var(--tv-ink) !important;
+  }
+  .travel-app .widget-tree-node-branch-header:hover,
+.travel-app .widget-tree-node-branch-header-clickable:hover {
+    background-color: var(--tv-surface-2) !important;
+  }
   .travel-app .panel h1, .travel-app .panel h2, .travel-app .panel h3, .travel-app .panel h4, .travel-app .panel h5,
 .travel-app .lab-cell h5, .travel-app label.control-label, .travel-app .control-label {
     color: var(--tv-ink) !important;
