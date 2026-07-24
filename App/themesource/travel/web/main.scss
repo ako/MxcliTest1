@@ -498,6 +498,53 @@ body, .mx-page, .mx-name-content, .region-content {
   .lab-cell h5, label.control-label, .control-label { color: var(--tv-ink) !important; }
 }
 
+// ============================================================================
+// Modal / popup chrome — the edit popups (Trip_NewEdit, etc.) render in an
+// .mx-window at <body>, outside .travel-app, so they need global MES rules.
+// The white .modal-content showing through the transparent header was the
+// "white title bar".
+// ============================================================================
+.mx-window-content, .modal-content {
+  background: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+  box-shadow: var(--tv-shadow-md) !important;
+}
+.mx-window-header, .modal-header {
+  background: var(--tv-topbar) !important;
+  border-bottom: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.mx-window-header .mx-text, .modal-header .mx-text,
+.mx-window-title, .modal-title, .mx-dialog-caption {
+  color: var(--tv-ink) !important; font-family: var(--tv-display);
+  letter-spacing: .5px; text-transform: uppercase; font-size: 14px;
+}
+.mx-window-header .close, .modal-header .close, .mx-window .close {
+  color: var(--tv-muted) !important; opacity: 1 !important; text-shadow: none !important;
+  &:hover { color: var(--tv-ink) !important; }
+}
+.mx-window-body, .modal-body, .mx-window-footer, .modal-footer {
+  background: transparent !important; color: var(--tv-ink) !important; border-color: var(--tv-line) !important;
+}
+.mx-window, .modal {
+  .form-control, textarea, select, .widget-combobox, .widget-combobox-input, .widget-combobox-selected-items {
+    background-color: var(--tv-surface-2) !important; color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important; border-radius: 0 !important;
+    &::placeholder { color: var(--tv-faint) !important; }
+  }
+  .control-label, label { color: var(--tv-ink-2) !important; }
+  .btn { border-radius: 0 !important; text-transform: uppercase; letter-spacing: .5px;
+    font-size: 11px; font-weight: 600; }
+  .btn-default { background: var(--tv-surface-2) !important; color: var(--tv-ink-2) !important;
+    border: 1px solid var(--tv-line) !important;
+    &:hover { border-color: var(--tv-muted) !important; color: var(--tv-ink) !important; } }
+  .btn-primary, .btn-success { background: var(--tv-accent-wash) !important; color: var(--tv-accent) !important;
+    border: 1px solid var(--tv-accent) !important;
+    &:hover { background: rgba(63,185,80,.16) !important; } }
+}
+
 // Portal popovers render at <body>, outside .travel-app — theme globally.
 .widget-combobox-menu, .popupmenu-menu,
 .widget-tooltip, [class*="tooltip"] .tooltip-inner,

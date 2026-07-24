@@ -30823,6 +30823,81 @@ body, .mx-page, .mx-name-content, .region-content {
   color: var(--tv-ink) !important;
 }
 
+.mx-window-content, .modal-content {
+  background: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+  box-shadow: var(--tv-shadow-md) !important;
+}
+
+.mx-window-header, .modal-header {
+  background: var(--tv-topbar) !important;
+  border-bottom: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+
+.mx-window-header .mx-text, .modal-header .mx-text,
+.mx-window-title, .modal-title, .mx-dialog-caption {
+  color: var(--tv-ink) !important;
+  font-family: var(--tv-display);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.mx-window-header .close, .modal-header .close, .mx-window .close {
+  color: var(--tv-muted) !important;
+  opacity: 1 !important;
+  text-shadow: none !important;
+}
+.mx-window-header .close:hover, .modal-header .close:hover, .mx-window .close:hover {
+  color: var(--tv-ink) !important;
+}
+
+.mx-window-body, .modal-body, .mx-window-footer, .modal-footer {
+  background: transparent !important;
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+}
+
+.mx-window .form-control, .mx-window textarea, .mx-window select, .mx-window .widget-combobox, .mx-window .widget-combobox-input, .mx-window .widget-combobox-selected-items, .modal .form-control, .modal textarea, .modal select, .modal .widget-combobox, .modal .widget-combobox-input, .modal .widget-combobox-selected-items {
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.mx-window .form-control::placeholder, .mx-window textarea::placeholder, .mx-window select::placeholder, .mx-window .widget-combobox::placeholder, .mx-window .widget-combobox-input::placeholder, .mx-window .widget-combobox-selected-items::placeholder, .modal .form-control::placeholder, .modal textarea::placeholder, .modal select::placeholder, .modal .widget-combobox::placeholder, .modal .widget-combobox-input::placeholder, .modal .widget-combobox-selected-items::placeholder {
+  color: var(--tv-faint) !important;
+}
+.mx-window .control-label, .mx-window label, .modal .control-label, .modal label {
+  color: var(--tv-ink-2) !important;
+}
+.mx-window .btn, .modal .btn {
+  border-radius: 0 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 11px;
+  font-weight: 600;
+}
+.mx-window .btn-default, .modal .btn-default {
+  background: var(--tv-surface-2) !important;
+  color: var(--tv-ink-2) !important;
+  border: 1px solid var(--tv-line) !important;
+}
+.mx-window .btn-default:hover, .modal .btn-default:hover {
+  border-color: var(--tv-muted) !important;
+  color: var(--tv-ink) !important;
+}
+.mx-window .btn-primary, .mx-window .btn-success, .modal .btn-primary, .modal .btn-success {
+  background: var(--tv-accent-wash) !important;
+  color: var(--tv-accent) !important;
+  border: 1px solid var(--tv-accent) !important;
+}
+.mx-window .btn-primary:hover, .mx-window .btn-success:hover, .modal .btn-primary:hover, .modal .btn-success:hover {
+  background: rgba(63, 185, 80, 0.16) !important;
+}
+
 .widget-combobox-menu, .popupmenu-menu,
 .widget-tooltip, [class*=tooltip] .tooltip-inner,
 .filter-selectors, .widget-dropdown-filter-menu-slot, .widget-dropdown-filter-menu {
