@@ -1,0 +1,85 @@
+-- ============================================================================
+-- Travel Itinerary Planner — Charts integration (Trips overview insights)
+-- ============================================================================
+-- Adds a "Trip insights" strip to the overview with two Charts widgets:
+--   * Pie chart    — total activity spend by category
+--   * Column chart — planned budget per trip
+-- (These are the widget family mxcli authors with full fidelity; see the
+--  widget-findings report for Badge / Timeline / TreeNode limitations.)
+-- ============================================================================
+
+create or replace page "Travel"."Trips_Overview"
+(
+  title: 'Trips',
+  layout: Atlas_Core.Atlas_Default
+)
+{
+  container ctnHeader (class: 'page-header') {
+    dynamictext dtPageTitle (content: 'My Trips', rendermode: H1)
+    dynamictext dtPageSub (content: 'Plan your next adventure, day by day.')
+    actionbutton btnNewTrip (caption: 'New Trip', action: create_object "Travel"."Trip" then show_page Travel.Trip_NewEdit, buttonstyle: primary)
+  }
+
+  -- Insights strip: two Charts widgets over aggregated view entities
+  container ctnInsights (class: 'insights-strip') {
+    container ctnChartSpend (class: 'insight-card') {
+      dynamictext dtSpendTitle (content: 'Spend by category', rendermode: H5)
+      pluggablewidget 'com.mendix.widget.web.piechart.PieChart' chartSpend (
+        datasource: database from "Travel"."CostByCategory",
+        seriesName: '{CategoryName}',
+        seriesValueAttribute: TotalCost,
+        holeRadius: 55,
+        showLegend: true,
+        heightUnit: pixels, height: 260
+      )
+    }
+    container ctnChartBudget (class: 'insight-card') {
+      dynamictext dtBudgetTitle (content: 'Budget by trip', rendermode: H5)
+      pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartBudget (
+        showLegend: false,
+        heightUnit: pixels, height: 260
+      ) {
+        series sBudget (
+          dataSet: static,
+          staticDataSource: database from "Travel"."BudgetByTrip",
+          staticXAttribute: TripTitle,
+          staticYAttribute: Budget,
+          staticName: 'Budget'
+        )
+      }
+    }
+  }
+
+  gallery galTrips (
+    datasource: database from "Travel"."Trip" sort by StartDate asc,
+    selection: none,
+    DesktopColumns: 3, TabletColumns: 2, PhoneColumns: 1,
+    class: 'trips-gallery'
+  ) {
+    template tplTrip {
+      container ctnCard (class: 'trip-card') {
+        linkbutton lnkOpen (caption: ' ', action: show_page Travel.Trip_Detail($Trip = $currentObject), class: 'card-hit')
+        container ctnCover (class: 'trip-cover') {
+          pluggablewidget 'com.mendix.widget.web.image.Image' imgCover (
+            ImageType: 'imageUrl',
+            imageUrl: '{CoverImageUrl}',
+            isBackgroundImage: true,
+            widthUnit: percentage, width: 100,
+            heightUnit: pixels, height: 160
+          )
+          container ctnBadge (class: 'trip-status-badge') {
+            dynamictext dtStatus (content: '{1}', contentparams: [{1} = "Status"])
+          }
+        }
+        container ctnCardBody (class: 'trip-card-body') {
+          dynamictext dtTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H4)
+          dynamictext dtDest (content: '{1}', contentparams: [{1} = Destination])
+          container ctnDates (class: 'trip-dates') {
+            dynamictext dtDates (content: '{1}', contentparams: [{1} = DateRangeLabel])
+          }
+        }
+      }
+    }
+  }
+}
+/

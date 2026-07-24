@@ -1,0 +1,33 @@
+-- ============================================================================
+-- Travel Itinerary Planner — Insights view entities (chart data sources)
+-- ============================================================================
+-- Aggregated OQL view entities that feed the Pie and Column charts on the
+-- Trips overview.
+-- ============================================================================
+
+/**
+ * Total activity spend per category (feeds the "Spend by category" pie chart).
+ * @since 1.1.0
+ */
+@position(100, 400)
+create view entity "Travel"."CostByCategory" (
+  "CategoryName": enumeration("Travel"."ENUM_ActivityCategory"),
+  "TotalCost": decimal
+) as (
+  select a."Category" as CategoryName, sum(a."Cost") as TotalCost
+  from "Travel"."Activity" as a
+  group by a."Category"
+);
+
+/**
+ * Planned budget per trip (feeds the "Budget by trip" column chart).
+ * @since 1.1.0
+ */
+@position(450, 400)
+create view entity "Travel"."BudgetByTrip" (
+  "TripTitle": string(200),
+  "Budget": decimal
+) as (
+  select t."Title" as TripTitle, t."Budget" as Budget
+  from "Travel"."Trip" as t
+);

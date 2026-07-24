@@ -1,0 +1,376 @@
+@import '../../../theme/web/custom-variables';
+
+// ============================================================================
+// Itinera — a modern SaaS design layer over Atlas UI.
+// Ported from the approved HTML mockup: cool-ink neutrals, one azure accent,
+// mono type for all temporal/numeric data, elevation + status pills.
+// ============================================================================
+
+:root {
+  --tv-bg:        #eef1f7;
+  --tv-surface:   #ffffff;
+  --tv-surface-2: #f7f9fc;
+  --tv-ink:       #0e1626;
+  --tv-ink-2:     #384457;
+  --tv-muted:     #5c6779;
+  --tv-faint:     #8a94a6;
+  --tv-line:      #e4e8f0;
+  --tv-line-2:    #eef1f6;
+  --tv-accent:    #1f6feb;
+  --tv-accent-wash: rgba(31,111,235,.10);
+
+  --tv-good: #0f7a5a; --tv-good-wash: rgba(15,122,90,.12);
+  --tv-info: #1f6feb; --tv-info-wash: rgba(31,111,235,.12);
+  --tv-warn: #b4791f; --tv-warn-wash: rgba(180,121,31,.14);
+
+  --tv-cat-sight:#eda100; --tv-cat-food:#1baf7a; --tv-cat-lodging:#eb6834;
+  --tv-cat-transport:#e87ba4; --tv-cat-activity:#2a78d6; --tv-cat-other:#8a94a6;
+
+  --tv-shadow-sm: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.05);
+  --tv-shadow-md: 0 2px 6px rgba(16,24,40,.06), 0 12px 28px rgba(16,24,40,.09);
+  --tv-radius: 14px;
+  --tv-radius-sm: 10px;
+  --tv-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tv-bg:#080b13; --tv-surface:#101725; --tv-surface-2:#0c1220;
+    --tv-ink:#eef2f9; --tv-ink-2:#c3ccdb; --tv-muted:#8f9bb0; --tv-faint:#66728a;
+    --tv-line:#1e2739; --tv-line-2:#161e2e;
+    --tv-accent:#4f8cff; --tv-accent-wash:rgba(79,140,255,.14);
+    --tv-good:#3bbb8f; --tv-good-wash:rgba(59,187,143,.15);
+    --tv-info:#4f8cff; --tv-info-wash:rgba(79,140,255,.15);
+    --tv-warn:#e0a94a; --tv-warn-wash:rgba(224,169,74,.16);
+    --tv-cat-sight:#c98500; --tv-cat-food:#199e70; --tv-cat-lodging:#d95926;
+    --tv-cat-transport:#d55181; --tv-cat-activity:#3987e5;
+    --tv-shadow-sm: 0 1px 2px rgba(0,0,0,.3);
+    --tv-shadow-md: 0 2px 8px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.45);
+  }
+}
+
+// ============================================================================
+// App shell — style the Atlas sidebar layout into the Itinera nav rail
+// ============================================================================
+.layout-atlas-responsive-sidebar { background: var(--tv-bg); }
+
+.region-sidebar {
+  width: 244px !important; flex: 0 0 244px !important;
+  background: var(--tv-surface) !important;
+  border-right: 1px solid var(--tv-line);
+  box-shadow: none;
+  // recolor Atlas's nav state vars so the selected/hover item is Itinera azure, not grey
+  --navsidebar-bg: transparent;
+  --navsidebar-bg-hover: var(--tv-surface-2);
+  --navsidebar-bg-active: var(--tv-accent-wash);
+  --navigation-bg-hover: var(--tv-surface-2);
+  --navigation-bg-active: var(--tv-accent-wash);
+  --navsidebar-color: var(--tv-muted);
+  --navsidebar-color-hover: var(--tv-ink);
+  --navsidebar-color-active: var(--tv-accent);
+}
+.region-sidebar .sidebar-wrapper,
+.region-sidebar .navbar-inner { background: transparent !important; }
+// hide the default Mendix app logo (static image) in the rail
+.region-sidebar .mx-name-staticImage1,
+.region-sidebar .mx-image-viewer { display: none !important; }
+
+// brand lockup injected at the top of the rail
+.region-sidebar .sidebar-wrapper::before {
+  content: "Itinera";
+  display: flex; align-items: center;
+  margin: 4px 12px 10px; padding: 10px 6px 14px 42px;
+  font-weight: 800; font-size: 18px; letter-spacing: -.015em; color: var(--tv-ink);
+  border-bottom: 1px solid var(--tv-line-2);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='8' fill='%231f6feb'/%3E%3Cpath d='M14 7l6 3.5v7L14 21l-6-3.5v-7z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 6px center / 28px 28px no-repeat;
+}
+
+// nav menu items
+.region-sidebar .mx-navigationtree { padding: 8px 10px 0 !important; margin-top: 0 !important; }
+.region-sidebar .mx-navigationtree a {
+  display: flex; align-items: center; gap: 11px;
+  padding: 9px 11px; margin-bottom: 2px; border-radius: 9px;
+  color: var(--tv-muted) !important; font-weight: 500; font-size: 13.5px;
+  text-decoration: none; transition: background .12s ease, color .12s ease;
+  .mx-navigationtree-item-text, span { color: inherit !important; }
+  .glyphicon, .mx-icon, [class*="mx-icon"] { color: var(--tv-faint); font-size: 17px; }
+}
+.region-sidebar .mx-navigationtree a:hover {
+  background: var(--tv-surface-2); color: var(--tv-ink) !important;
+}
+.region-sidebar .mx-navigationtree .active > a,
+.region-sidebar .mx-navigationtree a.active,
+.region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected {
+  background: var(--tv-accent-wash); color: var(--tv-accent) !important;
+  [class*="mx-icon"], .glyphicon { color: var(--tv-accent); }
+}
+
+// hide the desktop collapse toggle (mockup rail is fixed)
+.region-sidebar .toggle-btn-sidebar.hide-phone { display: none !important; }
+
+// ---- page ground -----------------------------------------------------------
+.mx-page, .mx-scrollcontainer-wrapper { background: var(--tv-bg); }
+.travel-app {
+  max-width: 1240px; margin: 0 auto; padding: 8px 6px 60px; color: var(--tv-ink);
+}
+.travel-app .mono .mx-text, .travel-app .tv-mono .mx-text {
+  font-family: var(--tv-mono); font-variant-numeric: tabular-nums;
+}
+
+// ---- shared helpers --------------------------------------------------------
+.eyebrow .mx-text, .eyebrow.mx-text {
+  font-family: var(--tv-mono); font-size: 11px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--tv-faint); font-weight: 500;
+}
+.panel {
+  background: var(--tv-surface); border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+}
+.panel-head {
+  display: flex; align-items: center; gap: 10px; padding: 15px 17px 4px;
+  h1,h2,h3,h4,h5 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -.01em; color: var(--tv-ink); }
+  .panel-sub .mx-text { color: var(--tv-faint); font-size: 12px; }
+}
+.panel-body { padding: 14px 17px 18px; }
+.is-money .mx-text { font-family: var(--tv-mono); font-variant-numeric: tabular-nums; }
+.is-money .mx-text::before { content: "$"; opacity: .7; }
+
+// ---- page header -----------------------------------------------------------
+.page-header {
+  display: flex; align-items: flex-end; flex-wrap: wrap; gap: 6px 18px;
+  padding: 20px 4px 18px; margin-bottom: 18px; border-bottom: 1px solid var(--tv-line);
+  h1 { margin: 2px 0 0; font-size: 27px; font-weight: 750; letter-spacing: -.025em; color: var(--tv-ink); }
+  .page-sub .mx-text { color: var(--tv-muted); font-size: 14.5px; }
+  .header-titles { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; }
+  .mx-button, .btn { margin-left: auto; align-self: center; }
+}
+
+// ---- buttons (azure) -------------------------------------------------------
+.travel-app .btn-primary.mx-button, .travel-app .mx-button.btn-primary {
+  background: var(--tv-accent); border-color: var(--tv-accent); color: #fff;
+  border-radius: 9px; font-weight: 600; box-shadow: var(--tv-shadow-sm);
+  transition: transform .12s ease, box-shadow .12s ease;
+  &:hover { transform: translateY(-1px); box-shadow: var(--tv-shadow-md); }
+}
+.travel-app .btn-default.mx-button {
+  border-radius: 9px; border-color: var(--tv-line); background: var(--tv-surface); font-weight: 600;
+}
+
+// ---- KPI stat row ----------------------------------------------------------
+.stat-row .mx-dataview-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.stat {
+  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
+  padding: 15px 16px; box-shadow: var(--tv-shadow-sm);
+  .stat-k .mx-text { color: var(--tv-muted); font-size: 12.5px; font-weight: 500; }
+  .stat-v { margin-top: 7px; }
+  .stat-v .mx-text {
+    font-family: var(--tv-mono); font-variant-numeric: tabular-nums;
+    font-size: 25px; font-weight: 700; letter-spacing: -.02em; color: var(--tv-ink);
+  }
+  .stat-d { margin-top: 3px; }
+  .stat-d .mx-text { color: var(--tv-faint); font-size: 12px; font-weight: 600; }
+}
+
+// ---- insights strip --------------------------------------------------------
+.insights-strip { display: grid; grid-template-columns: 1.05fr 1fr; gap: 14px; margin: 20px 0 24px; }
+.insight-card {
+  background: var(--tv-surface); border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+}
+
+// ---- section bar -----------------------------------------------------------
+.section-bar {
+  display: flex; align-items: center; gap: 12px; margin: 4px 0 14px;
+  h2,h3 { margin: 0; font-size: 16px; font-weight: 650; color: var(--tv-ink); }
+  .section-count .mx-text {
+    font-family: var(--tv-mono); font-size: 12px; color: var(--tv-faint);
+    background: var(--tv-surface); border: 1px solid var(--tv-line); padding: 1px 8px; border-radius: 20px;
+  }
+}
+
+// ---- trips gallery ---------------------------------------------------------
+.trips-gallery .mx-gallery-item, .trips-gallery li { outline: none; }
+.trip-card {
+  position: relative; display: flex; flex-direction: column; margin: 8px;
+  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
+  box-shadow: var(--tv-shadow-sm); overflow: hidden; cursor: pointer;
+  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+  &:hover {
+    transform: translateY(-3px); box-shadow: var(--tv-shadow-md);
+    border-color: color-mix(in srgb, var(--tv-accent) 30%, var(--tv-line));
+  }
+}
+.card-hit {
+  position: absolute; inset: 0; z-index: 4; opacity: 0; border: 0; background: transparent; cursor: pointer;
+  &:hover, &:focus { opacity: 0; outline: none; }
+}
+.trip-cover {
+  position: relative; width: 100%; height: 140px; overflow: hidden;
+  .mx-image-background, .mx-image, [class*='image'] {
+    background-size: cover !important; background-position: center !important; background-color: #cfd8e6;
+  }
+  &::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(to top, rgba(8,12,22,.5) 0%, rgba(8,12,22,.05) 45%, rgba(8,12,22,0) 100%);
+  }
+}
+.trip-dest {
+  position: absolute; left: 13px; bottom: 11px; z-index: 2;
+  .mx-text { font-family: var(--tv-mono); font-size: 11.5px; letter-spacing: .04em; color:#fff;
+    text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+}
+
+// status pills — container carries state class, Badge/text renders inside
+.trip-status-badge {
+  position: absolute; top: 11px; right: 11px; z-index: 3;
+  .mx-text {
+    display: inline-flex; align-items: center; font-family: var(--tv-mono);
+    font-size: 11px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
+    padding: 4px 10px; border-radius: 20px; color: #fff;
+    background: rgba(8,12,22,.55); backdrop-filter: blur(4px); border: 0;
+  }
+}
+.trip-body {
+  padding: 13px 15px 4px; display: flex; flex-direction: column; gap: 2px;
+  h3,h4 { margin: 0; font-size: 16.5px; font-weight: 680; letter-spacing: -.01em; color: var(--tv-ink); }
+}
+.trip-meta .mx-text { font-family: var(--tv-mono); color: var(--tv-ink-2); font-size: 12.5px; }
+.trip-foot {
+  display: flex; align-items: flex-start; gap: 14px; margin: 12px 15px 15px;
+  padding-top: 12px; border-top: 1px solid var(--tv-line-2);
+  .trip-budget { flex: 0 0 auto; }
+  .trip-budget .mx-text {
+    font-family: var(--tv-mono); font-weight: 700; font-size: 15px; color: var(--tv-ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .trip-days { flex: 1 1 auto; min-width: 0;
+    .mx-text {
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      color: var(--tv-muted); font-size: 12px; line-height: 1.42;
+    }
+  }
+}
+
+// ---- detail hero -----------------------------------------------------------
+.trip-hero {
+  position: relative; border-radius: var(--tv-radius); overflow: hidden;
+  border: 1px solid var(--tv-line); box-shadow: var(--tv-shadow-sm); margin-bottom: 16px;
+}
+.hero-cover {
+  position: relative; height: 220px; width: 100%;
+  .mx-image-background, .mx-image, [class*='image'] {
+    background-size: cover !important; background-position: center !important; background-color: #cfd8e6;
+  }
+}
+.hero-overlay {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+  display: flex; flex-direction: column; gap: 7px; padding: 22px 24px 20px;
+  background: linear-gradient(to top, rgba(6,9,16,.82) 0%, rgba(6,9,16,.30) 48%, rgba(6,9,16,.02) 100%);
+  h1 { margin: 0; color: #fff; font-size: 30px; font-weight: 760; letter-spacing: -.025em; }
+  .hero-loc .mx-text { color: rgba(255,255,255,.92); font-family: var(--tv-mono); font-size: 13px; }
+}
+.hero-topline {
+  position: absolute; top: 15px; left: 15px; right: 15px; z-index: 3;
+  display: flex; align-items: center; gap: 10px;
+  .mx-button {
+    margin-left: auto; border-radius: 9px; font-weight: 600;
+    background: rgba(12,18,30,.42) !important; border: 1px solid rgba(255,255,255,.4) !important;
+    color: #fff !important; backdrop-filter: blur(6px);
+    &:hover { background: rgba(12,18,30,.6) !important; }
+  }
+  .trip-status-badge { position: static; }
+}
+.trip-metabar {
+  display: flex; align-items: center; gap: 0 22px; flex-wrap: wrap;
+  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
+  padding: 14px 20px; box-shadow: var(--tv-shadow-sm); margin-bottom: 16px;
+  .meta-item { display: flex; flex-direction: column; gap: 2px; }
+  .meta-lb .mx-text { font-size: 11px; color: var(--tv-faint); text-transform: uppercase; letter-spacing: .06em; }
+  .meta-vv .mx-text { font-family: var(--tv-mono); font-weight: 650; font-size: 15px; color: var(--tv-ink); }
+  .meta-sep { width: 1px; height: 30px; background: var(--tv-line); }
+  .meta-summary { flex: 1 1 260px; min-width: 220px; .mx-text { color: var(--tv-ink-2); font-size: 13.5px; line-height: 1.5; } }
+}
+
+// ---- detail two columns ----------------------------------------------------
+.agenda-panel, .timeline-panel {
+  background: var(--tv-surface); border: 1px solid var(--tv-line);
+  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+}
+.day-block { padding: 2px 4px 8px; }
+.day-head {
+  display: flex; align-items: center; gap: 11px; padding: 9px 6px 7px;
+  .day-num .mx-text {
+    display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px;
+    background: var(--tv-accent-wash); color: var(--tv-accent); font-family: var(--tv-mono);
+    font-weight: 700; font-size: 12.5px;
+  }
+  .day-title .mx-text { font-weight: 650; font-size: 14.5px; color: var(--tv-ink); }
+  .day-date { margin-left: auto; .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-faint); } }
+}
+.act-row {
+  display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: start;
+  padding: 9px 8px; border-radius: var(--tv-radius-sm);
+  &:hover { background: var(--tv-surface-2); }
+  .act-time .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-ink-2); font-variant-numeric: tabular-nums; }
+  .act-name .mx-text { font-weight: 600; font-size: 13.5px; color: var(--tv-ink); }
+  .act-tags { display: flex; align-items: center; gap: 9px; margin-top: 5px; flex-wrap: wrap; }
+  .act-loc .mx-text { color: var(--tv-faint); font-size: 12px; }
+}
+
+// category chip — colored by dynamicclasses cat-*
+.cat-chip {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 2px 9px 2px 8px; border: 1px solid var(--tv-line); background: var(--tv-surface-2); border-radius: 20px;
+  .mx-text { font-size: 11px; font-weight: 600; color: var(--tv-ink-2); }
+  &::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tv-cat-other); flex: 0 0 auto; }
+}
+.cat-chip.cat-sight::before { background: var(--tv-cat-sight); }
+.cat-chip.cat-food::before { background: var(--tv-cat-food); }
+.cat-chip.cat-lodging::before { background: var(--tv-cat-lodging); }
+.cat-chip.cat-transport::before { background: var(--tv-cat-transport); }
+.cat-chip.cat-activity::before { background: var(--tv-cat-activity); }
+
+// timeline
+.tl-daylabel .mx-text {
+  display: inline-block; font-family: var(--tv-mono); font-size: 11px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--tv-faint); background: var(--tv-surface-2);
+  border: 1px solid var(--tv-line); padding: 3px 10px; border-radius: 20px; margin: 8px 0 6px 20px;
+}
+.tl-item {
+  position: relative; padding: 4px 0 14px 34px;
+  &::before { content: ""; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--tv-line); }
+  .tl-head { display: flex; align-items: baseline; gap: 10px; }
+  .tl-name .mx-text { font-weight: 600; font-size: 13.5px; color: var(--tv-ink); }
+  .tl-time { margin-left: auto; .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-muted); white-space: nowrap; } }
+  .tl-sub .mx-text { color: var(--tv-faint); font-size: 12px; }
+}
+.tl-node {
+  position: absolute; left: 5px; top: 6px; width: 14px; height: 14px; border-radius: 50%; z-index: 1;
+  background: var(--tv-cat-other); border: 3px solid var(--tv-surface); box-shadow: 0 0 0 1.5px var(--tv-line);
+}
+.tl-node.cat-sight { background: var(--tv-cat-sight); }
+.tl-node.cat-food { background: var(--tv-cat-food); }
+.tl-node.cat-lodging { background: var(--tv-cat-lodging); }
+.tl-node.cat-transport { background: var(--tv-cat-transport); }
+.tl-node.cat-activity { background: var(--tv-cat-activity); }
+
+// ---- budget list (Budget page) ---------------------------------------------
+.budget-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px 6px; border-bottom: 1px solid var(--tv-line-2);
+  .budget-main { flex: 1 1 auto; min-width: 0; }
+  .budget-name .mx-text { font-weight: 650; font-size: 14.5px; color: var(--tv-ink); }
+  .budget-dest .mx-text { font-family: var(--tv-mono); color: var(--tv-faint); font-size: 12px; }
+  .budget-badge { position: static; }
+  .budget-amt .mx-text { font-family: var(--tv-mono); font-weight: 700; font-size: 17px; color: var(--tv-ink); font-variant-numeric: tabular-nums; }
+}
+.mx-listview .budget-row { }
+.budget-list .mx-listview-item:last-child .budget-row { border-bottom: 0; }
+
+.mx-gallery-empty, .mx-listview-empty {
+  padding: 28px; text-align: center; color: var(--tv-muted); font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .stat-row .mx-dataview-content { grid-template-columns: repeat(2, 1fr); }
+  .insights-strip { grid-template-columns: 1fr; }
+}
