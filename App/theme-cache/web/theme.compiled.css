@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap");
 @font-face {
   font-family: "Atlas_Core$Atlas_Styling";
   src: url("./fonts/Atlas_Core$Atlas_Styling.ttf") format("truetype");
@@ -3116,16 +3117,41 @@
 }
 
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -3176,16 +3202,41 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -3236,16 +3287,41 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -4304,16 +4380,41 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -26940,16 +27041,41 @@ html div.dj_ios .widget-switch.auto .widget-switch-btn-wrapper.checked.widget-sw
 }
 
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -29069,16 +29195,41 @@ input[type=checkbox].three-state-checkbox + .control-label {
     ==| Variables |=========================================================================================
 */
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -29464,16 +29615,41 @@ Do not render = "none"
 }
 
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -29524,16 +29700,41 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*
@@ -29584,78 +29785,64 @@ Do not change this file because it is core styling. Customizing core files will 
 /* Groupbox */
 /* Callouts */
 :root {
-  --tv-bg: #eef1f7;
-  --tv-surface: #ffffff;
-  --tv-surface-2: #f7f9fc;
-  --tv-ink: #0e1626;
-  --tv-ink-2: #384457;
-  --tv-muted: #5c6779;
-  --tv-faint: #8a94a6;
-  --tv-line: #e4e8f0;
-  --tv-line-2: #eef1f6;
-  --tv-accent: #1f6feb;
-  --tv-accent-wash: rgba(31,111,235,.10);
-  --tv-good: #0f7a5a;
-  --tv-good-wash: rgba(15,122,90,.12);
-  --tv-info: #1f6feb;
-  --tv-info-wash: rgba(31,111,235,.12);
-  --tv-warn: #b4791f;
-  --tv-warn-wash: rgba(180,121,31,.14);
-  --tv-cat-sight:#eda100;
-  --tv-cat-food:#1baf7a;
-  --tv-cat-lodging:#eb6834;
-  --tv-cat-transport:#e87ba4;
-  --tv-cat-activity:#2a78d6;
-  --tv-cat-other:#8a94a6;
-  --tv-shadow-sm: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.05);
-  --tv-shadow-md: 0 2px 6px rgba(16,24,40,.06), 0 12px 28px rgba(16,24,40,.09);
-  --tv-radius: 14px;
-  --tv-radius-sm: 10px;
-  --tv-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
+  --tv-bg: #0a0d12;
+  --tv-surface: #141a22;
+  --tv-surface-2: #10151c;
+  --tv-surface-3: #11161d;
+  --tv-panel: linear-gradient(160deg, #141a22, #10151c);
+  --tv-topbar: linear-gradient(180deg, #11161d, #0d1117);
+  --tv-ink: #e6edf3;
+  --tv-ink-2: #c9d1d9;
+  --tv-muted: #8b949e;
+  --tv-faint: #5c6773;
+  --tv-line: #1c232c;
+  --tv-line-2: #161c24;
+  --tv-accent: #3fb950;
+  --tv-accent-wash: rgba(63,185,80,.08);
+  --tv-good: #3fb950;
+  --tv-good-wash: rgba(63,185,80,.10);
+  --tv-info: #58a6ff;
+  --tv-info-wash: rgba(88,166,255,.10);
+  --tv-warn: #e3b341;
+  --tv-warn-wash: rgba(227,179,65,.10);
+  --tv-danger: #f85149;
+  --tv-danger-wash: rgba(248,81,73,.08);
+  --tv-cat-sight:#e3b341;
+  --tv-cat-food:#3fb950;
+  --tv-cat-lodging:#58a6ff;
+  --tv-cat-transport:#a371f7;
+  --tv-cat-activity:#3fb950;
+  --tv-cat-other:#8b949e;
+  --tv-shadow-sm: none;
+  --tv-shadow-md: 0 10px 34px rgba(0,0,0,.55);
+  --tv-radius: 0;
+  --tv-radius-sm: 0;
+  --tv-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --tv-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --tv-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --tv-bg:#080b13;
-    --tv-surface:#101725;
-    --tv-surface-2:#0c1220;
-    --tv-ink:#eef2f9;
-    --tv-ink-2:#c3ccdb;
-    --tv-muted:#8f9bb0;
-    --tv-faint:#66728a;
-    --tv-line:#1e2739;
-    --tv-line-2:#161e2e;
-    --tv-accent:#4f8cff;
-    --tv-accent-wash:rgba(79,140,255,.14);
-    --tv-good:#3bbb8f;
-    --tv-good-wash:rgba(59,187,143,.15);
-    --tv-info:#4f8cff;
-    --tv-info-wash:rgba(79,140,255,.15);
-    --tv-warn:#e0a94a;
-    --tv-warn-wash:rgba(224,169,74,.16);
-    --tv-cat-sight:#c98500;
-    --tv-cat-food:#199e70;
-    --tv-cat-lodging:#d95926;
-    --tv-cat-transport:#d55181;
-    --tv-cat-activity:#3987e5;
-    --tv-shadow-sm: 0 1px 2px rgba(0,0,0,.3);
-    --tv-shadow-md: 0 2px 8px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.45);
-  }
-}
+.mx-page, .mx-scrollcontainer-wrapper,
 .layout-atlas-responsive-sidebar {
   background: var(--tv-bg);
 }
 
+body, .mx-page, .mx-name-content, .region-content {
+  font-family: var(--tv-body);
+  color: var(--tv-ink);
+  letter-spacing: 0.2px;
+}
+
 .region-sidebar {
-  width: 244px !important;
-  flex: 0 0 244px !important;
-  background: var(--tv-surface) !important;
+  width: 232px !important;
+  flex: 0 0 232px !important;
+  background: var(--tv-topbar) !important;
   border-right: 1px solid var(--tv-line);
   box-shadow: none;
   --navsidebar-bg: transparent;
-  --navsidebar-bg-hover: var(--tv-surface-2);
+  --navsidebar-bg-hover: rgba(255,255,255,.03);
   --navsidebar-bg-active: var(--tv-accent-wash);
-  --navigation-bg-hover: var(--tv-surface-2);
+  --navigation-bg-hover: rgba(255,255,255,.03);
   --navigation-bg-active: var(--tv-accent-wash);
   --navsidebar-color: var(--tv-muted);
   --navsidebar-color-hover: var(--tv-ink);
@@ -29673,21 +29860,24 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 
 .region-sidebar .sidebar-wrapper::before {
-  content: "Itinera";
+  content: "ATLAS ·MES";
   display: flex;
   align-items: center;
-  margin: 4px 12px 10px;
-  padding: 10px 6px 14px 42px;
-  font-weight: 800;
-  font-size: 18px;
-  letter-spacing: -0.015em;
+  margin: 0 0 6px;
+  padding: 18px 6px 16px 48px;
+  height: 56px;
+  box-sizing: border-box;
+  font-family: var(--tv-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 2px;
   color: var(--tv-ink);
-  border-bottom: 1px solid var(--tv-line-2);
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='8' fill='%231f6feb'/%3E%3Cpath d='M14 7l6 3.5v7L14 21l-6-3.5v-7z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 6px center/28px 28px no-repeat;
+  border-bottom: 1px solid var(--tv-line);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect x='4' y='4' width='16' height='16' fill='none' stroke='%233fb950' stroke-width='2' transform='rotate(45 12 12)'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%233fb950' transform='rotate(45 12 12)'/%3E%3C/svg%3E") 18px center/24px 24px no-repeat;
 }
 
 .region-sidebar .mx-navigationtree {
-  padding: 8px 10px 0 !important;
+  padding: 10px 8px 0 !important;
   margin-top: 0 !important;
 }
 
@@ -29695,25 +29885,27 @@ Do not change this file because it is core styling. Customizing core files will 
   display: flex;
   align-items: center;
   gap: 11px;
-  padding: 9px 11px;
-  margin-bottom: 2px;
-  border-radius: 9px;
+  padding: 10px 12px;
+  margin-bottom: 1px;
+  border-radius: 0;
+  border-left: 2px solid transparent;
   color: var(--tv-muted) !important;
-  font-weight: 500;
-  font-size: 13.5px;
+  font-weight: 600;
+  font-size: 12.5px;
+  letter-spacing: 0.4px;
   text-decoration: none;
-  transition: background 0.12s ease, color 0.12s ease;
+  transition: background 0.12s ease, color 0.12s ease, border-color 0.12s ease;
 }
 .region-sidebar .mx-navigationtree a .mx-navigationtree-item-text, .region-sidebar .mx-navigationtree a span {
   color: inherit !important;
 }
 .region-sidebar .mx-navigationtree a .glyphicon, .region-sidebar .mx-navigationtree a .mx-icon, .region-sidebar .mx-navigationtree a [class*=mx-icon] {
   color: var(--tv-faint);
-  font-size: 17px;
+  font-size: 16px;
 }
 
 .region-sidebar .mx-navigationtree a:hover {
-  background: var(--tv-surface-2);
+  background: rgba(255, 255, 255, 0.03);
   color: var(--tv-ink) !important;
 }
 
@@ -29722,6 +29914,7 @@ Do not change this file because it is core styling. Customizing core files will 
 .region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected {
   background: var(--tv-accent-wash);
   color: var(--tv-accent) !important;
+  border-left-color: var(--tv-accent);
 }
 .region-sidebar .mx-navigationtree .active > a [class*=mx-icon], .region-sidebar .mx-navigationtree .active > a .glyphicon,
 .region-sidebar .mx-navigationtree a.active [class*=mx-icon],
@@ -29735,15 +29928,15 @@ Do not change this file because it is core styling. Customizing core files will 
   display: none !important;
 }
 
-.mx-page, .mx-scrollcontainer-wrapper {
-  background: var(--tv-bg);
-}
-
 .travel-app {
-  max-width: 1240px;
+  max-width: 1320px;
   margin: 0 auto;
-  padding: 8px 6px 60px;
+  padding: 8px 8px 60px;
   color: var(--tv-ink);
+  font-family: var(--tv-body);
+}
+.travel-app h1, .travel-app h2, .travel-app h3, .travel-app h4, .travel-app h5 {
+  font-family: var(--tv-display);
 }
 
 .travel-app .mono .mx-text, .travel-app .tv-mono .mx-text {
@@ -29754,17 +29947,17 @@ Do not change this file because it is core styling. Customizing core files will 
 .eyebrow .mx-text, .eyebrow.mx-text {
   font-family: var(--tv-mono);
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--tv-faint);
   font-weight: 500;
 }
 
 .panel {
-  background: var(--tv-surface);
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
-  box-shadow: var(--tv-shadow-sm);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -29776,14 +29969,17 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .panel-head h1, .panel-head h2, .panel-head h3, .panel-head h4, .panel-head h5 {
   margin: 0;
-  font-size: 15px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
+  font-family: var(--tv-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   color: var(--tv-ink);
 }
 .panel-head .panel-sub .mx-text {
   color: var(--tv-faint);
-  font-size: 12px;
+  font-size: 11px;
+  font-family: var(--tv-mono);
 }
 
 .panel-body {
@@ -29797,7 +29993,7 @@ Do not change this file because it is core styling. Customizing core files will 
 
 .is-money .mx-text::before {
   content: "$";
-  opacity: 0.7;
+  opacity: 0.55;
 }
 
 .page-header {
@@ -29805,103 +30001,119 @@ Do not change this file because it is core styling. Customizing core files will 
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 6px 18px;
-  padding: 20px 4px 18px;
-  margin-bottom: 18px;
+  padding: 18px 4px 16px;
+  margin-bottom: 16px;
   border-bottom: 1px solid var(--tv-line);
 }
 .page-header h1 {
   margin: 2px 0 0;
-  font-size: 27px;
-  font-weight: 750;
-  letter-spacing: -0.025em;
+  font-family: var(--tv-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   color: var(--tv-ink);
 }
 .page-header .page-sub .mx-text {
   color: var(--tv-muted);
-  font-size: 14.5px;
+  font-size: 13px;
 }
 .page-header .header-titles {
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 .page-header .mx-button, .page-header .btn {
   margin-left: auto;
   align-self: center;
 }
 
-.travel-app .btn-primary.mx-button, .travel-app .mx-button.btn-primary {
-  background: var(--tv-accent);
-  border-color: var(--tv-accent);
-  color: #fff;
-  border-radius: 9px;
+.travel-app .btn, .travel-app .mx-button {
+  border-radius: 0;
+  font-family: var(--tv-body);
   font-weight: 600;
-  box-shadow: var(--tv-shadow-sm);
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  font-size: 11px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  transition: background 0.12s ease, border-color 0.12s ease;
+}
+
+.travel-app .btn-primary.mx-button, .travel-app .mx-button.btn-primary {
+  background: var(--tv-accent-wash);
+  border: 1px solid var(--tv-accent);
+  color: var(--tv-accent);
+  box-shadow: none;
 }
 .travel-app .btn-primary.mx-button:hover, .travel-app .mx-button.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: var(--tv-shadow-md);
+  background: rgba(63, 185, 80, 0.16);
 }
 
 .travel-app .btn-default.mx-button {
-  border-radius: 9px;
-  border-color: var(--tv-line);
-  background: var(--tv-surface);
-  font-weight: 600;
+  border: 1px solid var(--tv-line);
+  background: var(--tv-surface-2);
+  color: var(--tv-ink-2);
+}
+.travel-app .btn-default.mx-button:hover {
+  border-color: var(--tv-muted);
+  color: var(--tv-ink);
 }
 
 .stat-row .mx-dataview-content {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 14px;
+  gap: 12px;
 }
 
 .stat {
-  background: var(--tv-surface);
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
-  padding: 15px 16px;
-  box-shadow: var(--tv-shadow-sm);
+  border-left: 3px solid var(--tv-accent);
+  border-radius: 0;
+  padding: 13px 15px;
+  box-shadow: none;
 }
 .stat .stat-k .mx-text {
-  color: var(--tv-muted);
-  font-size: 12.5px;
+  color: var(--tv-faint);
+  font-size: 10px;
   font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
 }
 .stat .stat-v {
-  margin-top: 7px;
+  margin-top: 9px;
 }
 .stat .stat-v .mx-text {
   font-family: var(--tv-mono);
   font-variant-numeric: tabular-nums;
-  font-size: 25px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 0;
   color: var(--tv-ink);
 }
 .stat .stat-d {
-  margin-top: 3px;
+  margin-top: 8px;
 }
 .stat .stat-d .mx-text {
-  color: var(--tv-faint);
-  font-size: 12px;
-  font-weight: 600;
+  color: var(--tv-muted);
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--tv-mono);
 }
 
 .insights-strip {
   display: grid;
   grid-template-columns: 1.05fr 1fr;
-  gap: 14px;
-  margin: 20px 0 24px;
+  gap: 12px;
+  margin: 18px 0 22px;
 }
 
 .insight-card {
-  background: var(--tv-surface);
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
-  box-shadow: var(--tv-shadow-sm);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -29913,18 +30125,21 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .section-bar h2, .section-bar h3 {
   margin: 0;
-  font-size: 16px;
-  font-weight: 650;
+  font-family: var(--tv-display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   color: var(--tv-ink);
 }
 .section-bar .section-count .mx-text {
   font-family: var(--tv-mono);
-  font-size: 12px;
+  font-size: 11px;
   color: var(--tv-faint);
-  background: var(--tv-surface);
+  background: var(--tv-surface-2);
   border: 1px solid var(--tv-line);
-  padding: 1px 8px;
-  border-radius: 20px;
+  padding: 2px 8px;
+  border-radius: 0;
 }
 
 .trips-gallery .mx-gallery-item, .trips-gallery li {
@@ -29935,19 +30150,28 @@ Do not change this file because it is core styling. Customizing core files will 
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 8px;
-  background: var(--tv-surface);
+  margin: 6px;
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
-  box-shadow: var(--tv-shadow-sm);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
   cursor: pointer;
-  transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+  transition: border-color 0.16s ease, transform 0.16s ease;
+}
+.trip-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--tv-accent);
+  z-index: 5;
 }
 .trip-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--tv-shadow-md);
-  border-color: color-mix(in srgb, var(--tv-accent) 30%, var(--tv-line));
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--tv-accent) 40%, var(--tv-line));
 }
 
 .card-hit {
@@ -29967,76 +30191,78 @@ Do not change this file because it is core styling. Customizing core files will 
 .trip-cover {
   position: relative;
   width: 100%;
-  height: 140px;
+  height: 130px;
   overflow: hidden;
 }
 .trip-cover .mx-image-background, .trip-cover .mx-image, .trip-cover [class*=image] {
   background-size: cover !important;
   background-position: center !important;
-  background-color: #cfd8e6;
+  background-color: #0d1117;
+  filter: saturate(0.85) contrast(1.05);
 }
 .trip-cover::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(to top, rgba(8, 12, 22, 0.5) 0%, rgba(8, 12, 22, 0.05) 45%, rgba(8, 12, 22, 0) 100%);
+  background: linear-gradient(to top, rgba(10, 13, 18, 0.85) 0%, rgba(10, 13, 18, 0.2) 55%, rgba(10, 13, 18, 0.05) 100%);
 }
 
 .trip-dest {
   position: absolute;
-  left: 13px;
+  left: 14px;
   bottom: 11px;
   z-index: 2;
 }
 .trip-dest .mx-text {
   font-family: var(--tv-mono);
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
-  color: #fff;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--tv-ink);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
 }
 
 .trip-status-badge {
   position: absolute;
-  top: 11px;
+  top: 14px;
   right: 11px;
-  z-index: 3;
+  z-index: 6;
 }
 .trip-status-badge .mx-text {
   display: inline-flex;
   align-items: center;
   font-family: var(--tv-mono);
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.03em;
+  letter-spacing: 1px;
   text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
-  color: #fff;
-  background: rgba(8, 12, 22, 0.55);
-  backdrop-filter: blur(4px);
-  border: 0;
+  padding: 4px 9px;
+  border-radius: 0;
+  color: var(--tv-accent);
+  background: rgba(10, 13, 18, 0.7);
+  border: 1px solid var(--tv-accent);
+  backdrop-filter: blur(3px);
 }
 
 .trip-body {
   padding: 13px 15px 4px;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 .trip-body h3, .trip-body h4 {
   margin: 0;
-  font-size: 16.5px;
-  font-weight: 680;
-  letter-spacing: -0.01em;
+  font-family: var(--tv-display);
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
   color: var(--tv-ink);
 }
 
 .trip-meta .mx-text {
   font-family: var(--tv-mono);
   color: var(--tv-ink-2);
-  font-size: 12.5px;
+  font-size: 12px;
 }
 
 .trip-foot {
@@ -30045,14 +30271,14 @@ Do not change this file because it is core styling. Customizing core files will 
   gap: 14px;
   margin: 12px 15px 15px;
   padding-top: 12px;
-  border-top: 1px solid var(--tv-line-2);
+  border-top: 1px solid var(--tv-line);
 }
 .trip-foot .trip-budget {
   flex: 0 0 auto;
 }
 .trip-foot .trip-budget .mx-text {
   font-family: var(--tv-mono);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 15px;
   color: var(--tv-ink);
   font-variant-numeric: tabular-nums;
@@ -30073,22 +30299,23 @@ Do not change this file because it is core styling. Customizing core files will 
 
 .trip-hero {
   position: relative;
-  border-radius: var(--tv-radius);
+  border-radius: 0;
   overflow: hidden;
   border: 1px solid var(--tv-line);
-  box-shadow: var(--tv-shadow-sm);
-  margin-bottom: 16px;
+  box-shadow: none;
+  margin-bottom: 14px;
 }
 
 .hero-cover {
   position: relative;
-  height: 220px;
+  height: 210px;
   width: 100%;
 }
 .hero-cover .mx-image-background, .hero-cover .mx-image, .hero-cover [class*=image] {
   background-size: cover !important;
   background-position: center !important;
-  background-color: #cfd8e6;
+  background-color: #0d1117;
+  filter: saturate(0.85) contrast(1.05);
 }
 
 .hero-overlay {
@@ -30101,26 +30328,28 @@ Do not change this file because it is core styling. Customizing core files will 
   flex-direction: column;
   gap: 7px;
   padding: 22px 24px 20px;
-  background: linear-gradient(to top, rgba(6, 9, 16, 0.82) 0%, rgba(6, 9, 16, 0.3) 48%, rgba(6, 9, 16, 0.02) 100%);
+  background: linear-gradient(to top, rgba(10, 13, 18, 0.92) 0%, rgba(10, 13, 18, 0.4) 50%, rgba(10, 13, 18, 0.05) 100%);
 }
 .hero-overlay h1 {
   margin: 0;
-  color: #fff;
-  font-size: 30px;
-  font-weight: 760;
-  letter-spacing: -0.025em;
+  font-family: var(--tv-display);
+  color: var(--tv-ink);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 .hero-overlay .hero-loc .mx-text {
-  color: rgba(255, 255, 255, 0.92);
+  color: var(--tv-ink-2);
   font-family: var(--tv-mono);
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .hero-topline {
   position: absolute;
-  top: 15px;
-  left: 15px;
-  right: 15px;
+  top: 14px;
+  left: 14px;
+  right: 14px;
   z-index: 3;
   display: flex;
   align-items: center;
@@ -30128,15 +30357,16 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .hero-topline .mx-button {
   margin-left: auto;
-  border-radius: 9px;
+  border-radius: 0;
   font-weight: 600;
-  background: rgba(12, 18, 30, 0.42) !important;
-  border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  color: #fff !important;
+  background: rgba(10, 13, 18, 0.55) !important;
+  border: 1px solid var(--tv-line) !important;
+  color: var(--tv-ink) !important;
   backdrop-filter: blur(6px);
 }
 .hero-topline .mx-button:hover {
-  background: rgba(12, 18, 30, 0.6) !important;
+  background: rgba(10, 13, 18, 0.8) !important;
+  border-color: var(--tv-muted) !important;
 }
 .hero-topline .trip-status-badge {
   position: static;
@@ -30147,27 +30377,27 @@ Do not change this file because it is core styling. Customizing core files will 
   align-items: center;
   gap: 0 22px;
   flex-wrap: wrap;
-  background: var(--tv-surface);
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
+  border-radius: 0;
   padding: 14px 20px;
-  box-shadow: var(--tv-shadow-sm);
-  margin-bottom: 16px;
+  box-shadow: none;
+  margin-bottom: 14px;
 }
 .trip-metabar .meta-item {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 .trip-metabar .meta-lb .mx-text {
-  font-size: 11px;
+  font-size: 10px;
   color: var(--tv-faint);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 1px;
 }
 .trip-metabar .meta-vv .mx-text {
   font-family: var(--tv-mono);
-  font-weight: 650;
+  font-weight: 600;
   font-size: 15px;
   color: var(--tv-ink);
 }
@@ -30182,15 +30412,15 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .trip-metabar .meta-summary .mx-text {
   color: var(--tv-ink-2);
-  font-size: 13.5px;
+  font-size: 13px;
   line-height: 1.5;
 }
 
 .agenda-panel, .timeline-panel {
-  background: var(--tv-surface);
+  background: var(--tv-panel);
   border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius);
-  box-shadow: var(--tv-shadow-sm);
+  border-radius: 0;
+  box-shadow: none;
   overflow: hidden;
 }
 
@@ -30209,17 +30439,19 @@ Do not change this file because it is core styling. Customizing core files will 
   place-items: center;
   width: 26px;
   height: 26px;
-  border-radius: 8px;
+  border-radius: 0;
   background: var(--tv-accent-wash);
   color: var(--tv-accent);
   font-family: var(--tv-mono);
-  font-weight: 700;
-  font-size: 12.5px;
+  font-weight: 600;
+  font-size: 12px;
+  border: 1px solid var(--tv-accent);
 }
 .day-head .day-title .mx-text {
-  font-weight: 650;
-  font-size: 14.5px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--tv-ink);
+  font-family: var(--tv-display);
 }
 .day-head .day-date {
   margin-left: auto;
@@ -30236,10 +30468,10 @@ Do not change this file because it is core styling. Customizing core files will 
   gap: 12px;
   align-items: start;
   padding: 9px 8px;
-  border-radius: var(--tv-radius-sm);
+  border-radius: 0;
 }
 .act-row:hover {
-  background: var(--tv-surface-2);
+  background: rgba(255, 255, 255, 0.02);
 }
 .act-row .act-time .mx-text {
   font-family: var(--tv-mono);
@@ -30249,7 +30481,7 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .act-row .act-name .mx-text {
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--tv-ink);
 }
 .act-row .act-tags {
@@ -30271,12 +30503,15 @@ Do not change this file because it is core styling. Customizing core files will 
   padding: 2px 9px 2px 8px;
   border: 1px solid var(--tv-line);
   background: var(--tv-surface-2);
-  border-radius: 20px;
+  border-radius: 0;
 }
 .cat-chip .mx-text {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   color: var(--tv-ink-2);
+  font-family: var(--tv-mono);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 .cat-chip::before {
   content: "";
@@ -30285,39 +30520,45 @@ Do not change this file because it is core styling. Customizing core files will 
   border-radius: 50%;
   background: var(--tv-cat-other);
   flex: 0 0 auto;
+  box-shadow: 0 0 6px var(--tv-cat-other);
 }
 
 .cat-chip.cat-sight::before {
   background: var(--tv-cat-sight);
+  box-shadow: 0 0 6px var(--tv-cat-sight);
 }
 
 .cat-chip.cat-food::before {
   background: var(--tv-cat-food);
+  box-shadow: 0 0 6px var(--tv-cat-food);
 }
 
 .cat-chip.cat-lodging::before {
   background: var(--tv-cat-lodging);
+  box-shadow: 0 0 6px var(--tv-cat-lodging);
 }
 
 .cat-chip.cat-transport::before {
   background: var(--tv-cat-transport);
+  box-shadow: 0 0 6px var(--tv-cat-transport);
 }
 
 .cat-chip.cat-activity::before {
   background: var(--tv-cat-activity);
+  box-shadow: 0 0 6px var(--tv-cat-activity);
 }
 
 .tl-daylabel .mx-text {
   display: inline-block;
   font-family: var(--tv-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: 10px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--tv-faint);
   background: var(--tv-surface-2);
   border: 1px solid var(--tv-line);
   padding: 3px 10px;
-  border-radius: 20px;
+  border-radius: 0;
   margin: 8px 0 6px 20px;
 }
 
@@ -30341,7 +30582,7 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .tl-item .tl-name .mx-text {
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 13px;
   color: var(--tv-ink);
 }
 .tl-item .tl-time {
@@ -30362,40 +30603,45 @@ Do not change this file because it is core styling. Customizing core files will 
   position: absolute;
   left: 5px;
   top: 6px;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   z-index: 1;
   background: var(--tv-cat-other);
-  border: 3px solid var(--tv-surface);
-  box-shadow: 0 0 0 1.5px var(--tv-line);
+  border: 2px solid var(--tv-bg);
+  box-shadow: 0 0 8px var(--tv-cat-other);
 }
 
 .tl-node.cat-sight {
   background: var(--tv-cat-sight);
+  box-shadow: 0 0 8px var(--tv-cat-sight);
 }
 
 .tl-node.cat-food {
   background: var(--tv-cat-food);
+  box-shadow: 0 0 8px var(--tv-cat-food);
 }
 
 .tl-node.cat-lodging {
   background: var(--tv-cat-lodging);
+  box-shadow: 0 0 8px var(--tv-cat-lodging);
 }
 
 .tl-node.cat-transport {
   background: var(--tv-cat-transport);
+  box-shadow: 0 0 8px var(--tv-cat-transport);
 }
 
 .tl-node.cat-activity {
   background: var(--tv-cat-activity);
+  box-shadow: 0 0 8px var(--tv-cat-activity);
 }
 
 .budget-row {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 6px;
+  padding: 14px 8px;
   border-bottom: 1px solid var(--tv-line-2);
 }
 .budget-row .budget-main {
@@ -30403,23 +30649,24 @@ Do not change this file because it is core styling. Customizing core files will 
   min-width: 0;
 }
 .budget-row .budget-name .mx-text {
-  font-weight: 650;
-  font-size: 14.5px;
+  font-weight: 600;
+  font-size: 14px;
   color: var(--tv-ink);
+  font-family: var(--tv-display);
 }
 .budget-row .budget-dest .mx-text {
   font-family: var(--tv-mono);
   color: var(--tv-faint);
-  font-size: 12px;
+  font-size: 11px;
 }
 .budget-row .budget-badge {
   position: static;
 }
 .budget-row .budget-amt .mx-text {
   font-family: var(--tv-mono);
-  font-weight: 700;
+  font-weight: 600;
   font-size: 17px;
-  color: var(--tv-ink);
+  color: var(--tv-accent);
   font-variant-numeric: tabular-nums;
 }
 
@@ -30427,11 +30674,16 @@ Do not change this file because it is core styling. Customizing core files will 
   border-bottom: 0;
 }
 
+.budget-list .mx-listview-item:hover .budget-row {
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .mx-gallery-empty, .mx-listview-empty {
   padding: 28px;
   text-align: center;
   color: var(--tv-muted);
-  font-size: 14px;
+  font-size: 13px;
+  font-family: var(--tv-mono);
 }
 
 @media (max-width: 900px) {
@@ -30448,161 +30700,194 @@ Do not change this file because it is core styling. Customizing core files will 
 }
 .lab-cell h1, .lab-cell h2, .lab-cell h3, .lab-cell h4, .lab-cell h5 {
   margin: 0 0 11px;
-  font-size: 13px;
-  font-weight: 650;
-  letter-spacing: 0.01em;
+  font-family: var(--tv-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   color: var(--tv-ink);
 }
 
 .lab-html-block {
   padding: 10px 13px;
-  border-radius: 10px;
+  border-radius: 0;
   font-weight: 600;
+  font-family: var(--tv-mono);
   background: var(--tv-accent-wash);
   color: var(--tv-accent);
-  border: 1px solid color-mix(in srgb, var(--tv-accent) 26%, transparent);
+  border: 1px solid color-mix(in srgb, var(--tv-accent) 40%, transparent);
 }
 
 .lab-tip-target .mx-text {
   display: inline-block;
   padding: 7px 13px;
-  border-radius: 9px;
+  border-radius: 0;
   border: 1px dashed var(--tv-line);
   color: var(--tv-ink-2);
   background: var(--tv-surface-2);
   cursor: help;
+  font-family: var(--tv-mono);
 }
 
 .travel-app .js-plotly-plot .main-svg {
   background: transparent !important;
 }
 
-.travel-app .form-control, .travel-app textarea.form-control, .travel-app select.form-control,
-.travel-app .widget-combobox-input, .travel-app .widget-combobox {
-  background-color: var(--tv-surface);
-  color: var(--tv-ink);
-  border-color: var(--tv-line);
+.travel-app .form-control, .travel-app textarea, .travel-app textarea.form-control, .travel-app select, .travel-app .form-control-static,
+.travel-app .widget-combobox, .travel-app .widget-combobox-input, .travel-app .widget-combobox-selected-items {
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+  border-radius: 0 !important;
 }
-.travel-app .form-control::placeholder, .travel-app textarea.form-control::placeholder, .travel-app select.form-control::placeholder,
-.travel-app .widget-combobox-input::placeholder, .travel-app .widget-combobox::placeholder {
-  color: var(--tv-faint);
+.travel-app .form-control::placeholder, .travel-app textarea::placeholder, .travel-app textarea.form-control::placeholder, .travel-app select::placeholder, .travel-app .form-control-static::placeholder,
+.travel-app .widget-combobox::placeholder, .travel-app .widget-combobox-input::placeholder, .travel-app .widget-combobox-selected-items::placeholder {
+  color: var(--tv-faint) !important;
 }
 .travel-app .widget-combobox-placeholder {
-  color: var(--tv-faint);
+  color: var(--tv-faint) !important;
 }
 .travel-app .widget-combobox-icon {
-  color: var(--tv-muted);
+  color: var(--tv-muted) !important;
 }
-
-@media (prefers-color-scheme: dark) {
-  .travel-app .form-control, .travel-app textarea, .travel-app textarea.form-control, .travel-app select, .travel-app .form-control-static,
-.travel-app .widget-combobox, .travel-app .widget-combobox-input, .travel-app .widget-combobox-selected-items {
-    background-color: var(--tv-surface-2) !important;
-    color: var(--tv-ink) !important;
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app .widget-datagrid, .travel-app .widget-datagrid-grid, .travel-app .widget-datagrid-content,
+.travel-app .widget-datagrid, .travel-app .widget-datagrid-grid, .travel-app .widget-datagrid-content,
 .travel-app .widget-datagrid-grid-body, .travel-app .widget-datagrid-grid-head {
-    background-color: var(--tv-surface) !important;
-    color: var(--tv-ink) !important;
-  }
-  .travel-app .widget-datagrid .tr, .travel-app .widget-datagrid .td, .travel-app .widget-datagrid .th,
+  background-color: transparent !important;
+  color: var(--tv-ink) !important;
+}
+.travel-app .widget-datagrid-grid-head, .travel-app .widget-datagrid .th, .travel-app .widget-datagrid [role=columnheader] {
+  background-color: var(--tv-surface-3) !important;
+}
+.travel-app .widget-datagrid .tr, .travel-app .widget-datagrid .td, .travel-app .widget-datagrid .th,
 .travel-app .widget-datagrid [role=row], .travel-app .widget-datagrid [role=cell],
 .travel-app .widget-datagrid [role=columnheader], .travel-app .widget-datagrid [role=gridcell] {
-    background-color: transparent !important;
-    color: var(--tv-ink) !important;
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app .widget-datagrid .th, .travel-app .widget-datagrid [role=columnheader],
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+}
+.travel-app .widget-datagrid .td, .travel-app .widget-datagrid [role=gridcell] {
+  font-family: var(--tv-mono);
+}
+.travel-app .widget-datagrid .th, .travel-app .widget-datagrid [role=columnheader],
 .travel-app .widget-datagrid .column-header {
-    color: var(--tv-ink-2) !important;
-  }
-  .travel-app .widget-datagrid [role=row]:hover,
+  color: var(--tv-faint) !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 10px;
+}
+.travel-app .widget-datagrid [role=row]:hover,
 .travel-app .widget-datagrid .tr:hover {
-    background-color: var(--tv-surface-2) !important;
-  }
-  .travel-app .widget-datagrid-paging-status, .travel-app .widget-datagrid .paging-status {
-    color: var(--tv-muted) !important;
-  }
-  .travel-app .widget-datagrid .btn-default, .travel-app .widget-datagrid .btn,
+  background-color: rgba(255, 255, 255, 0.02) !important;
+}
+.travel-app .widget-datagrid-paging-status, .travel-app .widget-datagrid .paging-status {
+  color: var(--tv-muted) !important;
+}
+.travel-app .widget-datagrid .btn-default, .travel-app .widget-datagrid .btn,
 .travel-app .filter-selector-button, .travel-app .filter-selectors {
-    background-color: var(--tv-surface-2) !important;
-    color: var(--tv-ink) !important;
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app .widget-datagrid .btn-default:hover, .travel-app .filter-selector-button:hover {
-    background-color: var(--tv-surface) !important;
-  }
-  .travel-app .widget-accordion, .travel-app .widget-accordion-group,
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.travel-app .widget-datagrid .btn-default:hover, .travel-app .filter-selector-button:hover {
+  background-color: var(--tv-surface) !important;
+}
+.travel-app .widget-accordion, .travel-app .widget-accordion-group,
 .travel-app .widget-accordion-group-header, .travel-app .widget-accordion-group-header-button,
 .travel-app .widget-accordion-group-content, .travel-app .mx-accordion, .travel-app .card {
-    background-color: var(--tv-surface-2) !important;
-    color: var(--tv-ink) !important;
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app .widget-accordion-group-header-button {
-    color: var(--tv-ink) !important;
-  }
-  .travel-app fieldset, .travel-app .widget-fieldset {
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app fieldset > legend, .travel-app .widget-fieldset legend {
-    color: var(--tv-ink) !important;
-    border-color: var(--tv-line) !important;
-  }
-  .travel-app .widget-tree-node-body, .travel-app .widget-tree-node-content, .travel-app .widget-tree-node-branch,
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.travel-app .widget-accordion-group-header-button {
+  color: var(--tv-ink) !important;
+}
+.travel-app fieldset, .travel-app .widget-fieldset {
+  border-color: var(--tv-line) !important;
+}
+.travel-app fieldset > legend, .travel-app .widget-fieldset legend {
+  color: var(--tv-ink) !important;
+  border-color: var(--tv-line) !important;
+}
+.travel-app .widget-tree-node-body, .travel-app .widget-tree-node-content, .travel-app .widget-tree-node-branch,
 .travel-app .widget-tree-node-body [class*=mx-name-index] {
-    background-color: transparent !important;
-    color: var(--tv-ink) !important;
-  }
-  .travel-app .widget-tree-node-branch-header:hover,
+  background-color: transparent !important;
+  color: var(--tv-ink) !important;
+}
+.travel-app .widget-tree-node-branch-header:hover,
 .travel-app .widget-tree-node-branch-header-clickable:hover {
-    background-color: var(--tv-surface-2) !important;
-  }
-  .travel-app .panel h1, .travel-app .panel h2, .travel-app .panel h3, .travel-app .panel h4, .travel-app .panel h5,
+  background-color: rgba(255, 255, 255, 0.03) !important;
+}
+.travel-app .panel h1, .travel-app .panel h2, .travel-app .panel h3, .travel-app .panel h4, .travel-app .panel h5,
 .travel-app .lab-cell h5, .travel-app label.control-label, .travel-app .control-label {
-    color: var(--tv-ink) !important;
-  }
+  color: var(--tv-ink) !important;
+}
 
-  .widget-combobox-menu, .popupmenu-menu,
+.widget-combobox-menu, .popupmenu-menu,
 .widget-tooltip, [class*=tooltip] .tooltip-inner,
 .filter-selectors, .widget-dropdown-filter-menu-slot, .widget-dropdown-filter-menu {
-    background-color: var(--tv-surface-2) !important;
-    color: var(--tv-ink) !important;
-    border: 1px solid var(--tv-line) !important;
-  }
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+}
 
-  .widget-dropdown-filter-menu-item, .widget-dropdown-filter-menu-item-text,
+.widget-dropdown-filter-menu-item, .widget-dropdown-filter-menu-item-text,
 .widget-combobox-menu .widget-combobox-item, .filter-selectors li {
-    color: var(--tv-ink) !important;
-  }
+  color: var(--tv-ink) !important;
+}
 
-  .widget-dropdown-filter-menu, .widget-combobox-menu {
-    background-image: none !important;
-  }
+.widget-dropdown-filter-menu, .widget-combobox-menu {
+  background-image: none !important;
+}
 
-  .widget-dropdown-filter-popover, .widget-combobox-menu {
-    box-shadow: var(--tv-shadow-md) !important;
-  }
+.widget-dropdown-filter-popover, .widget-combobox-menu {
+  box-shadow: var(--tv-shadow-md) !important;
+}
 
-  .widget-combobox-menu .widget-combobox-item:hover,
+.widget-combobox-menu .widget-combobox-item:hover,
 .widget-dropdown-filter-menu-item:hover,
 .widget-dropdown-filter-menu li:hover,
 .filter-selectors li:hover {
-    background-color: var(--tv-accent-wash) !important;
-  }
+  background-color: var(--tv-accent-wash) !important;
 }
+
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 }
 
 /*

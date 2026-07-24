@@ -252,9 +252,9 @@ create or replace page "Travel"."WidgetLab_Charts"
             holeRadius: 62,
             showLegend: true,
             heightUnit: pixels, height: 260,
-            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif","color":"#8a94a6","size":12},"margin":{"l":8,"r":8,"t":8,"b":8},"legend":{"font":{"color":"#8a94a6","size":12}},"hoverlabel":{"bgcolor":"#101725","bordercolor":"rgba(140,148,166,0.3)","font":{"color":"#eef2f9"}}}',
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":8,"r":8,"t":8,"b":8},"legend":{"bgcolor":"rgba(0,0,0,0)","bordercolor":"rgba(0,0,0,0)","font":{"color":"#8b949e","size":12}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
             customConfigurations: '{"displayModeBar":false,"responsive":true}',
-            customSeriesOptions: '{"marker":{"colors":["#3b82f6","#12a17a","#e0a92e","#e8617a","#8a5cf6"],"line":{"color":"rgba(0,0,0,0)","width":0}},"textfont":{"color":"#ffffff","size":12},"textposition":"inside","sort":false,"direction":"clockwise"}'
+            customSeriesOptions: '{"marker":{"colors":["#3fb950","#58a6ff","#e3b341","#f85149","#a371f7"],"line":{"color":"#0a0d12","width":2}},"textfont":{"color":"#0a0d12","size":12},"textposition":"inside","sort":false,"direction":"clockwise"}'
           )
         }
         column colColumn (desktopwidth: 6, class: 'panel') {
@@ -262,7 +262,7 @@ create or replace page "Travel"."WidgetLab_Charts"
           pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartColumn (
             showLegend: false,
             heightUnit: pixels, height: 260,
-            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif","color":"#8a94a6","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"bargap":0.55,"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#101725","bordercolor":"rgba(140,148,166,0.3)","font":{"color":"#eef2f9"}}}',
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"bargap":0.55,"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
             customConfigurations: '{"displayModeBar":false,"responsive":true}'
           ) {
             series sCol (
@@ -272,7 +272,7 @@ create or replace page "Travel"."WidgetLab_Charts"
               staticYAttribute: Budget,
               staticName: 'Budget',
               aggregationType: sum,
-              customSeriesOptions: '{"marker":{"color":"#3b82f6","cornerradius":6,"line":{"width":0}}}'
+              customSeriesOptions: '{"marker":{"color":"#3fb950","cornerradius":0,"line":{"width":0}}}'
             )
           }
         }
@@ -283,7 +283,7 @@ create or replace page "Travel"."WidgetLab_Charts"
           pluggablewidget 'com.mendix.widget.web.barchart.BarChart' chartBar (
             showLegend: false,
             heightUnit: pixels, height: 260,
-            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif","color":"#8a94a6","size":12},"margin":{"l":110,"r":16,"t":10,"b":34},"bargap":0.5,"xaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#101725","bordercolor":"rgba(140,148,166,0.3)","font":{"color":"#eef2f9"}}}',
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":110,"r":16,"t":10,"b":34},"bargap":0.5,"xaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
             customConfigurations: '{"displayModeBar":false,"responsive":true}'
           ) {
             series sBar (
@@ -293,7 +293,7 @@ create or replace page "Travel"."WidgetLab_Charts"
               staticYAttribute: TripTitle,
               staticName: 'Budget',
               aggregationType: none,
-              customSeriesOptions: '{"marker":{"color":"#12a17a","cornerradius":6,"line":{"width":0}}}'
+              customSeriesOptions: '{"marker":{"color":"#58a6ff","cornerradius":0,"line":{"width":0}}}'
             )
           }
         }
@@ -302,7 +302,7 @@ create or replace page "Travel"."WidgetLab_Charts"
           pluggablewidget 'com.mendix.widget.web.areachart.AreaChart' chartArea (
             showLegend: false,
             heightUnit: pixels, height: 260,
-            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif","color":"#8a94a6","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#101725","bordercolor":"rgba(140,148,166,0.3)","font":{"color":"#eef2f9"}}}',
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
             customConfigurations: '{"displayModeBar":false,"responsive":true}'
           ) {
             series sArea (
@@ -313,7 +313,7 @@ create or replace page "Travel"."WidgetLab_Charts"
               staticName: 'Budget',
               aggregationType: sum,
               interpolation: spline,
-              customSeriesOptions: '{"line":{"color":"#3b82f6","width":2.5,"shape":"spline"},"fillcolor":"rgba(59,130,246,0.16)","mode":"lines"}'
+              customSeriesOptions: '{"line":{"color":"#3fb950","width":2.5,"shape":"spline"},"fillcolor":"rgba(63,185,80,0.16)","mode":"lines"}'
             )
           }
         }

@@ -5,17 +5,46 @@ $form-input-style: default;
 $btn-bordered: false; // Default value false, set to true if you want this effect
 
 :root {
-  /* Brand Colors — Itinera design language */
-  --brand-primary: #1f6feb;
-  --brand-success: #0f7a5a;
-  --brand-warning: #b4791f;
-  --brand-danger: #e5484d;
-  --brand-default: color-mix(in srgb, var(--brand-primary) 10%, #e7e7e9);
-  --gray: #B8BABF;
+  /* Brand Colors — Atlas MES design language (dark, industrial) */
+  --brand-primary: #3fb950;
+  --brand-success: #3fb950;
+  --brand-warning: #e3b341;
+  --brand-danger: #f85149;
+  --brand-default: #1c232c;
+  --gray: #8b949e;
 
-  /* App background — cool near-white */
-  --bg-color: #eef1f7;
-  --bg-color-secondary: #ffffff;
+  /* App background — near-black control-room ground */
+  --bg-color: #0a0d12;
+  --bg-color-secondary: #10151c;
+
+  /* Dark-ify Atlas core leaves (MES is dark-only) so widgets outside our
+     .travel-app scope inherit the dark surfaces too. */
+  --font-color-default: #e6edf3;
+  --font-color-header: #e6edf3;
+  --font-color-detail: #8b949e;
+  --border-color-default: #1c232c;
+  --link-color: #58a6ff;
+  --link-hover-color: #79b8ff;
+
+  --form-input-bg: #10151c;
+  --form-input-bg-focus: #10151c;
+  --form-input-bg-hover: #141a22;
+  --form-input-bg-disabled: #0d1117;
+  --form-input-color: #e6edf3;
+  --form-input-focus-color: #e6edf3;
+  --form-input-border-color: #1c232c;
+  --form-input-border-focus-color: #3fb950;
+  --form-input-placeholder-color: #5c6773;
+
+  --card-bg: linear-gradient(160deg, #141a22, #10151c);
+  --card-border-radius: 0;
+  --border-radius-s: 0;
+  --border-radius-m: 0;
+  --border-radius-l: 0;
+
+  --grid-bg: transparent;
+  --grid-bg-header: #11161d;
+  --grid-border-color: #1c232c;
 
 //   /* Hover Color Variants */
 //   --brand-default-hover: var(--brand-default-100);
