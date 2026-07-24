@@ -251,6 +251,34 @@ touching structure, and (being SCSS) it hot-applies via `--watch`. Concrete less
   and JS. (Private `claude.ai/design/…` share links are not fetchable by the agent — ask for the
   exported bundle or pasted HTML.)
 
+### Building a bespoke dashboard, not just a re-skin (the MES Line-Overview exercise)
+Everything above re-styled *existing* structure. To test whether mxcli can **build a bespoke
+operational screen from scratch**, we authored a real Manufacturing-Execution-System "Line Overview"
+dashboard — new `MES` module (ProductionLine / PlantEvent entities, an aggregating view, a KPI
+carrier + `DS_MESStats` microflow, a committed demo seed), and a page with a custom **top-bar + nav-tabs
+shell**, a 6-tile KPI grid, status-coloured line cards, a throughput chart, and a live event feed.
+It rendered faithfully to the mockup. Verdict: **yes — mxcli can generate a designed dashboard, not
+only re-theme one.** Reusable techniques it proved:
+
+- **Custom shell without a custom Layout document.** We wanted a full-screen control-room (no Atlas
+  sidebar), but a blank *layout* is hard to select (`Blank` is a page *template*, and the catalog
+  doesn't expose layout refs). Solution: keep a normal Atlas layout and **hide the sidebar per-page
+  with `.mx-page:has(.mes-app) .region-sidebar { display:none }`**, building the top-bar + tabs as page
+  content. Page-scoped `:has()` is the clean way to get a bespoke shell without new layout docs.
+- **Status-driven colour is one `dynamicclasses` expression + one CSS var.** A single
+  `dynamicclasses` maps the status enum to `status-running|idle|down`; the card sets `--st` per state
+  and that one variable cascades the colour into the pill, the OEE number, the pulsing dot, and the
+  card border. This is *the* "colour-by-state" recipe — it should ship as a first-class recipe.
+- **CSS animations port; client-side JS state does not.** Pulse/blink "alive" cues work via
+  `@keyframes` + classes. The mockup's ticking clock / incrementing counters / sweep are client JS
+  with no Mendix equivalent — you get static values unless you add a nanoflow-refresh timer. Document
+  this ceiling so "real-time dashboard" expectations are set.
+- **Aggregate KPIs (count/sum) compute fine** — the tiles showed real sums/counts — but see the
+  microflow gotchas below for what the aggregate grammar does *not* allow.
+
+This exercise is also the strongest case for the P1 Building-Block work: the line-card, KPI-tile, and
+event-row shapes are exactly the reusable compositions a Building-Block library would hold.
+
 ## The standard — a 4-layer architecture
 
 ```
@@ -354,6 +382,13 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 | **Chart colours don't re-skin** — series colour lives in the model (`customSeriesOptions`), not CSS | accept it's model config; a palette pivot needs an MDL edit + gen-2 restart, not a theme edit |
 | Google-fonts `@import url()` silently dropped | make it the **first line** of `main.scss` (before the partial import + any rule); keep a system fallback stack |
 | Full re-skin desired (new identity) | it's **theme-only** — retune `custom-variables.scss` (Atlas leaves) + `main.scss` (`--tv-*` + classes); no page/MDL edits, hot-applies |
+| Full-screen page (no Atlas sidebar) but no blank layout resolves | keep a normal layout; hide the shell per-page with `.mx-page:has(.my-app) .region-sidebar { display:none }` |
+| "Colour by state" (status pills/cards) | one `dynamicclasses` enum→class expression + one `--st` CSS var cascaded into pill/number/dot/border |
+| **`grant view on page` to a *cross-module* role → CE0148 "reselect roles" that BLOCKS the build** | grant the page's **own-module** role (add that role to the user role for access); cost real time to diagnose |
+| Seed microflow data doesn't appear (queries empty) | **`create` doesn't persist — add `commit $obj;`**; the miss is silent (no error) |
+| Bare `$x = avg(...)` or `$x = 2` fails to parse | bare `$x = …` accepts only `count`/`sum` aggregates; use `declare $x T = expr` for other expressions, `set $x = expr` to reassign a declared var |
+| Integer/integer division `$a / $b` → CE0117 | Mendix `/` needs a decimal operand; averaging integers is awkward — compute upstream or store decimals |
+| View entity flagged CE6770 "out of sync" | the view's declared attribute types must match its OQL source columns (Decimal vs Integer mismatch trips it) |
 | **`mx check` passes but the browser client crashes** (e.g. old ListView `SearchRefs`; the slider `findDOMNode` throw only fires on interaction) | **always Playwright-verify a running build; never ship on `mx check` alone** |
 | "SCSS cache" — edits don't show | never a cache: `--watch` (now watches theme source) or clean restart; kill stale process first |
 | Stale process serves old output, looks like a cache | `run --local` now refuses occupied ports; free them (pgrep/kill/curl 000) |
@@ -372,6 +407,7 @@ workflow. **P0 = fix before the loop is reliable; P1 = enables the workflow; P2 
 |---|---|---|---|
 | **P0** | **Watch-mode re-serves `/dist/*` on *structural* model changes** (new/removed page, nav/home change) — or forces a clean re-bundle; readiness probe must verify `/dist/index.js` is `200` before reporting "build applied" | Every structural change this session left the app blank/unbootable (gen-2 404) until a manual clean restart — it repeatedly broke the warm loop | New (tooling bug) |
 | **P0** | **`run` teardown kills its child `mxbuild --serve` / runtime** on stop | After `Ctrl-C`/kill, a stray serve held the port (`port 6543 in use`), so the next run refused to start | New (tooling) |
+| **P1** | **`grant view on page` to a cross-module role must not emit a build-blocking CE0148** | Granting a page a role from another module set the allowed-roles list correctly yet still raised CE0148 "reselect roles", which **fails the deploy** — confusing and costly; the own-module role works, so the serialization is wrong for cross-module grants | New (bug) |
 | **P1** | **Building Blocks — READ**: extend the page/snippet widget-tree reader to `Forms$BuildingBlock`; expose `SHOW BUILDING BLOCKS` + `DESCRIBE BUILDING BLOCK` | Prerequisite for *any* Building-Block reuse — today content is unreadable (name-only), so you can't discover-then-reuse what a project ships | `show-describe-building-blocks.md` |
 | **P1** | **Building Blocks — INSTANTIATE**: `USE BUILDING BLOCK Mod.Name [prefix]` (deep-copy; reuse fragment-expansion) | The "compose a page from pre-built sections" capability — the native home for the recipe library | `show-describe-building-blocks.md` |
 | **P1** | **Parameterized fragments** | Lets content-varying recipes (a card wrapping arbitrary content) ship without `.mdl` fill-in; materially simplifies the recipe library | `proposal_page_composition.md` |
@@ -435,5 +471,7 @@ Itinera build: `mdlsource/06-redesign.mdl`, `07-shell.mdl`, `themesource/travel/
 second identity proving the token+recipe layer is a swappable skin (the earlier light-Itinera version
 is in git history); the styled charts + every-widget validation page in
 `mdlsource/08-widgetlab.mdl` (chart `customLayout`/`customConfigurations`/`customSeriesOptions`,
-`showTooltip:false` slider fix); widget-authoring findings in `WIDGET-FINDINGS.md`; approved visual
+`showTooltip:false` slider fix); the bespoke dashboard build in `mdlsource/09-mes-dashboard.mdl`
+(custom top-bar+tabs shell, status `dynamicclasses`, committed seed, aggregate KPIs) with its MES
+styling block in `main.scss`; widget-authoring findings in `WIDGET-FINDINGS.md`; approved visual
 direction in the Itinera HTML mockup + the Atlas MES handoff bundle.
