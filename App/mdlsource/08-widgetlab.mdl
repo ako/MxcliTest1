@@ -114,7 +114,7 @@ create or replace page "Travel"."WidgetLab_Inputs"
               minValueType: static, staticMinimumValue: 0,
               maxValueType: static, staticMaximumValue: 100,
               stepSizeType: static, stepValue: 5,
-              showTooltip: true
+              showTooltip: false
             )
           }
           -- Range slider --------------------------------------------------
@@ -126,7 +126,7 @@ create or replace page "Travel"."WidgetLab_Inputs"
               minValueType: static, staticMinimumValue: 0,
               maxValueType: static, staticMaximumValue: 100,
               stepSizeType: static, stepValue: 5,
-              showTooltip: true
+              showTooltip: false
             )
           }
         }
@@ -193,7 +193,7 @@ create or replace page "Travel"."WidgetLab_Inputs"
             pluggablewidget 'com.mendix.widget.web.htmlelement.HTMLElement' htmlBlock (
               tagName: div,
               tagContentMode: innerHTML,
-              tagContentHTML: '<div style="padding:8px;border-radius:8px;background:#eef4ff;color:#1f6feb;font-weight:600;">Rendered from raw HTML</div>'
+              tagContentHTML: '<div class="lab-html-block">Rendered from raw HTML</div>'
             )
           }
           -- Accordion -----------------------------------------------------
@@ -251,14 +251,16 @@ create or replace page "Travel"."WidgetLab_Charts"
             seriesValueAttribute: TotalCost,
             holeRadius: 55,
             showLegend: true,
-            heightUnit: pixels, height: 260
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"color":"#8a94a6"},"legend":{"font":{"color":"#8a94a6"}}}'
           )
         }
         column colColumn (desktopwidth: 6, class: 'panel') {
           dynamictext dtColTitle (content: 'Column — budget by trip', rendermode: H5)
           pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartColumn (
             showLegend: false,
-            heightUnit: pixels, height: 260
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"color":"#8a94a6"},"xaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"},"yaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"}}'
           ) {
             series sCol (
               dataSet: static,
@@ -276,7 +278,8 @@ create or replace page "Travel"."WidgetLab_Charts"
           dynamictext dtBarTitle (content: 'Bar — budget by trip', rendermode: H5)
           pluggablewidget 'com.mendix.widget.web.barchart.BarChart' chartBar (
             showLegend: false,
-            heightUnit: pixels, height: 260
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"color":"#8a94a6"},"xaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"},"yaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"}}'
           ) {
             series sBar (
               dataSet: static,
@@ -292,7 +295,8 @@ create or replace page "Travel"."WidgetLab_Charts"
           dynamictext dtAreaTitle (content: 'Area — budget by trip', rendermode: H5)
           pluggablewidget 'com.mendix.widget.web.areachart.AreaChart' chartArea (
             showLegend: false,
-            heightUnit: pixels, height: 260
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"color":"#8a94a6"},"xaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"},"yaxis":{"gridcolor":"rgba(128,128,128,0.18)","linecolor":"rgba(128,128,128,0.25)","zerolinecolor":"rgba(128,128,128,0.25)"}}'
           ) {
             series sArea (
               dataSet: static,

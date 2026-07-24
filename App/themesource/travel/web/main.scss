@@ -374,3 +374,128 @@
   .stat-row .mx-dataview-content { grid-template-columns: repeat(2, 1fr); }
   .insights-strip { grid-template-columns: 1fr; }
 }
+
+// ============================================================================
+// Widget Lab — validation pages. Make Atlas's own widgets (inputs, combobox,
+// datagrid, accordion, fieldset) honour the Itinera surface tokens so embedded
+// content matches the panel in both light and dark. Charts use a transparent
+// customLayout (set in MDL) so their plot area inherits the panel background.
+// ============================================================================
+
+// ---- lab cell scaffolding (both themes) ------------------------------------
+.lab-cell {
+  padding: 6px 6px 16px;
+  h1,h2,h3,h4,h5 { margin: 0 0 11px; font-size: 13px; font-weight: 650;
+    letter-spacing: .01em; color: var(--tv-ink); }
+}
+.lab-html-block {
+  padding: 10px 13px; border-radius: 10px; font-weight: 600;
+  background: var(--tv-accent-wash); color: var(--tv-accent);
+  border: 1px solid color-mix(in srgb, var(--tv-accent) 26%, transparent);
+}
+.lab-tip-target .mx-text {
+  display: inline-block; padding: 7px 13px; border-radius: 9px;
+  border: 1px dashed var(--tv-line); color: var(--tv-ink-2);
+  background: var(--tv-surface-2); cursor: help;
+}
+
+// The lab charts panels: let the transparent plot show the panel surface.
+.travel-app .js-plotly-plot .main-svg { background: transparent !important; }
+
+// ---- form controls: honour surface tokens (both themes; harmless in light) --
+.travel-app {
+  .form-control, textarea.form-control, select.form-control,
+  .widget-combobox-input, .widget-combobox {
+    background-color: var(--tv-surface);
+    color: var(--tv-ink);
+    border-color: var(--tv-line);
+    &::placeholder { color: var(--tv-faint); }
+  }
+  .widget-combobox-placeholder { color: var(--tv-faint); }
+  .widget-combobox-icon { color: var(--tv-muted); }
+}
+
+// ============================================================================
+// Dark-mode: repaint Atlas widgets that ship light-only surfaces so they stop
+// clashing with the dark panels. Scoped to .travel-app (+ portal popovers).
+// ============================================================================
+@media (prefers-color-scheme: dark) {
+  .travel-app {
+    // text inputs / textarea / combobox field
+    .form-control, textarea, textarea.form-control, select, .form-control-static,
+    .widget-combobox, .widget-combobox-input, .widget-combobox-selected-items {
+      background-color: var(--tv-surface-2) !important;
+      color: var(--tv-ink) !important;
+      border-color: var(--tv-line) !important;
+    }
+
+    // Datagrid 2 — grid surface, header, rows, cells
+    .widget-datagrid, .widget-datagrid-grid, .widget-datagrid-content,
+    .widget-datagrid-grid-body, .widget-datagrid-grid-head {
+      background-color: var(--tv-surface) !important;
+      color: var(--tv-ink) !important;
+    }
+    .widget-datagrid .tr, .widget-datagrid .td, .widget-datagrid .th,
+    .widget-datagrid [role="row"], .widget-datagrid [role="cell"],
+    .widget-datagrid [role="columnheader"], .widget-datagrid [role="gridcell"] {
+      background-color: transparent !important;
+      color: var(--tv-ink) !important;
+      border-color: var(--tv-line) !important;
+    }
+    .widget-datagrid .th, .widget-datagrid [role="columnheader"],
+    .widget-datagrid .column-header { color: var(--tv-ink-2) !important; }
+    .widget-datagrid [role="row"]:hover,
+    .widget-datagrid .tr:hover { background-color: var(--tv-surface-2) !important; }
+    .widget-datagrid-paging-status, .widget-datagrid .paging-status { color: var(--tv-muted) !important; }
+
+    // filter-type selector chips ("Ab" / "=" ) + paging/column icon buttons
+    .widget-datagrid .btn-default, .widget-datagrid .btn,
+    .filter-selector-button, .filter-selectors {
+      background-color: var(--tv-surface-2) !important;
+      color: var(--tv-ink) !important;
+      border-color: var(--tv-line) !important;
+    }
+    .widget-datagrid .btn-default:hover, .filter-selector-button:hover {
+      background-color: var(--tv-surface) !important;
+    }
+
+    // Accordion — headers + content bodies
+    .widget-accordion, .widget-accordion-group,
+    .widget-accordion-group-header, .widget-accordion-group-header-button,
+    .widget-accordion-group-content, .mx-accordion, .card {
+      background-color: var(--tv-surface-2) !important;
+      color: var(--tv-ink) !important;
+      border-color: var(--tv-line) !important;
+    }
+    .widget-accordion-group-header-button { color: var(--tv-ink) !important; }
+
+    // Fieldset — legend + border
+    fieldset, .widget-fieldset { border-color: var(--tv-line) !important; }
+    fieldset > legend, .widget-fieldset legend { color: var(--tv-ink) !important; border-color: var(--tv-line) !important; }
+
+    // headings emitted by Atlas inside panels
+    .panel h1, .panel h2, .panel h3, .panel h4, .panel h5,
+    .lab-cell h5, label.control-label, .control-label { color: var(--tv-ink) !important; }
+  }
+
+  // Portal popovers render at <body>, outside .travel-app — theme them globally.
+  .widget-combobox-menu, .popupmenu-menu,
+  .widget-tooltip, [class*="tooltip"] .tooltip-inner,
+  .filter-selectors, .widget-dropdown-filter-menu-slot, .widget-dropdown-filter-menu {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border: 1px solid var(--tv-line) !important;
+  }
+  // menu item labels: default Atlas grey is too dim on dark — brighten them
+  .widget-dropdown-filter-menu-item, .widget-dropdown-filter-menu-item-text,
+  .widget-combobox-menu .widget-combobox-item, .filter-selectors li {
+    color: var(--tv-ink) !important;
+  }
+  // the menu <ul> paints a hardcoded white scroll-fade gradient over the dark bg
+  .widget-dropdown-filter-menu, .widget-combobox-menu { background-image: none !important; }
+  .widget-dropdown-filter-popover, .widget-combobox-menu { box-shadow: var(--tv-shadow-md) !important; }
+  .widget-combobox-menu .widget-combobox-item:hover,
+  .widget-dropdown-filter-menu-item:hover,
+  .widget-dropdown-filter-menu li:hover,
+  .filter-selectors li:hover { background-color: var(--tv-accent-wash) !important; }
+}

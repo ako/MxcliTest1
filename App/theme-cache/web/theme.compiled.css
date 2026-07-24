@@ -30443,6 +30443,146 @@ Do not change this file because it is core styling. Customizing core files will 
     grid-template-columns: 1fr;
   }
 }
+.lab-cell {
+  padding: 6px 6px 16px;
+}
+.lab-cell h1, .lab-cell h2, .lab-cell h3, .lab-cell h4, .lab-cell h5 {
+  margin: 0 0 11px;
+  font-size: 13px;
+  font-weight: 650;
+  letter-spacing: 0.01em;
+  color: var(--tv-ink);
+}
+
+.lab-html-block {
+  padding: 10px 13px;
+  border-radius: 10px;
+  font-weight: 600;
+  background: var(--tv-accent-wash);
+  color: var(--tv-accent);
+  border: 1px solid color-mix(in srgb, var(--tv-accent) 26%, transparent);
+}
+
+.lab-tip-target .mx-text {
+  display: inline-block;
+  padding: 7px 13px;
+  border-radius: 9px;
+  border: 1px dashed var(--tv-line);
+  color: var(--tv-ink-2);
+  background: var(--tv-surface-2);
+  cursor: help;
+}
+
+.travel-app .js-plotly-plot .main-svg {
+  background: transparent !important;
+}
+
+.travel-app .form-control, .travel-app textarea.form-control, .travel-app select.form-control,
+.travel-app .widget-combobox-input, .travel-app .widget-combobox {
+  background-color: var(--tv-surface);
+  color: var(--tv-ink);
+  border-color: var(--tv-line);
+}
+.travel-app .form-control::placeholder, .travel-app textarea.form-control::placeholder, .travel-app select.form-control::placeholder,
+.travel-app .widget-combobox-input::placeholder, .travel-app .widget-combobox::placeholder {
+  color: var(--tv-faint);
+}
+.travel-app .widget-combobox-placeholder {
+  color: var(--tv-faint);
+}
+.travel-app .widget-combobox-icon {
+  color: var(--tv-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  .travel-app .form-control, .travel-app textarea, .travel-app textarea.form-control, .travel-app select, .travel-app .form-control-static,
+.travel-app .widget-combobox, .travel-app .widget-combobox-input, .travel-app .widget-combobox-selected-items {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app .widget-datagrid, .travel-app .widget-datagrid-grid, .travel-app .widget-datagrid-content,
+.travel-app .widget-datagrid-grid-body, .travel-app .widget-datagrid-grid-head {
+    background-color: var(--tv-surface) !important;
+    color: var(--tv-ink) !important;
+  }
+  .travel-app .widget-datagrid .tr, .travel-app .widget-datagrid .td, .travel-app .widget-datagrid .th,
+.travel-app .widget-datagrid [role=row], .travel-app .widget-datagrid [role=cell],
+.travel-app .widget-datagrid [role=columnheader], .travel-app .widget-datagrid [role=gridcell] {
+    background-color: transparent !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app .widget-datagrid .th, .travel-app .widget-datagrid [role=columnheader],
+.travel-app .widget-datagrid .column-header {
+    color: var(--tv-ink-2) !important;
+  }
+  .travel-app .widget-datagrid [role=row]:hover,
+.travel-app .widget-datagrid .tr:hover {
+    background-color: var(--tv-surface-2) !important;
+  }
+  .travel-app .widget-datagrid-paging-status, .travel-app .widget-datagrid .paging-status {
+    color: var(--tv-muted) !important;
+  }
+  .travel-app .widget-datagrid .btn-default, .travel-app .widget-datagrid .btn,
+.travel-app .filter-selector-button, .travel-app .filter-selectors {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app .widget-datagrid .btn-default:hover, .travel-app .filter-selector-button:hover {
+    background-color: var(--tv-surface) !important;
+  }
+  .travel-app .widget-accordion, .travel-app .widget-accordion-group,
+.travel-app .widget-accordion-group-header, .travel-app .widget-accordion-group-header-button,
+.travel-app .widget-accordion-group-content, .travel-app .mx-accordion, .travel-app .card {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app .widget-accordion-group-header-button {
+    color: var(--tv-ink) !important;
+  }
+  .travel-app fieldset, .travel-app .widget-fieldset {
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app fieldset > legend, .travel-app .widget-fieldset legend {
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .travel-app .panel h1, .travel-app .panel h2, .travel-app .panel h3, .travel-app .panel h4, .travel-app .panel h5,
+.travel-app .lab-cell h5, .travel-app label.control-label, .travel-app .control-label {
+    color: var(--tv-ink) !important;
+  }
+
+  .widget-combobox-menu, .popupmenu-menu,
+.widget-tooltip, [class*=tooltip] .tooltip-inner,
+.filter-selectors, .widget-dropdown-filter-menu-slot, .widget-dropdown-filter-menu {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border: 1px solid var(--tv-line) !important;
+  }
+
+  .widget-dropdown-filter-menu-item, .widget-dropdown-filter-menu-item-text,
+.widget-combobox-menu .widget-combobox-item, .filter-selectors li {
+    color: var(--tv-ink) !important;
+  }
+
+  .widget-dropdown-filter-menu, .widget-combobox-menu {
+    background-image: none !important;
+  }
+
+  .widget-dropdown-filter-popover, .widget-combobox-menu {
+    box-shadow: var(--tv-shadow-md) !important;
+  }
+
+  .widget-combobox-menu .widget-combobox-item:hover,
+.widget-dropdown-filter-menu-item:hover,
+.widget-dropdown-filter-menu li:hover,
+.filter-selectors li:hover {
+    background-color: var(--tv-accent-wash) !important;
+  }
+}
 :root {
   /* Brand Colors — Itinera design language */
   --brand-primary: #1f6feb;
