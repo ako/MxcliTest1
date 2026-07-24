@@ -82,6 +82,39 @@ rule. Brand blue on buttons? `--brand-primary` before overriding `.btn-primary`.
 
 ---
 
+## Findings from live testing (this app, mxcli `b990548`)
+
+Ran a controlled experiment on the running app: a page of **pure Atlas classes, zero custom CSS**,
+authored purely with mxcli's `class:` property. Result — **the Atlas-first thesis holds**:
+
+| Authored via `class:` | Rendered |
+|---|---|
+| `card` + `spacing-inner-large` | real Atlas card (surface bg, border, radius, padding) ✅ |
+| `background-primary` | **the app's azure** — the Atlas utility inherited our retuned `--brand-primary` ✅ |
+| `flex-row` + `align-x-between` | children spread left/right ✅ |
+| `buttonstyle: primary`, `btn-lg` (class), `btn-bordered` (class) | solid / large / outlined Atlas buttons ✅ |
+
+**Confirmed for the proposal:**
+1. **Raw `class:` strings are sufficient today** — `page-styling-support` Phase 1 (`class`) already renders
+   the full Atlas appearance vocabulary. The typed `designproperties` channel is **not required for the
+   visual result** (it matters only for round-tripping into Studio Pro's Appearance tab). → recipes can
+   ship on `class:` now; `designproperties` support is a nicety, not a blocker.
+2. **Brand tokens propagate *down* into Atlas utilities** — `background-primary`/`btn-primary` resolve to
+   our `--brand-primary`. This validates the layered model: retune Layer 1 tokens and Layer 0 Atlas
+   classes follow for free. Strong argument to **delete** the hand-rolled `.panel`/`.trip-card`/`.stat`/
+   `.insight-card` and use `class:'card …'`, keeping custom SCSS only for identity (mono type, pills,
+   timeline spine, elevation curve).
+
+**Tooling finding for the mxcli session (a real bug):**
+- Under `run --local --watch`, a **model change that added a page and repointed the home** hot-applied
+  "via restart, client re-bundled (gen 2)" but then **`/dist/index.js` 404'd** → the app served only the
+  `<noscript>` shell and was unbootable. A **clean full restart fixed it** (the same page renders fine).
+  So the watch client-re-bundle path does not reliably regenerate/serve `/dist/index.js` on *structural*
+  model changes. Recommendation: on a structural change (new/removed page, nav/home change), force a full
+  client re-bundle (or fall back to a clean restart) rather than the incremental gen-bump — and have the
+  readiness probe verify `/dist/index.js` is 200 before reporting the build applied. (Theme-only SCSS
+  edits hot-apply correctly — that path is unaffected.)
+
 ## The standard — a 4-layer architecture
 
 ```
@@ -194,8 +227,9 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 - `show-describe-building-blocks.md` `use` — **proposed**; the ideal long-term recipe home.
 
 ## Open questions
-- **`designproperties` vs `class` strings**: recipes use `class:` today; migrate to typed
-  `designproperties` when that phase lands (more idiomatic, shows in the Appearance tab).
+- **`designproperties` vs `class` strings**: **resolved by live testing** — raw `class:` renders the full
+  Atlas vocabulary today, so recipes ship on `class:` now. Typed `designproperties` becomes a *later*
+  nicety (Studio-Pro Appearance-tab round-trip), not a prerequisite.
 - **Dark mode**: authored in tokens, but Atlas web apps don't runtime-toggle by default — ship
   light-only or wire a toggle?
 - **Recipe home end-state**: parameterized fragments vs native Building Blocks — likely both, with
