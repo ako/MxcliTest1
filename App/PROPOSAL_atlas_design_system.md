@@ -361,6 +361,30 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 
 ---
 
+## mxcli work required (prioritized)
+
+`atlas-design` is a skill layer, but it depends on and surfaces concrete mxcli work. Consolidated
+here so the tooling asks are visible in one place, ranked by how much they unblock the design
+workflow. **P0 = fix before the loop is reliable; P1 = enables the workflow; P2 = polish / round-trip.**
+"New" = surfaced by this session; otherwise it lives in the named existing proposal.
+
+| Pri | Item | Why it matters | Home |
+|---|---|---|---|
+| **P0** | **Watch-mode re-serves `/dist/*` on *structural* model changes** (new/removed page, nav/home change) — or forces a clean re-bundle; readiness probe must verify `/dist/index.js` is `200` before reporting "build applied" | Every structural change this session left the app blank/unbootable (gen-2 404) until a manual clean restart — it repeatedly broke the warm loop | New (tooling bug) |
+| **P0** | **`run` teardown kills its child `mxbuild --serve` / runtime** on stop | After `Ctrl-C`/kill, a stray serve held the port (`port 6543 in use`), so the next run refused to start | New (tooling) |
+| **P1** | **Building Blocks — READ**: extend the page/snippet widget-tree reader to `Forms$BuildingBlock`; expose `SHOW BUILDING BLOCKS` + `DESCRIBE BUILDING BLOCK` | Prerequisite for *any* Building-Block reuse — today content is unreadable (name-only), so you can't discover-then-reuse what a project ships | `show-describe-building-blocks.md` |
+| **P1** | **Building Blocks — INSTANTIATE**: `USE BUILDING BLOCK Mod.Name [prefix]` (deep-copy; reuse fragment-expansion) | The "compose a page from pre-built sections" capability — the native home for the recipe library | `show-describe-building-blocks.md` |
+| **P1** | **Parameterized fragments** | Lets content-varying recipes (a card wrapping arbitrary content) ship without `.mdl` fill-in; materially simplifies the recipe library | `proposal_page_composition.md` |
+| **P2** | **Chart theme colourway** — let a chart read a CSS var / named theme colourway | Charts are the *only* thing that doesn't re-skin via CSS (colour lives in the model's `customSeriesOptions`); today a re-brand needs an MDL edit + restart | New |
+| **P2** | **Building Blocks — AUTHOR**: `CREATE BUILDING BLOCK` | Generated apps contribute reusable blocks back to the Studio-Pro toolbox | `show-describe-building-blocks.md` |
+| **P2** | **Typed `designproperties`** (later phase) | Studio-Pro Appearance-tab round-trip; recipes could use Atlas tokens idiomatically vs. raw `class:` strings (not a blocker — `class:` renders everything today) | `page-styling-support.md` |
+| **P2** | **Lint rules**: hardcoded hex over token; data widget shipped without a recorded runtime verification | Enforces the token discipline and the "verify at runtime" rule the standard depends on | New (skill Phase 5) |
+| **P2** | **Widget-skill note**: Slider/RangeSlider `showTooltip:false` default (React `findDOMNode` removed in MX 11) | Prevents a "Could not render widget" crash that `mx check` can't catch | New (docs) |
+
+The P1 Building-Block trio (read → instantiate → author) is the single biggest lever: it turns the
+recipe library from a `.mdl`/fragment workaround into native, Studio-Pro-visible components. The two
+P0 items are small but block the tight verify loop the standard is built on.
+
 ## Rollout
 
 - **Phase 1 — skill core**: `atlas-design.md` + `gotchas.md` + `verify.md` (captures the method while fresh).
@@ -373,6 +397,10 @@ professional / branded / less bland", or to match a design mock. Companion to `c
   without a recorded runtime verification.
 
 ## Dependencies
+> For the ranked, consolidated view of everything mxcli needs to build (incl. the two P0 tooling
+> bugs), see **"mxcli work required (prioritized)"** above. This section lists only the hard
+> prerequisites for the skill itself.
+
 - `page-styling-support.md` Phase 1 (`class`/`style`) — **done**, required. Typed `designproperties`
   (later phase) would let recipes use Atlas tokens idiomatically instead of raw class strings.
 - `proposal_page_composition.md` fragments — **implemented**, required for the fragment recipes.
