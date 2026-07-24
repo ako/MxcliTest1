@@ -1,68 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 @import '../../../theme/web/custom-variables';
 
 // ============================================================================
-// Itinera — a modern SaaS design layer over Atlas UI.
-// Ported from the approved HTML mockup: cool-ink neutrals, one azure accent,
-// mono type for all temporal/numeric data, elevation + status pills.
+// ATLAS MES — a dark, industrial "execution system" design layer over Atlas UI.
+// Ported from the Atlas MES mockup: near-black control-room ground, gradient
+// cards with hairline borders + accent bars, sharp corners, Space Grotesk /
+// IBM Plex type, mono for all data, glowing status dots, one green accent.
+// Dark-only (no light variant) — so the Atlas-widget overrides are unconditional.
 // ============================================================================
 
 :root {
-  --tv-bg:        #eef1f7;
-  --tv-surface:   #ffffff;
-  --tv-surface-2: #f7f9fc;
-  --tv-ink:       #0e1626;
-  --tv-ink-2:     #384457;
-  --tv-muted:     #5c6779;
-  --tv-faint:     #8a94a6;
-  --tv-line:      #e4e8f0;
-  --tv-line-2:    #eef1f6;
-  --tv-accent:    #1f6feb;
-  --tv-accent-wash: rgba(31,111,235,.10);
+  --tv-bg:        #0a0d12;
+  --tv-surface:   #141a22;   // card gradient start
+  --tv-surface-2: #10151c;   // card gradient end / recessed
+  --tv-surface-3: #11161d;   // topbar / table header
+  --tv-panel:     linear-gradient(160deg, #141a22, #10151c);
+  --tv-topbar:    linear-gradient(180deg, #11161d, #0d1117);
 
-  --tv-good: #0f7a5a; --tv-good-wash: rgba(15,122,90,.12);
-  --tv-info: #1f6feb; --tv-info-wash: rgba(31,111,235,.12);
-  --tv-warn: #b4791f; --tv-warn-wash: rgba(180,121,31,.14);
+  --tv-ink:    #e6edf3;
+  --tv-ink-2:  #c9d1d9;
+  --tv-muted:  #8b949e;
+  --tv-faint:  #5c6773;
 
-  --tv-cat-sight:#eda100; --tv-cat-food:#1baf7a; --tv-cat-lodging:#eb6834;
-  --tv-cat-transport:#e87ba4; --tv-cat-activity:#2a78d6; --tv-cat-other:#8a94a6;
+  --tv-line:   #1c232c;
+  --tv-line-2: #161c24;
 
-  --tv-shadow-sm: 0 1px 2px rgba(16,24,40,.05), 0 1px 3px rgba(16,24,40,.05);
-  --tv-shadow-md: 0 2px 6px rgba(16,24,40,.06), 0 12px 28px rgba(16,24,40,.09);
-  --tv-radius: 14px;
-  --tv-radius-sm: 10px;
-  --tv-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Roboto Mono", Menlo, Consolas, monospace;
-}
-@media (prefers-color-scheme: dark) {
-  :root {
-    --tv-bg:#080b13; --tv-surface:#101725; --tv-surface-2:#0c1220;
-    --tv-ink:#eef2f9; --tv-ink-2:#c3ccdb; --tv-muted:#8f9bb0; --tv-faint:#66728a;
-    --tv-line:#1e2739; --tv-line-2:#161e2e;
-    --tv-accent:#4f8cff; --tv-accent-wash:rgba(79,140,255,.14);
-    --tv-good:#3bbb8f; --tv-good-wash:rgba(59,187,143,.15);
-    --tv-info:#4f8cff; --tv-info-wash:rgba(79,140,255,.15);
-    --tv-warn:#e0a94a; --tv-warn-wash:rgba(224,169,74,.16);
-    --tv-cat-sight:#c98500; --tv-cat-food:#199e70; --tv-cat-lodging:#d95926;
-    --tv-cat-transport:#d55181; --tv-cat-activity:#3987e5;
-    --tv-shadow-sm: 0 1px 2px rgba(0,0,0,.3);
-    --tv-shadow-md: 0 2px 8px rgba(0,0,0,.35), 0 16px 40px rgba(0,0,0,.45);
-  }
+  --tv-accent: #3fb950;                       // green — running / primary
+  --tv-accent-wash: rgba(63,185,80,.08);
+
+  --tv-good: #3fb950; --tv-good-wash: rgba(63,185,80,.10);
+  --tv-info: #58a6ff; --tv-info-wash: rgba(88,166,255,.10);   // complete
+  --tv-warn: #e3b341; --tv-warn-wash: rgba(227,179,65,.10);   // idle / hold
+  --tv-danger: #f85149; --tv-danger-wash: rgba(248,81,73,.08); // down / critical
+
+  // itinerary category accents, remapped onto the MES palette
+  --tv-cat-sight:#e3b341; --tv-cat-food:#3fb950; --tv-cat-lodging:#58a6ff;
+  --tv-cat-transport:#a371f7; --tv-cat-activity:#3fb950; --tv-cat-other:#8b949e;
+
+  --tv-shadow-sm: none;
+  --tv-shadow-md: 0 10px 34px rgba(0,0,0,.55);
+  --tv-radius: 0;      // MES is sharp-cornered
+  --tv-radius-sm: 0;
+
+  --tv-mono:    "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --tv-display: "Space Grotesk", "IBM Plex Sans", system-ui, sans-serif;
+  --tv-body:    "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 // ============================================================================
-// App shell — style the Atlas sidebar layout into the Itinera nav rail
+// Global ground + type
 // ============================================================================
+.mx-page, .mx-scrollcontainer-wrapper,
 .layout-atlas-responsive-sidebar { background: var(--tv-bg); }
+body, .mx-page, .mx-name-content, .region-content {
+  font-family: var(--tv-body); color: var(--tv-ink); letter-spacing: .2px;
+}
 
+// ============================================================================
+// App shell — the Atlas sidebar rendered as the MES nav rail
+// ============================================================================
 .region-sidebar {
-  width: 244px !important; flex: 0 0 244px !important;
-  background: var(--tv-surface) !important;
+  width: 232px !important; flex: 0 0 232px !important;
+  background: var(--tv-topbar) !important;
   border-right: 1px solid var(--tv-line);
   box-shadow: none;
-  // recolor Atlas's nav state vars so the selected/hover item is Itinera azure, not grey
   --navsidebar-bg: transparent;
-  --navsidebar-bg-hover: var(--tv-surface-2);
+  --navsidebar-bg-hover: rgba(255,255,255,.03);
   --navsidebar-bg-active: var(--tv-accent-wash);
-  --navigation-bg-hover: var(--tv-surface-2);
+  --navigation-bg-hover: rgba(255,255,255,.03);
   --navigation-bg-active: var(--tv-accent-wash);
   --navsidebar-color: var(--tv-muted);
   --navsidebar-color-hover: var(--tv-ink);
@@ -70,47 +75,50 @@
 }
 .region-sidebar .sidebar-wrapper,
 .region-sidebar .navbar-inner { background: transparent !important; }
-// hide the default Mendix app logo (static image) in the rail
 .region-sidebar .mx-name-staticImage1,
 .region-sidebar .mx-image-viewer { display: none !important; }
 
-// brand lockup injected at the top of the rail
+// brand lockup — "ATLAS MES" with a rotated-diamond mark, MES-style
 .region-sidebar .sidebar-wrapper::before {
-  content: "Itinera";
+  content: "ATLAS \00B7 MES";
   display: flex; align-items: center;
-  margin: 4px 12px 10px; padding: 10px 6px 14px 42px;
-  font-weight: 800; font-size: 18px; letter-spacing: -.015em; color: var(--tv-ink);
-  border-bottom: 1px solid var(--tv-line-2);
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28'%3E%3Crect width='28' height='28' rx='8' fill='%231f6feb'/%3E%3Cpath d='M14 7l6 3.5v7L14 21l-6-3.5v-7z' fill='none' stroke='%23fff' stroke-width='2' stroke-linejoin='round'/%3E%3C/svg%3E") 6px center / 28px 28px no-repeat;
+  margin: 0 0 6px; padding: 18px 6px 16px 48px; height: 56px; box-sizing: border-box;
+  font-family: var(--tv-display); font-weight: 700; font-size: 15px;
+  letter-spacing: 2px; color: var(--tv-ink);
+  border-bottom: 1px solid var(--tv-line);
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24'%3E%3Crect x='4' y='4' width='16' height='16' fill='none' stroke='%233fb950' stroke-width='2' transform='rotate(45 12 12)'/%3E%3Crect x='9' y='9' width='6' height='6' fill='%233fb950' transform='rotate(45 12 12)'/%3E%3C/svg%3E")
+    18px center / 24px 24px no-repeat;
 }
 
-// nav menu items
-.region-sidebar .mx-navigationtree { padding: 8px 10px 0 !important; margin-top: 0 !important; }
+.region-sidebar .mx-navigationtree { padding: 10px 8px 0 !important; margin-top: 0 !important; }
 .region-sidebar .mx-navigationtree a {
   display: flex; align-items: center; gap: 11px;
-  padding: 9px 11px; margin-bottom: 2px; border-radius: 9px;
-  color: var(--tv-muted) !important; font-weight: 500; font-size: 13.5px;
-  text-decoration: none; transition: background .12s ease, color .12s ease;
+  padding: 10px 12px; margin-bottom: 1px; border-radius: 0;
+  border-left: 2px solid transparent;
+  color: var(--tv-muted) !important; font-weight: 600; font-size: 12.5px;
+  letter-spacing: .4px; text-decoration: none;
+  transition: background .12s ease, color .12s ease, border-color .12s ease;
   .mx-navigationtree-item-text, span { color: inherit !important; }
-  .glyphicon, .mx-icon, [class*="mx-icon"] { color: var(--tv-faint); font-size: 17px; }
+  .glyphicon, .mx-icon, [class*="mx-icon"] { color: var(--tv-faint); font-size: 16px; }
 }
 .region-sidebar .mx-navigationtree a:hover {
-  background: var(--tv-surface-2); color: var(--tv-ink) !important;
+  background: rgba(255,255,255,.03); color: var(--tv-ink) !important;
 }
 .region-sidebar .mx-navigationtree .active > a,
 .region-sidebar .mx-navigationtree a.active,
 .region-sidebar .mx-navigationtree a.mx-navigationtree-item-selected {
   background: var(--tv-accent-wash); color: var(--tv-accent) !important;
+  border-left-color: var(--tv-accent);
   [class*="mx-icon"], .glyphicon { color: var(--tv-accent); }
 }
-
-// hide the desktop collapse toggle (mockup rail is fixed)
 .region-sidebar .toggle-btn-sidebar.hide-phone { display: none !important; }
 
-// ---- page ground -----------------------------------------------------------
-.mx-page, .mx-scrollcontainer-wrapper { background: var(--tv-bg); }
+// ---- page canvas -----------------------------------------------------------
 .travel-app {
-  max-width: 1240px; margin: 0 auto; padding: 8px 6px 60px; color: var(--tv-ink);
+  max-width: 1320px; margin: 0 auto; padding: 8px 8px 60px; color: var(--tv-ink);
+  font-family: var(--tv-body);
+  h1,h2,h3,h4,h5 { font-family: var(--tv-display); }
 }
 .travel-app .mono .mx-text, .travel-app .tv-mono .mx-text {
   font-family: var(--tv-mono); font-variant-numeric: tabular-nums;
@@ -118,128 +126,139 @@
 
 // ---- shared helpers --------------------------------------------------------
 .eyebrow .mx-text, .eyebrow.mx-text {
-  font-family: var(--tv-mono); font-size: 11px; letter-spacing: .12em;
+  font-family: var(--tv-mono); font-size: 11px; letter-spacing: .18em;
   text-transform: uppercase; color: var(--tv-faint); font-weight: 500;
 }
 .panel {
-  background: var(--tv-surface); border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+  background: var(--tv-panel); border: 1px solid var(--tv-line);
+  border-radius: 0; box-shadow: none; overflow: hidden;
 }
 .panel-head {
   display: flex; align-items: center; gap: 10px; padding: 15px 17px 4px;
-  h1,h2,h3,h4,h5 { margin: 0; font-size: 15px; font-weight: 650; letter-spacing: -.01em; color: var(--tv-ink); }
-  .panel-sub .mx-text { color: var(--tv-faint); font-size: 12px; }
+  h1,h2,h3,h4,h5 { margin: 0; font-family: var(--tv-display); font-size: 13px; font-weight: 600;
+    letter-spacing: .5px; text-transform: uppercase; color: var(--tv-ink); }
+  .panel-sub .mx-text { color: var(--tv-faint); font-size: 11px; font-family: var(--tv-mono); }
 }
 .panel-body { padding: 14px 17px 18px; }
 .is-money .mx-text { font-family: var(--tv-mono); font-variant-numeric: tabular-nums; }
-.is-money .mx-text::before { content: "$"; opacity: .7; }
+.is-money .mx-text::before { content: "$"; opacity: .55; }
 
 // ---- page header -----------------------------------------------------------
 .page-header {
   display: flex; align-items: flex-end; flex-wrap: wrap; gap: 6px 18px;
-  padding: 20px 4px 18px; margin-bottom: 18px; border-bottom: 1px solid var(--tv-line);
-  h1 { margin: 2px 0 0; font-size: 27px; font-weight: 750; letter-spacing: -.025em; color: var(--tv-ink); }
-  .page-sub .mx-text { color: var(--tv-muted); font-size: 14.5px; }
-  .header-titles { flex: 1 1 auto; display: flex; flex-direction: column; gap: 2px; }
+  padding: 18px 4px 16px; margin-bottom: 16px; border-bottom: 1px solid var(--tv-line);
+  h1 { margin: 2px 0 0; font-family: var(--tv-display); font-size: 22px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--tv-ink); }
+  .page-sub .mx-text { color: var(--tv-muted); font-size: 13px; }
+  .header-titles { flex: 1 1 auto; display: flex; flex-direction: column; gap: 3px; }
   .mx-button, .btn { margin-left: auto; align-self: center; }
 }
 
-// ---- buttons (azure) -------------------------------------------------------
+// ---- buttons (sharp, uppercase, MES) ---------------------------------------
+.travel-app .btn, .travel-app .mx-button {
+  border-radius: 0; font-family: var(--tv-body); font-weight: 600;
+  font-size: 11px; letter-spacing: .6px; text-transform: uppercase;
+  padding: 8px 16px; transition: background .12s ease, border-color .12s ease;
+}
 .travel-app .btn-primary.mx-button, .travel-app .mx-button.btn-primary {
-  background: var(--tv-accent); border-color: var(--tv-accent); color: #fff;
-  border-radius: 9px; font-weight: 600; box-shadow: var(--tv-shadow-sm);
-  transition: transform .12s ease, box-shadow .12s ease;
-  &:hover { transform: translateY(-1px); box-shadow: var(--tv-shadow-md); }
+  background: var(--tv-accent-wash); border: 1px solid var(--tv-accent); color: var(--tv-accent);
+  box-shadow: none;
+  &:hover { background: rgba(63,185,80,.16); }
 }
 .travel-app .btn-default.mx-button {
-  border-radius: 9px; border-color: var(--tv-line); background: var(--tv-surface); font-weight: 600;
+  border: 1px solid var(--tv-line); background: var(--tv-surface-2); color: var(--tv-ink-2);
+  &:hover { border-color: var(--tv-muted); color: var(--tv-ink); }
 }
 
-// ---- KPI stat row ----------------------------------------------------------
-.stat-row .mx-dataview-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+// ---- KPI stat row (MES tiles: left accent bar, uppercase label, mono value) -
+.stat-row .mx-dataview-content { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .stat {
-  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
-  padding: 15px 16px; box-shadow: var(--tv-shadow-sm);
-  .stat-k .mx-text { color: var(--tv-muted); font-size: 12.5px; font-weight: 500; }
-  .stat-v { margin-top: 7px; }
+  background: var(--tv-panel); border: 1px solid var(--tv-line); border-left: 3px solid var(--tv-accent);
+  border-radius: 0; padding: 13px 15px; box-shadow: none;
+  .stat-k .mx-text { color: var(--tv-faint); font-size: 10px; font-weight: 500;
+    letter-spacing: 1.2px; text-transform: uppercase; }
+  .stat-v { margin-top: 9px; }
   .stat-v .mx-text {
     font-family: var(--tv-mono); font-variant-numeric: tabular-nums;
-    font-size: 25px; font-weight: 700; letter-spacing: -.02em; color: var(--tv-ink);
+    font-size: 26px; font-weight: 600; letter-spacing: 0; color: var(--tv-ink);
   }
-  .stat-d { margin-top: 3px; }
-  .stat-d .mx-text { color: var(--tv-faint); font-size: 12px; font-weight: 600; }
+  .stat-d { margin-top: 8px; }
+  .stat-d .mx-text { color: var(--tv-muted); font-size: 11px; font-weight: 500; font-family: var(--tv-mono); }
 }
 
 // ---- insights strip --------------------------------------------------------
-.insights-strip { display: grid; grid-template-columns: 1.05fr 1fr; gap: 14px; margin: 20px 0 24px; }
+.insights-strip { display: grid; grid-template-columns: 1.05fr 1fr; gap: 12px; margin: 18px 0 22px; }
 .insight-card {
-  background: var(--tv-surface); border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+  background: var(--tv-panel); border: 1px solid var(--tv-line);
+  border-radius: 0; box-shadow: none; overflow: hidden;
 }
 
 // ---- section bar -----------------------------------------------------------
 .section-bar {
   display: flex; align-items: center; gap: 12px; margin: 4px 0 14px;
-  h2,h3 { margin: 0; font-size: 16px; font-weight: 650; color: var(--tv-ink); }
+  h2,h3 { margin: 0; font-family: var(--tv-display); font-size: 14px; font-weight: 600;
+    letter-spacing: .5px; text-transform: uppercase; color: var(--tv-ink); }
   .section-count .mx-text {
-    font-family: var(--tv-mono); font-size: 12px; color: var(--tv-faint);
-    background: var(--tv-surface); border: 1px solid var(--tv-line); padding: 1px 8px; border-radius: 20px;
+    font-family: var(--tv-mono); font-size: 11px; color: var(--tv-faint);
+    background: var(--tv-surface-2); border: 1px solid var(--tv-line); padding: 2px 8px; border-radius: 0;
   }
 }
 
-// ---- trips gallery ---------------------------------------------------------
+// ---- trips gallery — MES line-card style -----------------------------------
 .trips-gallery .mx-gallery-item, .trips-gallery li { outline: none; }
 .trip-card {
-  position: relative; display: flex; flex-direction: column; margin: 8px;
-  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
-  box-shadow: var(--tv-shadow-sm); overflow: hidden; cursor: pointer;
-  transition: transform .16s ease, box-shadow .16s ease, border-color .16s ease;
-  &:hover {
-    transform: translateY(-3px); box-shadow: var(--tv-shadow-md);
-    border-color: color-mix(in srgb, var(--tv-accent) 30%, var(--tv-line));
-  }
+  position: relative; display: flex; flex-direction: column; margin: 6px;
+  background: var(--tv-panel); border: 1px solid var(--tv-line); border-radius: 0;
+  box-shadow: none; overflow: hidden; cursor: pointer;
+  transition: border-color .16s ease, transform .16s ease;
+  // MES signature: a thin accent status bar across the top of each card
+  &::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--tv-accent); z-index: 5; }
+  &:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--tv-accent) 40%, var(--tv-line)); }
 }
 .card-hit {
   position: absolute; inset: 0; z-index: 4; opacity: 0; border: 0; background: transparent; cursor: pointer;
   &:hover, &:focus { opacity: 0; outline: none; }
 }
 .trip-cover {
-  position: relative; width: 100%; height: 140px; overflow: hidden;
+  position: relative; width: 100%; height: 130px; overflow: hidden;
   .mx-image-background, .mx-image, [class*='image'] {
-    background-size: cover !important; background-position: center !important; background-color: #cfd8e6;
+    background-size: cover !important; background-position: center !important; background-color: #0d1117;
+    filter: saturate(.85) contrast(1.05);
   }
   &::after {
     content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(to top, rgba(8,12,22,.5) 0%, rgba(8,12,22,.05) 45%, rgba(8,12,22,0) 100%);
+    background: linear-gradient(to top, rgba(10,13,18,.85) 0%, rgba(10,13,18,.2) 55%, rgba(10,13,18,.05) 100%);
   }
 }
 .trip-dest {
-  position: absolute; left: 13px; bottom: 11px; z-index: 2;
-  .mx-text { font-family: var(--tv-mono); font-size: 11.5px; letter-spacing: .04em; color:#fff;
-    text-shadow: 0 1px 6px rgba(0,0,0,.5); }
+  position: absolute; left: 14px; bottom: 11px; z-index: 2;
+  .mx-text { font-family: var(--tv-mono); font-size: 11px; letter-spacing: .06em; color: var(--tv-ink);
+    text-shadow: 0 1px 6px rgba(0,0,0,.7); }
 }
 
-// status pills — container carries state class, Badge/text renders inside
+// status pills — square, uppercase, colored border + wash, MES-style
 .trip-status-badge {
-  position: absolute; top: 11px; right: 11px; z-index: 3;
+  position: absolute; top: 14px; right: 11px; z-index: 6;
   .mx-text {
     display: inline-flex; align-items: center; font-family: var(--tv-mono);
-    font-size: 11px; font-weight: 700; letter-spacing: .03em; text-transform: uppercase;
-    padding: 4px 10px; border-radius: 20px; color: #fff;
-    background: rgba(8,12,22,.55); backdrop-filter: blur(4px); border: 0;
+    font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+    padding: 4px 9px; border-radius: 0; color: var(--tv-accent);
+    background: rgba(10,13,18,.7); border: 1px solid var(--tv-accent); backdrop-filter: blur(3px);
   }
 }
 .trip-body {
-  padding: 13px 15px 4px; display: flex; flex-direction: column; gap: 2px;
-  h3,h4 { margin: 0; font-size: 16.5px; font-weight: 680; letter-spacing: -.01em; color: var(--tv-ink); }
+  padding: 13px 15px 4px; display: flex; flex-direction: column; gap: 3px;
+  h3,h4 { margin: 0; font-family: var(--tv-display); font-size: 16px; font-weight: 600;
+    letter-spacing: .3px; color: var(--tv-ink); }
 }
-.trip-meta .mx-text { font-family: var(--tv-mono); color: var(--tv-ink-2); font-size: 12.5px; }
+.trip-meta .mx-text { font-family: var(--tv-mono); color: var(--tv-ink-2); font-size: 12px; }
 .trip-foot {
   display: flex; align-items: flex-start; gap: 14px; margin: 12px 15px 15px;
-  padding-top: 12px; border-top: 1px solid var(--tv-line-2);
+  padding-top: 12px; border-top: 1px solid var(--tv-line);
   .trip-budget { flex: 0 0 auto; }
   .trip-budget .mx-text {
-    font-family: var(--tv-mono); font-weight: 700; font-size: 15px; color: var(--tv-ink);
+    font-family: var(--tv-mono); font-weight: 600; font-size: 15px; color: var(--tv-ink);
     font-variant-numeric: tabular-nums;
   }
   .trip-days { flex: 1 1 auto; min-width: 0;
@@ -252,66 +271,68 @@
 
 // ---- detail hero -----------------------------------------------------------
 .trip-hero {
-  position: relative; border-radius: var(--tv-radius); overflow: hidden;
-  border: 1px solid var(--tv-line); box-shadow: var(--tv-shadow-sm); margin-bottom: 16px;
+  position: relative; border-radius: 0; overflow: hidden;
+  border: 1px solid var(--tv-line); box-shadow: none; margin-bottom: 14px;
 }
 .hero-cover {
-  position: relative; height: 220px; width: 100%;
+  position: relative; height: 210px; width: 100%;
   .mx-image-background, .mx-image, [class*='image'] {
-    background-size: cover !important; background-position: center !important; background-color: #cfd8e6;
+    background-size: cover !important; background-position: center !important; background-color: #0d1117;
+    filter: saturate(.85) contrast(1.05);
   }
 }
 .hero-overlay {
   position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
   display: flex; flex-direction: column; gap: 7px; padding: 22px 24px 20px;
-  background: linear-gradient(to top, rgba(6,9,16,.82) 0%, rgba(6,9,16,.30) 48%, rgba(6,9,16,.02) 100%);
-  h1 { margin: 0; color: #fff; font-size: 30px; font-weight: 760; letter-spacing: -.025em; }
-  .hero-loc .mx-text { color: rgba(255,255,255,.92); font-family: var(--tv-mono); font-size: 13px; }
+  background: linear-gradient(to top, rgba(10,13,18,.92) 0%, rgba(10,13,18,.4) 50%, rgba(10,13,18,.05) 100%);
+  h1 { margin: 0; font-family: var(--tv-display); color: var(--tv-ink); font-size: 26px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; }
+  .hero-loc .mx-text { color: var(--tv-ink-2); font-family: var(--tv-mono); font-size: 12px; }
 }
 .hero-topline {
-  position: absolute; top: 15px; left: 15px; right: 15px; z-index: 3;
+  position: absolute; top: 14px; left: 14px; right: 14px; z-index: 3;
   display: flex; align-items: center; gap: 10px;
   .mx-button {
-    margin-left: auto; border-radius: 9px; font-weight: 600;
-    background: rgba(12,18,30,.42) !important; border: 1px solid rgba(255,255,255,.4) !important;
-    color: #fff !important; backdrop-filter: blur(6px);
-    &:hover { background: rgba(12,18,30,.6) !important; }
+    margin-left: auto; border-radius: 0; font-weight: 600;
+    background: rgba(10,13,18,.55) !important; border: 1px solid var(--tv-line) !important;
+    color: var(--tv-ink) !important; backdrop-filter: blur(6px);
+    &:hover { background: rgba(10,13,18,.8) !important; border-color: var(--tv-muted) !important; }
   }
   .trip-status-badge { position: static; }
 }
 .trip-metabar {
   display: flex; align-items: center; gap: 0 22px; flex-wrap: wrap;
-  background: var(--tv-surface); border: 1px solid var(--tv-line); border-radius: var(--tv-radius);
-  padding: 14px 20px; box-shadow: var(--tv-shadow-sm); margin-bottom: 16px;
-  .meta-item { display: flex; flex-direction: column; gap: 2px; }
-  .meta-lb .mx-text { font-size: 11px; color: var(--tv-faint); text-transform: uppercase; letter-spacing: .06em; }
-  .meta-vv .mx-text { font-family: var(--tv-mono); font-weight: 650; font-size: 15px; color: var(--tv-ink); }
+  background: var(--tv-panel); border: 1px solid var(--tv-line); border-radius: 0;
+  padding: 14px 20px; box-shadow: none; margin-bottom: 14px;
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-lb .mx-text { font-size: 10px; color: var(--tv-faint); text-transform: uppercase; letter-spacing: 1px; }
+  .meta-vv .mx-text { font-family: var(--tv-mono); font-weight: 600; font-size: 15px; color: var(--tv-ink); }
   .meta-sep { width: 1px; height: 30px; background: var(--tv-line); }
-  .meta-summary { flex: 1 1 260px; min-width: 220px; .mx-text { color: var(--tv-ink-2); font-size: 13.5px; line-height: 1.5; } }
+  .meta-summary { flex: 1 1 260px; min-width: 220px; .mx-text { color: var(--tv-ink-2); font-size: 13px; line-height: 1.5; } }
 }
 
 // ---- detail two columns ----------------------------------------------------
 .agenda-panel, .timeline-panel {
-  background: var(--tv-surface); border: 1px solid var(--tv-line);
-  border-radius: var(--tv-radius); box-shadow: var(--tv-shadow-sm); overflow: hidden;
+  background: var(--tv-panel); border: 1px solid var(--tv-line);
+  border-radius: 0; box-shadow: none; overflow: hidden;
 }
 .day-block { padding: 2px 4px 8px; }
 .day-head {
   display: flex; align-items: center; gap: 11px; padding: 9px 6px 7px;
   .day-num .mx-text {
-    display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 8px;
+    display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 0;
     background: var(--tv-accent-wash); color: var(--tv-accent); font-family: var(--tv-mono);
-    font-weight: 700; font-size: 12.5px;
+    font-weight: 600; font-size: 12px; border: 1px solid var(--tv-accent);
   }
-  .day-title .mx-text { font-weight: 650; font-size: 14.5px; color: var(--tv-ink); }
+  .day-title .mx-text { font-weight: 600; font-size: 14px; color: var(--tv-ink); font-family: var(--tv-display); }
   .day-date { margin-left: auto; .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-faint); } }
 }
 .act-row {
   display: grid; grid-template-columns: 58px 1fr; gap: 12px; align-items: start;
-  padding: 9px 8px; border-radius: var(--tv-radius-sm);
-  &:hover { background: var(--tv-surface-2); }
+  padding: 9px 8px; border-radius: 0;
+  &:hover { background: rgba(255,255,255,.02); }
   .act-time .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-ink-2); font-variant-numeric: tabular-nums; }
-  .act-name .mx-text { font-weight: 600; font-size: 13.5px; color: var(--tv-ink); }
+  .act-name .mx-text { font-weight: 600; font-size: 13px; color: var(--tv-ink); }
   .act-tags { display: flex; align-items: center; gap: 9px; margin-top: 5px; flex-wrap: wrap; }
   .act-loc .mx-text { color: var(--tv-faint); font-size: 12px; }
 }
@@ -319,58 +340,351 @@
 // category chip — colored by dynamicclasses cat-*
 .cat-chip {
   display: inline-flex; align-items: center; gap: 6px;
-  padding: 2px 9px 2px 8px; border: 1px solid var(--tv-line); background: var(--tv-surface-2); border-radius: 20px;
-  .mx-text { font-size: 11px; font-weight: 600; color: var(--tv-ink-2); }
-  &::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tv-cat-other); flex: 0 0 auto; }
+  padding: 2px 9px 2px 8px; border: 1px solid var(--tv-line); background: var(--tv-surface-2); border-radius: 0;
+  .mx-text { font-size: 10px; font-weight: 600; color: var(--tv-ink-2); font-family: var(--tv-mono);
+    letter-spacing: .5px; text-transform: uppercase; }
+  &::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--tv-cat-other); flex: 0 0 auto;
+    box-shadow: 0 0 6px var(--tv-cat-other); }
 }
-.cat-chip.cat-sight::before { background: var(--tv-cat-sight); }
-.cat-chip.cat-food::before { background: var(--tv-cat-food); }
-.cat-chip.cat-lodging::before { background: var(--tv-cat-lodging); }
-.cat-chip.cat-transport::before { background: var(--tv-cat-transport); }
-.cat-chip.cat-activity::before { background: var(--tv-cat-activity); }
+.cat-chip.cat-sight::before { background: var(--tv-cat-sight); box-shadow: 0 0 6px var(--tv-cat-sight); }
+.cat-chip.cat-food::before { background: var(--tv-cat-food); box-shadow: 0 0 6px var(--tv-cat-food); }
+.cat-chip.cat-lodging::before { background: var(--tv-cat-lodging); box-shadow: 0 0 6px var(--tv-cat-lodging); }
+.cat-chip.cat-transport::before { background: var(--tv-cat-transport); box-shadow: 0 0 6px var(--tv-cat-transport); }
+.cat-chip.cat-activity::before { background: var(--tv-cat-activity); box-shadow: 0 0 6px var(--tv-cat-activity); }
 
 // timeline
 .tl-daylabel .mx-text {
-  display: inline-block; font-family: var(--tv-mono); font-size: 11px; letter-spacing: .06em;
+  display: inline-block; font-family: var(--tv-mono); font-size: 10px; letter-spacing: 1px;
   text-transform: uppercase; color: var(--tv-faint); background: var(--tv-surface-2);
-  border: 1px solid var(--tv-line); padding: 3px 10px; border-radius: 20px; margin: 8px 0 6px 20px;
+  border: 1px solid var(--tv-line); padding: 3px 10px; border-radius: 0; margin: 8px 0 6px 20px;
 }
 .tl-item {
   position: relative; padding: 4px 0 14px 34px;
   &::before { content: ""; position: absolute; left: 11px; top: 0; bottom: 0; width: 2px; background: var(--tv-line); }
   .tl-head { display: flex; align-items: baseline; gap: 10px; }
-  .tl-name .mx-text { font-weight: 600; font-size: 13.5px; color: var(--tv-ink); }
+  .tl-name .mx-text { font-weight: 600; font-size: 13px; color: var(--tv-ink); }
   .tl-time { margin-left: auto; .mx-text { font-family: var(--tv-mono); font-size: 12px; color: var(--tv-muted); white-space: nowrap; } }
   .tl-sub .mx-text { color: var(--tv-faint); font-size: 12px; }
 }
 .tl-node {
-  position: absolute; left: 5px; top: 6px; width: 14px; height: 14px; border-radius: 50%; z-index: 1;
-  background: var(--tv-cat-other); border: 3px solid var(--tv-surface); box-shadow: 0 0 0 1.5px var(--tv-line);
+  position: absolute; left: 5px; top: 6px; width: 12px; height: 12px; border-radius: 50%; z-index: 1;
+  background: var(--tv-cat-other); border: 2px solid var(--tv-bg); box-shadow: 0 0 8px var(--tv-cat-other);
 }
-.tl-node.cat-sight { background: var(--tv-cat-sight); }
-.tl-node.cat-food { background: var(--tv-cat-food); }
-.tl-node.cat-lodging { background: var(--tv-cat-lodging); }
-.tl-node.cat-transport { background: var(--tv-cat-transport); }
-.tl-node.cat-activity { background: var(--tv-cat-activity); }
+.tl-node.cat-sight { background: var(--tv-cat-sight); box-shadow: 0 0 8px var(--tv-cat-sight); }
+.tl-node.cat-food { background: var(--tv-cat-food); box-shadow: 0 0 8px var(--tv-cat-food); }
+.tl-node.cat-lodging { background: var(--tv-cat-lodging); box-shadow: 0 0 8px var(--tv-cat-lodging); }
+.tl-node.cat-transport { background: var(--tv-cat-transport); box-shadow: 0 0 8px var(--tv-cat-transport); }
+.tl-node.cat-activity { background: var(--tv-cat-activity); box-shadow: 0 0 8px var(--tv-cat-activity); }
 
-// ---- budget list (Budget page) ---------------------------------------------
+// ---- budget list (Budget page) — MES table rows ----------------------------
 .budget-row {
   display: flex; align-items: center; gap: 14px;
-  padding: 14px 6px; border-bottom: 1px solid var(--tv-line-2);
+  padding: 14px 8px; border-bottom: 1px solid var(--tv-line-2);
   .budget-main { flex: 1 1 auto; min-width: 0; }
-  .budget-name .mx-text { font-weight: 650; font-size: 14.5px; color: var(--tv-ink); }
-  .budget-dest .mx-text { font-family: var(--tv-mono); color: var(--tv-faint); font-size: 12px; }
+  .budget-name .mx-text { font-weight: 600; font-size: 14px; color: var(--tv-ink); font-family: var(--tv-display); }
+  .budget-dest .mx-text { font-family: var(--tv-mono); color: var(--tv-faint); font-size: 11px; }
   .budget-badge { position: static; }
-  .budget-amt .mx-text { font-family: var(--tv-mono); font-weight: 700; font-size: 17px; color: var(--tv-ink); font-variant-numeric: tabular-nums; }
+  .budget-amt .mx-text { font-family: var(--tv-mono); font-weight: 600; font-size: 17px; color: var(--tv-accent); font-variant-numeric: tabular-nums; }
 }
-.mx-listview .budget-row { }
 .budget-list .mx-listview-item:last-child .budget-row { border-bottom: 0; }
+.budget-list .mx-listview-item:hover .budget-row { background: rgba(255,255,255,.02); }
 
 .mx-gallery-empty, .mx-listview-empty {
-  padding: 28px; text-align: center; color: var(--tv-muted); font-size: 14px;
+  padding: 28px; text-align: center; color: var(--tv-muted); font-size: 13px; font-family: var(--tv-mono);
 }
 
 @media (max-width: 900px) {
   .stat-row .mx-dataview-content { grid-template-columns: repeat(2, 1fr); }
   .insights-strip { grid-template-columns: 1fr; }
 }
+
+// ============================================================================
+// Widget Lab scaffolding
+// ============================================================================
+.lab-cell {
+  padding: 6px 6px 16px;
+  h1,h2,h3,h4,h5 { margin: 0 0 11px; font-family: var(--tv-display); font-size: 12px; font-weight: 600;
+    letter-spacing: .5px; text-transform: uppercase; color: var(--tv-ink); }
+}
+.lab-html-block {
+  padding: 10px 13px; border-radius: 0; font-weight: 600; font-family: var(--tv-mono);
+  background: var(--tv-accent-wash); color: var(--tv-accent);
+  border: 1px solid color-mix(in srgb, var(--tv-accent) 40%, transparent);
+}
+.lab-tip-target .mx-text {
+  display: inline-block; padding: 7px 13px; border-radius: 0;
+  border: 1px dashed var(--tv-line); color: var(--tv-ink-2);
+  background: var(--tv-surface-2); cursor: help; font-family: var(--tv-mono);
+}
+.travel-app .js-plotly-plot .main-svg { background: transparent !important; }
+
+// ============================================================================
+// Atlas-widget dark surfaces — UNCONDITIONAL (the app is dark-only). Repaint the
+// light-only surfaces Atlas + Plotly ship so nothing clashes with the ground.
+// ============================================================================
+.travel-app {
+  // text inputs / textarea / combobox field
+  .form-control, textarea, textarea.form-control, select, .form-control-static,
+  .widget-combobox, .widget-combobox-input, .widget-combobox-selected-items {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+    border-radius: 0 !important;
+    &::placeholder { color: var(--tv-faint) !important; }
+  }
+  .widget-combobox-placeholder { color: var(--tv-faint) !important; }
+  .widget-combobox-icon { color: var(--tv-muted) !important; }
+
+  // Datagrid 2 — grid surface, header, rows, cells
+  .widget-datagrid, .widget-datagrid-grid, .widget-datagrid-content,
+  .widget-datagrid-grid-body, .widget-datagrid-grid-head {
+    background-color: transparent !important;
+    color: var(--tv-ink) !important;
+  }
+  .widget-datagrid-grid-head, .widget-datagrid .th, .widget-datagrid [role="columnheader"] {
+    background-color: var(--tv-surface-3) !important;
+  }
+  .widget-datagrid .tr, .widget-datagrid .td, .widget-datagrid .th,
+  .widget-datagrid [role="row"], .widget-datagrid [role="cell"],
+  .widget-datagrid [role="columnheader"], .widget-datagrid [role="gridcell"] {
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+  }
+  .widget-datagrid .td, .widget-datagrid [role="gridcell"] { font-family: var(--tv-mono); }
+  .widget-datagrid .th, .widget-datagrid [role="columnheader"],
+  .widget-datagrid .column-header {
+    color: var(--tv-faint) !important; text-transform: uppercase; letter-spacing: 1px; font-size: 10px;
+  }
+  .widget-datagrid [role="row"]:hover,
+  .widget-datagrid .tr:hover { background-color: rgba(255,255,255,.02) !important; }
+  .widget-datagrid-paging-status, .widget-datagrid .paging-status { color: var(--tv-muted) !important; }
+
+  .widget-datagrid .btn-default, .widget-datagrid .btn,
+  .filter-selector-button, .filter-selectors {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+    border-radius: 0 !important;
+  }
+  .widget-datagrid .btn-default:hover, .filter-selector-button:hover {
+    background-color: var(--tv-surface) !important;
+  }
+
+  // Accordion
+  .widget-accordion, .widget-accordion-group,
+  .widget-accordion-group-header, .widget-accordion-group-header-button,
+  .widget-accordion-group-content, .mx-accordion, .card {
+    background-color: var(--tv-surface-2) !important;
+    color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important;
+    border-radius: 0 !important;
+  }
+  .widget-accordion-group-header-button { color: var(--tv-ink) !important; }
+
+  // Fieldset
+  fieldset, .widget-fieldset { border-color: var(--tv-line) !important; }
+  fieldset > legend, .widget-fieldset legend { color: var(--tv-ink) !important; border-color: var(--tv-line) !important; }
+
+  // TreeNode — expanded rows ship a white card bg
+  .widget-tree-node-body, .widget-tree-node-content, .widget-tree-node-branch,
+  .widget-tree-node-body [class*="mx-name-index"] {
+    background-color: transparent !important;
+    color: var(--tv-ink) !important;
+  }
+  .widget-tree-node-branch-header:hover,
+  .widget-tree-node-branch-header-clickable:hover { background-color: rgba(255,255,255,.03) !important; }
+
+  .panel h1, .panel h2, .panel h3, .panel h4, .panel h5,
+  .lab-cell h5, label.control-label, .control-label { color: var(--tv-ink) !important; }
+}
+
+// ============================================================================
+// Modal / popup chrome — the edit popups (Trip_NewEdit, etc.) render in an
+// .mx-window at <body>, outside .travel-app, so they need global MES rules.
+// The white .modal-content showing through the transparent header was the
+// "white title bar".
+// ============================================================================
+.mx-window-content, .modal-content {
+  background: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+  box-shadow: var(--tv-shadow-md) !important;
+}
+.mx-window-header, .modal-header {
+  background: var(--tv-topbar) !important;
+  border-bottom: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.mx-window-header .mx-text, .modal-header .mx-text,
+.mx-window-title, .modal-title, .mx-dialog-caption {
+  color: var(--tv-ink) !important; font-family: var(--tv-display);
+  letter-spacing: .5px; text-transform: uppercase; font-size: 14px;
+}
+.mx-window-header .close, .modal-header .close, .mx-window .close {
+  color: var(--tv-muted) !important; opacity: 1 !important; text-shadow: none !important;
+  &:hover { color: var(--tv-ink) !important; }
+}
+.mx-window-body, .modal-body, .mx-window-footer, .modal-footer {
+  background: transparent !important; color: var(--tv-ink) !important; border-color: var(--tv-line) !important;
+}
+.mx-window, .modal {
+  .form-control, textarea, select, .widget-combobox, .widget-combobox-input, .widget-combobox-selected-items {
+    background-color: var(--tv-surface-2) !important; color: var(--tv-ink) !important;
+    border-color: var(--tv-line) !important; border-radius: 0 !important;
+    &::placeholder { color: var(--tv-faint) !important; }
+  }
+  .control-label, label { color: var(--tv-ink-2) !important; }
+  .btn { border-radius: 0 !important; text-transform: uppercase; letter-spacing: .5px;
+    font-size: 11px; font-weight: 600; }
+  .btn-default { background: var(--tv-surface-2) !important; color: var(--tv-ink-2) !important;
+    border: 1px solid var(--tv-line) !important;
+    &:hover { border-color: var(--tv-muted) !important; color: var(--tv-ink) !important; } }
+  .btn-primary, .btn-success { background: var(--tv-accent-wash) !important; color: var(--tv-accent) !important;
+    border: 1px solid var(--tv-accent) !important;
+    &:hover { background: rgba(63,185,80,.16) !important; } }
+}
+
+// Portal popovers render at <body>, outside .travel-app — theme globally.
+.widget-combobox-menu, .popupmenu-menu,
+.widget-tooltip, [class*="tooltip"] .tooltip-inner,
+.filter-selectors, .widget-dropdown-filter-menu-slot, .widget-dropdown-filter-menu {
+  background-color: var(--tv-surface-2) !important;
+  color: var(--tv-ink) !important;
+  border: 1px solid var(--tv-line) !important;
+  border-radius: 0 !important;
+}
+.widget-dropdown-filter-menu-item, .widget-dropdown-filter-menu-item-text,
+.widget-combobox-menu .widget-combobox-item, .filter-selectors li {
+  color: var(--tv-ink) !important;
+}
+.widget-dropdown-filter-menu, .widget-combobox-menu { background-image: none !important; }
+.widget-dropdown-filter-popover, .widget-combobox-menu { box-shadow: var(--tv-shadow-md) !important; }
+.widget-combobox-menu .widget-combobox-item:hover,
+.widget-dropdown-filter-menu-item:hover,
+.widget-dropdown-filter-menu li:hover,
+.filter-selectors li:hover { background-color: var(--tv-accent-wash) !important; }
+
+// ============================================================================
+// MES Line Overview — a bespoke operations dashboard on the Blank-ish canvas.
+// Custom top-bar + tabs shell, status-driven card colouring, live-cue anims.
+// ============================================================================
+@keyframes mesPulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+@keyframes mesBlink { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+
+.is-mono .mx-text { font-family: var(--tv-mono); font-variant-numeric: tabular-nums; }
+
+// hide the Atlas sidebar only on the MES page → full-screen control room
+.mx-page:has(.mes-app) .region-sidebar { display: none !important; }
+.mx-page:has(.mes-app) .region-content { margin: 0 !important; padding: 0 !important; }
+
+.mes-app { display: flex; flex-direction: column; min-height: 100vh; background: var(--tv-bg);
+  color: var(--tv-ink); font-family: var(--tv-body); }
+
+// ---- top bar ----
+.mes-topbar {
+  display: flex; align-items: center; height: 56px; flex: none;
+  border-bottom: 1px solid var(--tv-line); background: var(--tv-topbar);
+}
+.mes-brand { display: flex; align-items: center; gap: 11px; padding: 0 20px; height: 100%; border-right: 1px solid var(--tv-line); }
+.mes-mark { width: 24px; height: 24px; border: 2px solid var(--tv-accent); transform: rotate(45deg);
+  position: relative; flex: none;
+  &::after { content: ""; position: absolute; inset: 6px; background: var(--tv-accent); } }
+.mes-word { display: flex; flex-direction: column; line-height: 1;
+  .mx-text { font-family: var(--tv-display); font-weight: 700; font-size: 15px; letter-spacing: 2px; color: var(--tv-ink); } }
+.mes-brand-sub .mx-text { font-family: var(--tv-body) !important; font-weight: 400 !important; font-size: 9px !important;
+  letter-spacing: 2px !important; color: var(--tv-faint) !important; margin-top: 3px; }
+.mes-plant { display: flex; align-items: center; gap: 8px; padding: 0 20px; font-size: 12px;
+  .mx-text { color: var(--tv-muted); } .mes-plant-name .mx-text { color: var(--tv-ink); font-weight: 600; } }
+.mes-spacer { flex: 1; }
+.mes-alarm { display: flex; align-items: center; gap: 8px; padding: 0 18px; height: 100%; border-left: 1px solid var(--tv-line); }
+.mes-alarm-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--tv-danger);
+  box-shadow: 0 0 8px var(--tv-danger); animation: mesBlink 1s infinite; }
+.mes-alarm-n .mx-text { font-family: var(--tv-mono); font-size: 13px; font-weight: 600; color: var(--tv-danger); }
+.mes-alarm-l .mx-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-faint); }
+.mes-clock { display: flex; flex-direction: column; align-items: flex-end; justify-content: center;
+  padding: 0 20px; height: 100%; border-left: 1px solid var(--tv-line); min-width: 132px;
+  .mes-clock-time .mx-text { font-family: var(--tv-mono); font-size: 18px; font-weight: 600; letter-spacing: 1px; color: var(--tv-ink); }
+  .mx-text { font-size: 10px; letter-spacing: 1px; color: var(--tv-faint); } }
+
+// ---- tabs ----
+.mes-tabs { display: flex; align-items: stretch; height: 44px; flex: none;
+  background: var(--tv-surface-2); border-bottom: 1px solid var(--tv-line); padding: 0 8px; }
+.mes-tab { display: flex; align-items: center; gap: 9px; padding: 0 22px; cursor: pointer;
+  font-size: 13px; font-weight: 600; letter-spacing: .3px; color: var(--tv-faint);
+  border-bottom: 2px solid transparent;
+  .mx-text { color: inherit; } .mes-tab-num .mx-text { font-family: var(--tv-mono); font-size: 11px; opacity: .6; }
+  &.is-active { color: var(--tv-ink); border-bottom-color: var(--tv-accent); background: var(--tv-accent-wash); } }
+.mes-live { display: flex; align-items: center; gap: 7px; margin-left: auto; padding: 0 18px; font-size: 11px; color: var(--tv-faint);
+  .mx-text { color: inherit; } }
+.mes-live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--tv-accent); animation: mesPulse 2s infinite; }
+
+// ---- body ----
+.mes-body { flex: 1; overflow-y: auto; padding: 16px; }
+.mes-kpis .mx-dataview-content { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
+.mes-kpi { background: var(--tv-panel); border: 1px solid var(--tv-line); border-left: 3px solid var(--tv-accent);
+  padding: 13px 15px;
+  &.kpi-blue { border-left-color: var(--tv-info); } &.kpi-red { border-left-color: var(--tv-danger); } }
+.mes-kpi-l .mx-text { font-size: 10px; text-transform: uppercase; letter-spacing: 1.2px; color: var(--tv-faint); }
+.mes-kpi-v { display: flex; align-items: baseline; gap: 4px; margin-top: 9px;
+  .mx-text { font-family: var(--tv-mono); font-size: 26px; font-weight: 600; color: var(--tv-ink); line-height: 1; } }
+.mes-kpi-u .mx-text { font-size: 12px !important; color: var(--tv-faint) !important; }
+.mes-kpi-d { margin-top: 8px; .mx-text { font-family: var(--tv-mono); font-size: 11px; color: var(--tv-muted); }
+  &.good .mx-text { color: var(--tv-good); } &.warn .mx-text { color: var(--tv-warn); } &.danger .mx-text { color: var(--tv-danger); } }
+
+.mes-main { display: grid; grid-template-columns: 1fr 340px; gap: 16px; align-items: start; }
+.mes-line-gallery .mx-gallery-content { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.mes-line-gallery .mx-gallery-item, .mes-line-gallery li { outline: none; }
+
+.line-card { --st: var(--tv-muted); position: relative; background: var(--tv-panel);
+  border: 1px solid var(--tv-line); border-top: 3px solid var(--st); padding: 15px 16px;
+  &.status-running { --st: var(--tv-good); } &.status-idle { --st: var(--tv-warn); } &.status-down { --st: var(--tv-danger); border-color: color-mix(in srgb, var(--tv-danger) 30%, var(--tv-line)); } }
+.line-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 6px; }
+.line-id { display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  .line-code .mx-text { font-family: var(--tv-mono); font-size: 11px; color: var(--tv-faint); }
+  .line-name .mx-text { font-family: var(--tv-display); font-size: 17px; font-weight: 600; color: var(--tv-ink); } }
+.line-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--st);
+  background: color-mix(in srgb, var(--st) 10%, transparent);
+  .line-st .mx-text { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--st); font-family: var(--tv-mono); } }
+.line-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--st); box-shadow: 0 0 8px var(--st); }
+.status-running .line-dot { animation: mesPulse 1.6s infinite; }
+.status-down .line-dot { animation: mesBlink 1s infinite; }
+.line-sub { display: flex; gap: 0; margin-bottom: 14px; .mx-text { font-size: 11px; color: var(--tv-faint); } }
+.line-metrics { display: flex; align-items: flex-end; gap: 20px; margin-bottom: 13px; }
+.lm-l .mx-text { font-size: 9px; letter-spacing: 1px; color: var(--tv-faint); text-transform: uppercase; }
+.lm-oee { flex: none; }
+.lm-oee-v { display: flex; align-items: baseline; gap: 2px; margin-top: 4px;
+  .mx-text { font-family: var(--tv-mono); font-size: 32px; font-weight: 600; color: var(--st); line-height: 1; } }
+.lm-u .mx-text { font-size: 13px !important; color: var(--tv-faint) !important; }
+.lm-grid { flex: 1; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.lm-cell .lm-v { margin-top: 3px; }
+.lm-v .mx-text { font-family: var(--tv-mono); font-size: 14px; color: var(--tv-ink-2); }
+.line-out-hd { display: flex; align-items: center; justify-content: space-between; font-size: 11px; margin-bottom: 6px;
+  .lo-l .mx-text { color: var(--tv-muted); } .lo-v .mx-text { font-family: var(--tv-mono); color: var(--tv-ink-2); } .lo-t .mx-text { color: var(--tv-faint) !important; } }
+.line-out .progress, .line-out [class*="progress"] { border-radius: 0 !important; }
+
+// ---- rail ----
+.mes-rail { display: flex; flex-direction: column; gap: 16px; }
+.rail-card { background: var(--tv-panel); border: 1px solid var(--tv-line); padding: 15px; }
+.rail-t.mx-text, .rail-t { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-muted);
+  .mx-text { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--tv-muted); } }
+.rail-t .mx-text { font-family: var(--tv-body); }
+.rf-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.rf-live .mx-text { font-size: 10px; color: var(--tv-accent); font-family: var(--tv-mono); }
+.event-row { display: flex; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--tv-line-2); align-items: flex-start; }
+.event-list .mx-listview-item:last-child .event-row { border-bottom: 0; }
+.ev-time .mx-text { font-family: var(--tv-mono); font-size: 10px; color: var(--tv-faint); white-space: nowrap; padding-top: 1px; }
+.ev-dot { --sev: var(--tv-info); width: 6px; height: 6px; border-radius: 50%; margin-top: 5px; flex: none;
+  background: var(--sev); box-shadow: 0 0 6px var(--sev);
+  &.sev-crit { --sev: var(--tv-danger); } &.sev-warn { --sev: var(--tv-warn); } &.sev-info { --sev: var(--tv-info); } }
+.ev-text .mx-text { font-size: 11.5px; color: var(--tv-ink-2); line-height: 1.4; }
+
+@media (max-width: 1100px) {
+  .mes-kpis .mx-dataview-content { grid-template-columns: repeat(3, 1fr); }
+  .mes-main { grid-template-columns: 1fr; }
+  .mes-line-gallery .mx-gallery-content { grid-template-columns: 1fr; }
+}
+
+// metric label/value stacking (were rendering inline as "TAKT38s")
+.lm-cell .lm-l, .lm-cell .lm-v, .lm-oee .lm-l { display: block; }
+.lm-grid .lm-cell { min-width: 0; }
