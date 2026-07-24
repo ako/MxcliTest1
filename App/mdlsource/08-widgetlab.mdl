@@ -1,0 +1,443 @@
+-- ============================================================================
+-- Widget Lab — a live gallery that exercises every marketplace widget so the
+-- rendered output can be eyeballed in a browser (via the tunnel hub).
+--
+-- Three pages, grouped by widget family:
+--   * WidgetLab_Inputs  — editable input/indicator widgets over an NPE:
+--                         Switch, Rating, Slider, RangeSlider, ProgressBar,
+--                         ProgressCircle, Combobox, Fieldset, Tooltip,
+--                         BadgeButton, HTMLElement, Accordion.
+--   * WidgetLab_Charts  — Pie / Column / Bar / Area charts over view entities.
+--   * WidgetLab_Data    — Datagrid (+ filters/sort), Gallery, Timeline, TreeNode
+--                         over the real Trip/Activity data.
+-- ============================================================================
+
+-- MARK: STATE — a non-persistent object that backs the editable input widgets.
+
+create or modify non-persistent entity "Travel"."WidgetLabState" (
+  /** Switch */
+  "Enabled": Boolean default true,
+  /** Star rating */
+  "Rating": Integer default 4,
+  /** Slider value */
+  "Volume": Decimal default 60,
+  /** Range slider lower bound */
+  "RangeLow": Decimal default 20,
+  /** Range slider upper bound */
+  "RangeHigh": Decimal default 80,
+  /** Progress bar / circle value */
+  "Progress": Integer default 65,
+  /** Progress bar / circle minimum */
+  "ProgMin": Integer default 0,
+  /** Progress bar / circle maximum */
+  "ProgMax": Integer default 100,
+  /** Combobox selection (reuses the trip-status enum) */
+  "Choice": Enumeration("Travel"."ENUM_TripStatus") default "Travel"."ENUM_TripStatus".Booked,
+  /** Free text for the tooltip / fieldset demo */
+  "Notes": String(500)
+);
+/
+
+create or replace microflow "Travel"."DS_WidgetLabState" ()
+  returns "Travel"."WidgetLabState" as $State
+begin
+  $State = create "Travel"."WidgetLabState" (
+    "Enabled" = true,
+    "Rating" = 4,
+    "Volume" = 60,
+    "RangeLow" = 20,
+    "RangeHigh" = 80,
+    "Progress" = 65,
+    "ProgMin" = 0,
+    "ProgMax" = 100,
+    "Choice" = "Travel"."ENUM_TripStatus".Booked,
+    "Notes" = 'Editable state for the input-widget lab'
+  );
+  return $State;
+end;
+/
+
+grant execute on microflow "Travel"."DS_WidgetLabState" to "Travel"."User";
+
+-- MARK: PAGE 1 — INPUT & INDICATOR WIDGETS
+
+create or replace page "Travel"."WidgetLab_Inputs"
+(
+  title: 'Widget Lab — Inputs',
+  layout: Atlas_Core.Atlas_SideBar
+)
+{
+  container ctnApp (class: 'travel-app') {
+    container ctnHeader (class: 'page-header') {
+      container ctnTitles (class: 'header-titles') {
+        dynamictext dtEyebrow (content: 'Widget Lab', class: 'eyebrow')
+        dynamictext dtPageTitle (content: 'Inputs & indicators', rendermode: H1)
+        container ctnSub (class: 'page-sub') {
+          dynamictext dtPageSub (content: 'Editable widgets bound to a live state object — toggle and drag to verify.')
+        }
+      }
+    }
+
+    dataview dvState (datasource: microflow "Travel"."DS_WidgetLabState", class: 'panel') {
+
+      layoutgrid gridInputs {
+        row rowA {
+          -- Switch --------------------------------------------------------
+          column colSwitch (desktopwidth: 4, class: 'lab-cell') {
+            dynamictext dtSwitch (content: 'Switch', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.switch.Switch' swEnabled (
+              booleanAttribute: "Enabled"
+            )
+          }
+          -- Star rating ---------------------------------------------------
+          column colRating (desktopwidth: 4, class: 'lab-cell') {
+            dynamictext dtRating (content: 'Rating', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.starrating.StarRating' srRating (
+              rateAttribute: "Rating",
+              maximumStars: 5,
+              animation: true
+            )
+          }
+          -- Combobox ------------------------------------------------------
+          column colCombo (desktopwidth: 4, class: 'lab-cell') {
+            dynamictext dtCombo (content: 'Combobox', rendermode: H5)
+            combobox cbChoice (label: 'Status', attribute: "Choice")
+          }
+        }
+
+        row rowB {
+          -- Slider --------------------------------------------------------
+          column colSlider (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtSlider (content: 'Slider', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.slider.Slider' slVolume (
+              valueAttribute: "Volume",
+              minValueType: static, staticMinimumValue: 0,
+              maxValueType: static, staticMaximumValue: 100,
+              stepSizeType: static, stepValue: 5,
+              showTooltip: true
+            )
+          }
+          -- Range slider --------------------------------------------------
+          column colRange (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtRange (content: 'Range slider', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.RangeSlider.RangeSlider' rsRange (
+              lowerBoundAttribute: "RangeLow",
+              upperBoundAttribute: "RangeHigh",
+              minValueType: static, staticMinimumValue: 0,
+              maxValueType: static, staticMaximumValue: 100,
+              stepSizeType: static, stepValue: 5,
+              showTooltip: true
+            )
+          }
+        }
+
+        row rowC {
+          -- Progress bar --------------------------------------------------
+          column colPBar (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtPBar (content: 'Progress bar', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.progressbar.ProgressBar' pbProgress (
+              type: dynamic,
+              dynamicCurrentValue: "Progress",
+              dynamicMinValue: "ProgMin", dynamicMaxValue: "ProgMax",
+              showLabel: true, labelType: percentage
+            )
+          }
+          -- Progress circle -----------------------------------------------
+          column colPCircle (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtPCircle (content: 'Progress circle', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.custom.progresscircle.ProgressCircle' pcProgress (
+              type: dynamic,
+              dynamicCurrentValue: "Progress",
+              dynamicMinValue: "ProgMin", dynamicMaxValue: "ProgMax",
+              showLabel: true, labelType: percentage
+            )
+          }
+        }
+
+        row rowD {
+          -- Fieldset ------------------------------------------------------
+          column colFieldset (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtFieldset (content: 'Fieldset', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.web.fieldset.Fieldset' fsNotes (
+              legend: 'Trip notes'
+            ) {
+              container "content" {
+                textarea txtNotes (label: 'Notes', attribute: "Notes")
+              }
+            }
+          }
+          -- Tooltip + BadgeButton -----------------------------------------
+          column colTip (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtTip (content: 'Tooltip & badge button', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.web.tooltip.Tooltip' ttHint (
+              renderMethod: text,
+              textMessage: 'This is a tooltip shown on hover',
+              tooltipPosition: top,
+              openOn: hover
+            ) {
+              container trigger {
+                dynamictext dtTipTarget (content: 'Hover over me', class: 'lab-tip-target')
+              }
+            }
+            pluggablewidget 'com.mendix.widget.custom.badgebutton.BadgeButton' bbInbox (
+              label: 'Inbox',
+              value: '3'
+            )
+          }
+        }
+
+        row rowE {
+          -- HTML element --------------------------------------------------
+          column colHtml (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtHtml (content: 'HTML element', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.web.htmlelement.HTMLElement' htmlBlock (
+              tagName: div,
+              tagContentMode: innerHTML,
+              tagContentHTML: '<div style="padding:8px;border-radius:8px;background:#eef4ff;color:#1f6feb;font-weight:600;">Rendered from raw HTML</div>'
+            )
+          }
+          -- Accordion -----------------------------------------------------
+          column colAccordion (desktopwidth: 6, class: 'lab-cell') {
+            dynamictext dtAccordion (content: 'Accordion', rendermode: H5)
+            pluggablewidget 'com.mendix.widget.web.accordion.Accordion' accInfo (
+              advancedMode: false,
+              collapsible: true,
+              expandBehavior: singleExpanded,
+              showIcon: right
+            ) {
+              group grpA (headerRenderMode: text, headerText: 'What is a Widget Lab?') {
+                dynamictext dtGrpA (content: 'A single page that renders every marketplace widget so you can verify them in a browser.', rendermode: paragraph)
+              }
+              group grpB (headerRenderMode: text, headerText: 'How is state stored?') {
+                dynamictext dtGrpB (content: 'The input widgets bind to a non-persistent WidgetLabState object created by a datasource microflow.', rendermode: paragraph)
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."WidgetLab_Inputs" to "Travel"."User";
+
+-- MARK: PAGE 2 — CHARTS
+
+create or replace page "Travel"."WidgetLab_Charts"
+(
+  title: 'Widget Lab — Charts',
+  layout: Atlas_Core.Atlas_SideBar
+)
+{
+  container ctnApp (class: 'travel-app') {
+    container ctnHeader (class: 'page-header') {
+      container ctnTitles (class: 'header-titles') {
+        dynamictext dtEyebrow (content: 'Widget Lab', class: 'eyebrow')
+        dynamictext dtPageTitle (content: 'Charts', rendermode: H1)
+        container ctnSub (class: 'page-sub') {
+          dynamictext dtPageSub (content: 'Pie, column, bar and area charts over aggregated view entities.')
+        }
+      }
+    }
+
+    layoutgrid gridCharts {
+      row rowChart1 {
+        column colPie (desktopwidth: 6, class: 'panel') {
+          dynamictext dtPieTitle (content: 'Pie — spend by category', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.piechart.PieChart' chartPie (
+            datasource: database from "Travel"."CostByCategory",
+            seriesName: '{CategoryName}',
+            seriesValueAttribute: TotalCost,
+            holeRadius: 55,
+            showLegend: true,
+            heightUnit: pixels, height: 260
+          )
+        }
+        column colColumn (desktopwidth: 6, class: 'panel') {
+          dynamictext dtColTitle (content: 'Column — budget by trip', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.columnchart.ColumnChart' chartColumn (
+            showLegend: false,
+            heightUnit: pixels, height: 260
+          ) {
+            series sCol (
+              dataSet: static,
+              staticDataSource: database from "Travel"."BudgetByTrip",
+              staticXAttribute: TripTitle,
+              staticYAttribute: Budget,
+              staticName: 'Budget',
+              aggregationType: sum
+            )
+          }
+        }
+      }
+      row rowChart2 {
+        column colBar (desktopwidth: 6, class: 'panel') {
+          dynamictext dtBarTitle (content: 'Bar — budget by trip', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.barchart.BarChart' chartBar (
+            showLegend: false,
+            heightUnit: pixels, height: 260
+          ) {
+            series sBar (
+              dataSet: static,
+              staticDataSource: database from "Travel"."BudgetByTrip",
+              staticXAttribute: Budget,
+              staticYAttribute: TripTitle,
+              staticName: 'Budget',
+              aggregationType: sum
+            )
+          }
+        }
+        column colArea (desktopwidth: 6, class: 'panel') {
+          dynamictext dtAreaTitle (content: 'Area — budget by trip', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.areachart.AreaChart' chartArea (
+            showLegend: false,
+            heightUnit: pixels, height: 260
+          ) {
+            series sArea (
+              dataSet: static,
+              staticDataSource: database from "Travel"."BudgetByTrip",
+              staticXAttribute: TripTitle,
+              staticYAttribute: Budget,
+              staticName: 'Budget',
+              aggregationType: sum
+            )
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."WidgetLab_Charts" to "Travel"."User";
+
+-- MARK: PAGE 3 — DATA WIDGETS (Datagrid + filters/sort, Gallery, Timeline, TreeNode)
+
+create or replace page "Travel"."WidgetLab_Data"
+(
+  title: 'Widget Lab — Data',
+  layout: Atlas_Core.Atlas_SideBar
+)
+{
+  container ctnApp (class: 'travel-app') {
+    container ctnHeader (class: 'page-header') {
+      container ctnTitles (class: 'header-titles') {
+        dynamictext dtEyebrow (content: 'Widget Lab', class: 'eyebrow')
+        dynamictext dtPageTitle (content: 'Data widgets', rendermode: H1)
+        container ctnSub (class: 'page-sub') {
+          dynamictext dtPageSub (content: 'Datagrid with filtering and sorting, gallery, timeline and tree outline.')
+        }
+      }
+    }
+
+    container ctnGridPanel (class: 'panel') {
+      container hdG (class: 'panel-head') {
+        dynamictext dtGridTitle (content: 'Datagrid — trips', rendermode: H5)
+      }
+      datagrid dgTrips (
+        datasource: database from "Travel"."Trip" sort by StartDate asc,
+        selection: single,
+        PageSize: 10
+      ) {
+        column colTitle (attribute: "Title", caption: 'Trip') {
+          textfilter ftTitle (attribute: "Title")
+        }
+        column colDest (attribute: "Destination", caption: 'Destination') {
+          textfilter ftDest (attribute: "Destination")
+        }
+        column colStatus (attribute: "Status", caption: 'Status') {
+          dropdownfilter fdStatus (attribute: "Status")
+        }
+        column colBudget (attribute: "Budget", caption: 'Budget', Alignment: right) {
+          numberfilter fnBudget (attribute: "Budget")
+        }
+        column colStart (attribute: "StartDate", caption: 'Start') {
+          datefilter fdStart (attribute: "StartDate")
+        }
+      }
+    }
+
+    container ctnGalleryPanel (class: 'panel') {
+      container hdGal (class: 'panel-head') {
+        dynamictext dtGalTitle (content: 'Gallery — trips', rendermode: H5)
+      }
+      gallery galTrips (
+        datasource: database from "Travel"."Trip" sort by StartDate asc,
+        selection: none,
+        DesktopColumns: 3, TabletColumns: 2, PhoneColumns: 1,
+        class: 'trips-gallery'
+      ) {
+        template tplTrip {
+          container ctnCard (class: 'trip-card') {
+            container ctnCardBody (class: 'trip-card-body') {
+              dynamictext dtCTitle (content: '{1}', contentparams: [{1} = Title], rendermode: H4)
+              dynamictext dtCDest (content: '{1}', contentparams: [{1} = Destination])
+              container ctnCBadge (class: 'trip-status-badge') {
+                pluggablewidget 'com.mendix.widget.custom.badge.Badge' bdgCStatus (
+                  type: 'badge',
+                  value: '{Status}'
+                )
+              }
+            }
+          }
+        }
+      }
+    }
+
+    container ctnTlPanel (class: 'panel') {
+      container hdTl (class: 'panel-head') {
+        dynamictext dtTlTitle (content: 'Timeline — all activities', rendermode: H5)
+      }
+      pluggablewidget 'com.mendix.widget.web.timeline.Timeline' tlAll (
+        datasource: database from "Travel"."Activity" sort by StartTime asc,
+        title: '{Name}',
+        description: '{Location}',
+        timeIndication: '{TimeLabel}',
+        groupEvents: true,
+        groupAttribute: StartTime,
+        groupByKey: 'day'
+      )
+    }
+
+    container ctnTreePanel (class: 'panel') {
+      container hdTree (class: 'panel-head') {
+        dynamictext dtTreeTitle (content: 'Tree node — days outline', rendermode: H5)
+      }
+      pluggablewidget 'com.mendix.widget.web.treenode.TreeNode' tnDays (
+        datasource: database from "Travel"."Day" sort by DayNumber asc,
+        headerType: 'text',
+        headerCaption: 'Day {DayNumber} — {Heading}',
+        hasChildren: true,
+        startExpanded: false,
+        showIcon: 'left'
+      ) {
+        container children {
+          listview lvActs (datasource: $currentObject/"Travel"."Day_Activity") {
+            template tplAct {
+              container ctnTreeAct (class: 'tree-activity') {
+                dynamictext dtTreeName (content: '{1}', contentparams: [{1} = Name], class: 'tree-name')
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+/
+
+grant view on page "Travel"."WidgetLab_Data" to "Travel"."User";
+
+-- MARK: NAVIGATION — add the lab pages to the sidebar menu
+
+create or replace navigation Responsive
+  home page Travel.Trips_Overview
+  menu (
+    menu item 'Trips' page Travel.Trips_Overview;
+    menu item 'Budget' page Travel.Budget_Overview;
+    menu item 'Widget Lab · Inputs' page Travel.WidgetLab_Inputs;
+    menu item 'Widget Lab · Charts' page Travel.WidgetLab_Charts;
+    menu item 'Widget Lab · Data' page Travel.WidgetLab_Data;
+  )
+;
