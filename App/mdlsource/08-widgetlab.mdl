@@ -236,7 +236,7 @@ create or replace page "Travel"."WidgetLab_Charts"
         dynamictext dtEyebrow (content: 'Widget Lab', class: 'eyebrow')
         dynamictext dtPageTitle (content: 'Charts', rendermode: H1)
         container ctnSub (class: 'page-sub') {
-          dynamictext dtPageSub (content: 'Pie, column, bar and area charts over aggregated view entities.')
+          dynamictext dtPageSub (content: 'Pie, column, bar, area, line, bubble, time-series and heatmap — the full chart family, dark-themed.')
         }
       }
     }
@@ -315,6 +315,85 @@ create or replace page "Travel"."WidgetLab_Charts"
               interpolation: spline,
               customSeriesOptions: '{"line":{"color":"#3fb950","width":2.5,"shape":"spline"},"fillcolor":"rgba(63,185,80,0.16)","mode":"lines"}'
             )
+          }
+        }
+      }
+      row rowChart3 {
+        column colLine (desktopwidth: 6, class: 'panel') {
+          dynamictext dtLineTitle (content: 'Line — budget by trip', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.linechart.LineChart' chartLine (
+            showLegend: false,
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
+            customConfigurations: '{"displayModeBar":false,"responsive":true}'
+          ) {
+            line lnBudget (
+              dataSet: static,
+              staticDataSource: database from "Travel"."BudgetByTrip",
+              staticXAttribute: TripTitle,
+              staticYAttribute: Budget,
+              staticName: 'Budget',
+              interpolation: spline,
+              lineStyle: lineWithMarkers,
+              customSeriesOptions: '{"line":{"color":"#3fb950","width":2.5,"shape":"spline"},"marker":{"color":"#3fb950","size":8}}'
+            )
+          }
+        }
+        column colBubble (desktopwidth: 6, class: 'panel') {
+          dynamictext dtBubbleTitle (content: 'Bubble — OEE vs output', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.bubblechart.BubbleChart' chartBubble (
+            showLegend: false,
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":50,"r":14,"t":10,"b":34},"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
+            customConfigurations: '{"displayModeBar":false,"responsive":true}'
+          ) {
+            line bubLines (
+              dataSet: static,
+              staticDataSource: database from "MES"."ProductionLine",
+              staticXAttribute: OEE,
+              staticYAttribute: Produced,
+              staticSizeAttribute: Target,
+              staticName: 'Lines',
+              customSeriesOptions: '{"marker":{"color":"#58a6ff","line":{"color":"#0a0d12","width":1}}}'
+            )
+          }
+        }
+      }
+      row rowChart4 {
+        column colTs (desktopwidth: 6, class: 'panel') {
+          dynamictext dtTsTitle (content: 'Time series — budget over time', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.timeseries.TimeSeries' chartTs (
+            showLegend: false,
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":12},"margin":{"l":46,"r":14,"t":10,"b":34},"xaxis":{"gridcolor":"rgba(140,148,166,0.10)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":10}},"yaxis":{"gridcolor":"rgba(140,148,166,0.12)","zeroline":false,"showline":false,"ticks":"","automargin":true,"tickfont":{"size":11}},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
+            customConfigurations: '{"displayModeBar":false,"responsive":true}'
+          ) {
+            line tsBudget (
+              dataSet: static,
+              staticDataSource: database from "Travel"."Trip" sort by StartDate asc,
+              staticXAttribute: StartDate,
+              staticYAttribute: Budget,
+              staticName: 'Budget',
+              interpolation: spline,
+              customSeriesOptions: '{"line":{"color":"#3fb950","width":2.5,"shape":"spline"},"fillcolor":"rgba(63,185,80,0.14)"}'
+            )
+          }
+        }
+        column colHm (desktopwidth: 6, class: 'panel') {
+          dynamictext dtHmTitle (content: 'Heatmap — OEE by line × operator', rendermode: H5)
+          pluggablewidget 'com.mendix.widget.web.heatmap.HeatMap' chartHm (
+            datasource: database from "MES"."ProductionLine",
+            seriesValueAttribute: OEE,
+            horizontalAxisAttribute: LineCode,
+            verticalAxisAttribute: Operator,
+            showValues: true,
+            heightUnit: pixels, height: 260,
+            customLayout: '{"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"rgba(0,0,0,0)","font":{"family":"IBM Plex Sans,system-ui,sans-serif","color":"#8b949e","size":11},"margin":{"l":90,"r":14,"t":10,"b":30},"hoverlabel":{"bgcolor":"#11161d","bordercolor":"#1c232c","font":{"color":"#e6edf3"}}}',
+            customConfigurations: '{"displayModeBar":false,"responsive":true}'
+          ) {
+            scalecolor scLow (valuePercentage: 0, colour: '#0d1117')
+            scalecolor scMid (valuePercentage: 55, colour: '#1f6f42')
+            scalecolor scHigh (valuePercentage: 100, colour: '#3fb950')
           }
         }
       }
