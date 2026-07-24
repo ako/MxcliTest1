@@ -202,7 +202,8 @@ boxes with (often) near-invisible text. Observed clashes and the fix:
 | Accordion / Fieldset | white group/legend surfaces | surface token bg + border/legend ink |
 | **TreeNode** | expanded child rows carry a **white card bg**; dark ink text on it is invisible | drop the white so the dark panel shows through |
 | Charts | white Plotly paper | transparent `customLayout` (above) — adapts automatically |
-| Combobox/tooltip popovers | render at `<body>`, outside `.travel-app` | theme globally in the dark media query |
+| Combobox/tooltip/dropdown-filter popovers | render at `<body>`, outside `.travel-app` | theme **globally**, not `.travel-app`-scoped |
+| **Edit popups** (`.mx-window` / `.modal-content`) | white window container shows through the transparent header as a **white title bar**; white default buttons | theme `.mx-window`/`.modal` chrome + its form controls/buttons **globally** |
 
 **Takeaways for the skill:** (1) ship a **dark-mode widget-override recipe** (the selector list above
 is the starting inventory) as an optional asset — dark mode is *not* free once you leave your own
@@ -211,6 +212,44 @@ override recipe, **ship light-only** — a half-dark result (custom chrome dark,
 is worse than consistent light. Also a **runtime crash** to encode: the Slider/RangeSlider *tooltip*
 calls React's removed `findDOMNode` on Mendix 11's React and throws "Could not render widget" on
 drag — set `showTooltip:false`.
+
+### Re-skinning an existing app end-to-end (the "Atlas MES" exercise)
+We took the finished light-SaaS app and re-skinned it into a completely different identity — a dark,
+industrial "manufacturing execution system" (near-black ground, Space Grotesk / IBM Plex, sharp
+corners, green accent, gradient cards, glowing status dots) — **changing only the two theme files
+(`custom-variables.scss` + `main.scss`). Zero page/microflow/MDL edits.** This is the strongest
+validation of the architecture: the token + recipe-class layer is a genuine *skin*, swappable without
+touching structure, and (being SCSS) it hot-applies via `--watch`. Concrete lessons:
+
+- **A Layer-1 token retune cascades into pluggable widgets for free.** Setting `--brand-primary` to
+  the MES green flowed straight into the **Switch, Slider, RangeSlider, ProgressBar, ProgressCircle
+  and BadgeButton** (they read Atlas brand vars) — no per-widget CSS. This is the layered model's
+  headline payoff, now shown on a full palette pivot, not just a tweak.
+- **Use *both* token channels for a global shift.** `custom-variables.scss` retunes Atlas **leaves**
+  (`--bg-color`, `--font-color-default`, `--form-input-*`, `--border-color-default`,
+  `--card-border-radius`, radius→0) so Atlas surfaces *outside* your scoped classes (form inputs,
+  popups) inherit the new palette; `main.scss` retunes the `--tv-*` recipe tokens + classes. Neither
+  alone is enough.
+- **Committing to a single theme is *less* work than dual-theme.** Because MES is dark-only, we
+  dropped the `@media (prefers-color-scheme: dark)` gate entirely and made the widget overrides
+  **unconditional and global** (not `.travel-app`-scoped). That simultaneously fixed the "half-dark
+  clash" *and* covered the portal-rendered popups/modals. Decide theme-count up front: one committed
+  theme is simpler and more robust than trying to support both.
+- **Charts are the one thing that does NOT follow the CSS token cascade.** Every visual on the page
+  is CSS and re-skins for free — except chart **series colours**, which live in the *model* (each
+  chart's `customSeriesOptions` / `customLayout` JSON), not CSS. Matching charts to the new brand
+  therefore needed an **MDL edit + a gen-2 restart**, unlike everything else (pure SCSS, hot-applied).
+  → Flag for the roadmap: let charts read a theme colourway / CSS var so a palette pivot doesn't
+  require a model change. Until then, treat chart colour as model config, not theme.
+- **Web-font `@import` ordering gotcha.** `@import url('…fonts.googleapis…')` must be the **first
+  line** of `main.scss` — before the `custom-variables` partial import and before any CSS rule — or
+  the browser drops it (CSS ignores `@import` after rules). Always ship a **system fallback stack**
+  (`"Space Grotesk", "IBM Plex Sans", system-ui, …`) so the layout survives a font-load failure.
+- **Design-handoff ingestion.** The mockup arrived as a Claude Design bundle (`*.dc.html`): a
+  templating shell (`sc-for`/`sc-if`/`{{ }}` + a `DCLogic` state class). The **CSS values in the
+  inline styles are the spec** — extract palette / type / spacing / borders and ignore the templating
+  and JS. (Private `claude.ai/design/…` share links are not fetchable by the agent — ask for the
+  exported bundle or pasted HTML.)
 
 ## The standard — a 4-layer architecture
 
@@ -311,6 +350,10 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 | **Slider/RangeSlider** throw "Could not render widget" on drag (tooltip calls React `findDOMNode`, removed in MX 11) | set `showTooltip: false` |
 | Atlas widgets + Plotly **aren't dark-aware** — a `prefers-color-scheme` flip leaves them light on a dark page | ship the dark-mode widget-override recipe (form controls, datagrid + filters/popovers, accordion, fieldset, **treenode white rows**, transparent charts), or ship light-only |
 | `.widget-dropdown-filter-menu` paints a **hardcoded white scroll-fade gradient** even after bg is themed | override `background-image:none` and brighten menu-item text |
+| **Edit popup has a white title bar** — `.mx-window`/`.modal-content` renders at `<body>`, outside `.travel-app` | theme `.mx-window-content`/`.modal-content` + header + form controls/buttons **globally**, not scoped |
+| **Chart colours don't re-skin** — series colour lives in the model (`customSeriesOptions`), not CSS | accept it's model config; a palette pivot needs an MDL edit + gen-2 restart, not a theme edit |
+| Google-fonts `@import url()` silently dropped | make it the **first line** of `main.scss` (before the partial import + any rule); keep a system fallback stack |
+| Full re-skin desired (new identity) | it's **theme-only** — retune `custom-variables.scss` (Atlas leaves) + `main.scss` (`--tv-*` + classes); no page/MDL edits, hot-applies |
 | **`mx check` passes but the browser client crashes** (e.g. old ListView `SearchRefs`; the slider `findDOMNode` throw only fires on interaction) | **always Playwright-verify a running build; never ship on `mx check` alone** |
 | "SCSS cache" — edits don't show | never a cache: `--watch` (now watches theme source) or clean restart; kill stale process first |
 | Stale process serves old output, looks like a cache | `run --local` now refuses occupied ports; free them (pgrep/kill/curl 000) |
@@ -340,11 +383,16 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 - **`designproperties` vs `class` strings**: **resolved by live testing** — raw `class:` renders the full
   Atlas vocabulary today, so recipes ship on `class:` now. Typed `designproperties` becomes a *later*
   nicety (Studio-Pro Appearance-tab round-trip), not a prerequisite.
-- **Dark mode**: **partially resolved by this session.** A `prefers-color-scheme` flip repaints your
-  own classes but **not** Atlas widgets / Plotly (they ship light-only), producing a half-dark clash.
-  Options: (a) ship **light-only** (simplest, consistent), or (b) include the **dark-mode
-  widget-override recipe** (see "Styling the standard widgets"). Still open: whether to offer a
-  user-facing runtime toggle (Atlas has no built-in one) vs. following the OS preference only.
+- **Dark mode**: **resolved by this session.** A `prefers-color-scheme` flip repaints your own
+  classes but **not** Atlas widgets / Plotly (they ship light-only), producing a half-dark clash. The
+  robust answer is to **commit to one theme**: for a dark app, drop the media gate and make the
+  widget overrides **unconditional + global** (validated by the MES re-skin — this also covers
+  portal popups/modals). Ship **light-only** if you can't fund the override recipe; a half-dark
+  result is worse than either. Still open only: a user-facing runtime toggle (Atlas has none built in).
+- **Charts don't follow the token cascade**: series colour lives in the model
+  (`customSeriesOptions`), so a re-brand needs an MDL edit, not a theme edit. Should mxcli let a chart
+  read a theme colourway / CSS var (so charts re-skin with everything else), or is chart colour
+  legitimately model config? Leaning "let it read a colourway" for the design workflow.
 - **Recipe home end-state**: parameterized fragments vs native Building Blocks — likely both, with
   Building Blocks winning once `use` lands (Studio-Pro-visible).
 - **Verification is non-skippable**: the standard's correctness depends on runtime verification
@@ -355,7 +403,9 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 ### Appendix — reference artifacts
 Itinera build: `mdlsource/06-redesign.mdl`, `07-shell.mdl`, `themesource/travel/web/main.scss`
 (the `@media (prefers-color-scheme: dark)` block is the dark-mode widget-override starting inventory),
-`theme/web/custom-variables.scss`; the styled charts + every-widget validation page in
+`theme/web/custom-variables.scss` — **these two files now carry the dark "Atlas MES" skin**, a full
+second identity proving the token+recipe layer is a swappable skin (the earlier light-Itinera version
+is in git history); the styled charts + every-widget validation page in
 `mdlsource/08-widgetlab.mdl` (chart `customLayout`/`customConfigurations`/`customSeriesOptions`,
 `showTooltip:false` slider fix); widget-authoring findings in `WIDGET-FINDINGS.md`; approved visual
-direction in the Itinera HTML mockup.
+direction in the Itinera HTML mockup + the Atlas MES handoff bundle.
