@@ -86,3 +86,26 @@ widgets render with real data).
 The shipped model now **integrates all six widget families with live data** (previously
 withheld), and stays a clean bootable **MPR v2** build (0 errors, `mprcontents/` intact,
 HTTP 200). The four widget `.mpk`s are at marketplace latest.
+
+## Chart family — every chart type is authorable via MDL (verified, mxcli main `7dbb171`)
+
+An earlier note (create-page skill) said *"LineChart/BubbleChart/HeatMap … are not yet authorable
+via MDL — use Studio Pro for those."* **That is now stale.** Authored all eight chart types on this
+app, each passing `mx check` (0 errors) and rendering client-side with **0 console errors**:
+
+| Chart | Object-list (MDL container) | Data source |
+|---|---|---|
+| Pie | *(none — direct)* | widget `datasource:` |
+| Column / Bar / Area | `series` | per-series `staticDataSource:` |
+| **Line / Bubble / TimeSeries** | **`line`** (property `lines`) | per-series `staticDataSource:` |
+| **HeatMap** | **`scalecolor`** (property `scaleColors`, gradient stops) | widget `datasource:` |
+
+- Line/Bubble/TimeSeries: same `line (dataSet: static, staticDataSource: …, staticXAttribute: …,
+  staticYAttribute: …, …)` shape as chart `series`; Bubble adds `staticSizeAttribute`.
+- HeatMap: `datasource:` + `seriesValueAttribute` + `horizontalAxisAttribute`/`verticalAxisAttribute`
+  + `scalecolor (valuePercentage, colour)` gradient stops.
+- **Gotcha caught by mxcli itself:** writing HeatMap's source as `seriesDataSource: …` is rejected by
+  `mxcli check --references` (**MDL-WIDGET05**) with a clear fix — use the widget `datasource:` clause.
+
+Net: the whole `com.mendix.widget.web.*chart*` family (pie, column, bar, area, line, bubble,
+timeseries, heatmap) authors + builds + renders from MDL. ✅
