@@ -92,6 +92,14 @@ name level only and cannot be inspected, instantiated, or authored via MDL:
 So mxcli can list building-block names but can't read their content, describe them, copy one onto a
 page, or create one. (`show-describe-building-blocks.md` is `status: proposed`.)
 
+> **STATUS UPDATE (verified against `ako/mxcli` main this session):** capabilities (1) **read** and
+> (2) **instantiate** below have both **shipped and are verified working on the default `modelsdk`
+> engine** — see the *Implementation status* table near the end. The prediction in (2) held exactly:
+> `use building block` reuses the fragment-expansion machinery (it renders the block to MDL, re-parses
+> via a `define fragment` wrapper, then applies the prefix). Only (3) **author** (`CREATE BUILDING
+> BLOCK`) remains open. The paragraph below reflects the pre-implementation state and is kept for the
+> rationale.
+
 #### What "create pages with Building Blocks" actually requires (three capabilities, in order)
 1. **Read their content** — extend the widget-tree reader (already implemented for `Forms$Page` /
    `Forms$Snippet`; a Building Block carries the *same* `widgets: []` tree) to `Forms$BuildingBlock`,
@@ -430,9 +438,12 @@ A first wave landed and was verified against this app:
 | **P0** ports free on stop | ✅ **fixed** | SIGINT to `run` shuts down cleanly and frees `:8080`/`:6543`. *Residual:* the gen-2 **restart** still orphans the previous-generation runtime (a stray `java`, reparented to init) — it holds no port but lingers; worth reaping too |
 | **P1** cross-module page grant → CE0148 | ✅ **fixed** | `grant view on page MES.LineOverview to Travel.User` is now **rejected upfront** with an actionable message ("a page can only reference module roles from its own module… grant a MES module role instead") instead of silently producing a build-blocking CE0148 |
 | **P1** Building Blocks **read** (`SHOW`/`DESCRIBE BUILDING BLOCKS`) | ✅ **fixed** | Now works on the **default `modelsdk` engine** (the legacy-only gap was closed by a follow-up). `SHOW BUILDING BLOCKS [IN Module]` lists all 39 Atlas blocks with category/platform; `DESCRIBE` emits the full round-trippable widget tree (e.g. `Pageheader_WithControls` → `container` → `linkbutton` + `layoutgrid`/`row`/`column`/`dynamictext` with classes + design properties). The discover-then-reuse half is done — next is **instantiate** (`USE`) |
+| **P1** Building Blocks **instantiate** (`USE BUILDING BLOCK Mod.Name [as prefix_]`) | ✅ **fixed** | v1 deep-copy works on the **default `modelsdk` engine** (the skill's "legacy-only today" note is now stale). `use building block Atlas_Web_Content.Card as cust_` expands to the block's real tree — `cust_container2` + `cust_text22` carrying the `card-title` class **and** the nested `Spacing` design property — and `mx check` = 0 errors. **Two real usage constraints found:** (1) it expands only at **page-body / snippet top level**, not inside a nested `container` (nesting → *"unsupported widget type: USE_BUILDING_BLOCK"*); (2) a block has no parameters, so bind data/text afterwards with `alter page` on the prefixed copies. The recipe library can now be a thin adapter over native blocks |
+| **P1** compound (nested) `designproperties` survive the write path | ✅ **fixed** | An inline nested design property — e.g. Atlas `'Spacing': ['margin-bottom': 'Large', 'margin-top': 'Medium']` — was previously **silently dropped** on write (`check`/`exec`/`mx check` all passed, but the styling vanished; only flat toggle/option props survived). Now it round-trips: authored → `exec` → `describe page` shows the full `Spacing` group intact, `mx check` = 0 errors. This also fixes any block copied in via `use building block` that carries a compound prop (the Atlas Card carries `Spacing`) |
 
-Still open from the table above: Building-Block **instantiate** (`USE`) and **author** (`CREATE`), parameterized
-fragments, chart colourway, typed `designproperties`, lint rules.
+Still open from the table above: Building-Block **author** (`CREATE BUILDING BLOCK`), parameterized
+fragments, an inline-override block for `use building block` (v1.1 — configure at instantiation
+instead of a follow-up `alter page`), chart colourway, typed `designproperties` authoring ergonomics, lint rules.
 
 ## Rollout
 
