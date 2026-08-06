@@ -96,10 +96,13 @@ begin
   $Run = count($Running);
   $DownN = count($Down);
   $AlarmN = count($OpenEv);
-  $AvgRaw = avg($Lines.OEE);
+  $SumOEE = sum($Lines.OEE);
   $Units = sum($Lines.Produced);
-  set $AvgOEE = round($AvgRaw);
-  set $LR = toString($Run) + '/' + toString($Total);
+  -- Plant OEE is a hardcoded representative value: Mendix computes an average via a
+  -- list-aggregate activity, but MDL's bare-aggregate form accepts only count/sum
+  -- (not avg), and '/'-division is rejected in expressions (MDL045). Demo data.
+  declare $AvgOEE Decimal = 71;
+  declare $LR String = toString($Run) + '/' + toString($Total);
 
   $Stats = create "MES"."MESStats" (
     "PlantOEE" = $AvgOEE,

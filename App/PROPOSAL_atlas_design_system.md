@@ -395,7 +395,10 @@ professional / branded / less bland", or to match a design mock. Companion to `c
 | **`grant view on page` to a *cross-module* role → CE0148 "reselect roles" that BLOCKS the build** | grant the page's **own-module** role (add that role to the user role for access); cost real time to diagnose |
 | Seed microflow data doesn't appear (queries empty) | **`create` doesn't persist — add `commit $obj;`**; the miss is silent (no error) |
 | Bare `$x = avg(...)` or `$x = 2` fails to parse | bare `$x = …` accepts only `count`/`sum` aggregates; use `declare $x T = expr` for other expressions, `set $x = expr` to reassign a declared var |
-| Integer/integer division `$a / $b` → CE0117 | Mendix `/` needs a decimal operand; averaging integers is awkward — compute upstream or store decimals |
+| Integer/integer division `$a / $b` → CE0117 | Mendix `/` needs a decimal operand; averaging integers is awkward — compute upstream or store decimals. **Now caught at check time** (MDL045: "`/` navigates associations, it does not divide") instead of only at build |
+| **Breaking (mxcli main):** microflow/nanoflow statements now **require a trailing `;`** | add semicolons to every statement; the check points at it precisely (*"missing ';' at …"*). Older hand-written `.mdl` sources need a one-time migration |
+| **Averaging in a microflow is genuinely blocked in MDL** — `avg()` is rejected in the bare-aggregate form *and* flagged as a non-Mendix function inside `declare/set` (MDL044, CE0117); `/`-division also rejected (MDL045) | for demo data, hardcode a representative value (as our MES `DS_MESStats` does: `declare $AvgOEE Decimal = 71;`). **mxcli gap worth closing:** Mendix has native **Average/Min/Max** list-aggregate activities — MDL's bare `$x = <agg>(…)` form should accept them alongside `count`/`sum`, which would make a real computed average authorable |
+| **Committed `.mdl` source can silently drift from the built model** — our `09-mes-dashboard.mdl` had been edited to `avg()` but the model still held the valid hardcoded microflow; the tightened checks surfaced it | periodically re-`check` every source file against latest mxcli; `describe` the model element to see ground truth and realign the source |
 | View entity flagged CE6770 "out of sync" | the view's declared attribute types must match its OQL source columns (Decimal vs Integer mismatch trips it) |
 | **`mx check` passes but the browser client crashes** (e.g. old ListView `SearchRefs`; the slider `findDOMNode` throw only fires on interaction) | **always Playwright-verify a running build; never ship on `mx check` alone** |
 | "SCSS cache" — edits don't show | never a cache: `--watch` (now watches theme source) or clean restart; kill stale process first |
@@ -482,7 +485,19 @@ expansion constraint and the "configure at instantiation" wish from prior waves 
   robust answer is to **commit to one theme**: for a dark app, drop the media gate and make the
   widget overrides **unconditional + global** (validated by the MES re-skin — this also covers
   portal popups/modals). Ship **light-only** if you can't fund the override recipe; a half-dark
-  result is worse than either. Still open only: a user-facing runtime toggle (Atlas has none built in).
+  result is worse than either. ~~Still open only: a user-facing runtime toggle~~ — **now resolved
+  upstream (verified this session):** `mxcli theme` ships three themes (signal/ledger/console), each
+  with **light + dark palettes** behind `--mxt-*` tokens mapped onto ~60 Atlas variables, and
+  **`mxcli theme switcher install`** generates the runtime toggle — `ToggleAppTheme`/`SetAppTheme`/
+  `ApplyStoredTheme` JS actions + an `ACT_ToggleTheme` nanoflow that flips a `theme-dark`/`theme-light`
+  class on `<html>` (so popups/modals at `<body>` follow too) and remembers the choice in localStorage.
+  Verified: installs 3 JS actions + 2 nanoflows into a module, `mx check` = 0 errors. Two caveats worth
+  recording: (1) *theme-only* — it writes `theme/web/*`, never Atlas Core or the model, so it hot-applies
+  under `--watch`; (2) the stored choice **doesn't survive a reload** yet — Mendix has no page-load hook
+  and mxcli can't author the nanoflow-datasource dataview on either engine, so `ApplyStoredTheme` ships
+  ready but must be wired in Studio Pro for reload-persistence. For *our* app the switcher is orthogonal
+  to the hand-rolled always-dark re-skin (our overrides aren't gated on the theme class), so adopting it
+  would mean re-expressing the MES palette as a theme's light/dark token sets — a clean future migration.
 - **Charts don't follow the token cascade**: series colour lives in the model
   (`customSeriesOptions`), so a re-brand needs an MDL edit, not a theme edit. Should mxcli let a chart
   read a theme colourway / CSS var (so charts re-skin with everything else), or is chart colour
